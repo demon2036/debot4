@@ -1,0 +1,38 @@
+[storage]
+path = "var/debot4.sqlite3"
+sqlite_cache_mib = 32
+busy_timeout_ms = 5000
+
+[limits]
+queue_size_per_type = 1000
+active_tokens = 40
+http_total_concurrency = 6
+http_per_domain_concurrency = 2
+llm_concurrency = 1
+target_rss_mib = 96
+memory_high_mib = 128
+memory_max_mib = 180
+target_cpu_single_core_pct = 10
+
+[polling]
+debot_new_seconds = 10
+debot_completing_seconds = 10
+debot_completed_seconds = 60
+market_first_10m_seconds = 3
+market_first_hour_seconds = 6
+market_later_seconds = 60
+
+[g0]
+cycle_seconds = 3
+analysis_cycle_seconds = 10
+max_active_tokens = 40
+max_token_polls_per_cycle = 12
+event_read_limit = 512
+
+[model]
+base_url = "http://45.77.1.146:8339"
+name = "gpt-5.3-codex-spark"
+api_key_env = "AETHER_API_KEY"
+api_key_file_env = "AETHER_API_KEY_FILE"
+timeout_seconds = 45
+max_output_tokens = 1200

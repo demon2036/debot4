@@ -1,0 +1,33 @@
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+.venv/
+.env
+.env.*
+!.env.example
+*.egg-info/
+build/
+dist/
+
+# Runtime state is machine-local and may contain private observations.
+var/
+*.sqlite3
+*.sqlite3-*
+*.db
+*.db-*
+*.jsonl.*
+*.log
+*.lock
+
+# Credentials and authenticated client sessions never belong in Git.
+credentials/
+*.cred
+debot_cookies.json
+*.session
+*.session-journal
+
+.DS_Store

@@ -1,0 +1,98 @@
+"""Reviewed Chinese-language narrative, data, and propagation accounts."""
+
+from .actor_catalog_types import EXACT_POST_REVIEW, KOL, actor
+from .actors import ActorTier as T
+
+
+CHINA_ACTORS = (
+    actor(
+        "Sencrazy_1", "1978002137092411392", "Sencrazy",
+        "Chinese BSC meme advocate focused on Chinese internet-culture memes",
+        T.PROPAGATION_KOL, ("bsc", "bnb"), KOL,
+        languages=("zh", "en"), regions=("china",), aliases=("sen", "sencrazy"),
+        priority=5, basis=EXACT_POST_REVIEW,
+        evidence=("https://x.com/Sencrazy_1/status/2082776293675008032",),
+        risks=("frequent token-specific promotion; treat as position-biased propagation",),
+    ),
+    actor(
+        "nina_rong", "1164750442787561474", "Nina Rong",
+        "BNB Chain growth executive and RWA/memefi ecosystem catalyst",
+        T.ECOSYSTEM_AUTHORITY, ("bsc", "bnb", "arbitrum", "robinhood"), KOL,
+        languages=("zh", "en"), regions=("china", "global"),
+        aliases=("nina", "ninarong"), priority=3, basis=EXACT_POST_REVIEW,
+        evidence=("https://x.com/nina_rong/status/2084227627288838632",),
+    ),
+    actor(
+        "CryptoDevinL", "1371263177288130561", "CryptoD / 大D",
+        "Chinese cross-border meme ecosystem and early-token commentator",
+        T.PROPAGATION_KOL, ("bsc", "solana", "global"), KOL,
+        languages=("zh", "en"), regions=("china",), telegram=("D11111D1",),
+        aliases=("大D", "cryptod"), priority=4, basis=EXACT_POST_REVIEW,
+        evidence=("https://x.com/CryptoDevinL/status/2084157693242257450",),
+    ),
+    actor(
+        "hexiecs", "1236194290100928514", "冷静冷静再冷静",
+        "Chinese cross-chain narrative commentator tracking ecosystem pivots",
+        T.PROPAGATION_KOL, ("base", "bsc", "solana", "global"), KOL,
+        languages=("zh",), regions=("china",), aliases=("冷静",),
+        priority=4, basis=EXACT_POST_REVIEW,
+        evidence=("https://x.com/hexiecs/status/2077918738121396435",),
+    ),
+    actor(
+        "btc2ai", "1659207187330379778", "Crypto北斗",
+        "Chinese meme narrative researcher using cultural, IP, and chain comparisons",
+        T.DOMAIN_EXPERT, ("bsc", "solana", "robinhood", "global"), KOL,
+        languages=("zh",), regions=("china",), aliases=("北斗", "crypto北斗"),
+        priority=3, basis=EXACT_POST_REVIEW,
+        evidence=("https://x.com/btc2ai/status/2086756263141245396",),
+    ),
+    actor("jiaojiaojio", "1509319325098078208", "JiaoJiao", "Chinese meme IP and visual-narrative creator", T.PROPAGATION_KOL, ("bsc", "solana"), KOL, languages=("zh",), regions=("china",), priority=7),
+    actor("Lu77okk", "1830472297884602368", "Lu77", "Chinese Web3 and meme commentator", T.PROPAGATION_KOL, ("bsc", "solana"), KOL, languages=("zh",), regions=("china",), telegram=("Lu77ok",), priority=7),
+    actor("ai_9684xtpa", "1503362006191026180", "Ai 姨", "Chinese onchain data storyteller", T.DOMAIN_EXPERT, ("ethereum", "bsc", "solana", "robinhood"), KOL, languages=("zh",), regions=("china",), priority=5, basis=EXACT_POST_REVIEW, evidence=("https://x.com/ai_9684xtpa/status/2075124045151125600",)),
+    actor("EmberCN", "1499656309565657089", "Ember", "Chinese onchain data analyst", T.DOMAIN_EXPERT, ("ethereum", "bsc", "solana"), KOL, languages=("zh",), regions=("china",), priority=5, basis=EXACT_POST_REVIEW, evidence=("https://x.com/EmberCN/status/2086800255757201727",)),
+    actor(
+        "0xcryptowizard", "1195728139898376193", "0xWizard",
+        "Chinese cross-chain meme-cycle and capital-rotation narrative analyst",
+        T.PROPAGATION_KOL, ("solana", "bsc", "global"), KOL,
+        languages=("zh", "en"), regions=("china", "global"), priority=4,
+        basis=EXACT_POST_REVIEW,
+        evidence=("https://x.com/0xcryptowizard/status/1976092559979291097",),
+        risks=("platform affiliation and referrals create material commercial conflicts",),
+    ),
+    actor(
+        "0xmmu", "1368753968982073344", "木木",
+        "Chinese tokenized-stock and meme narrative tracker across emerging chains",
+        T.PROPAGATION_KOL, ("robinhood", "solana", "bsc", "rwa"), KOL,
+        languages=("zh", "en"), regions=("china",), priority=5,
+        basis=EXACT_POST_REVIEW,
+        evidence=("https://x.com/0xmmu/status/2085861388120191027",),
+        risks=("alpha positioning can be position-biased; validate chronology independently",),
+    ),
+    actor(
+        "BTCOld8", "1483287149655265280", "老八只白嫖",
+        "Chinese BSC versus Robinhood meme-cycle and second-leg commentator",
+        T.PROPAGATION_KOL, ("bsc", "robinhood"), KOL,
+        languages=("zh",), regions=("china",), telegram=("Old8_eth",),
+        priority=6, basis=EXACT_POST_REVIEW,
+        evidence=("https://x.com/BTCOld8/status/2085976465217327341",),
+        risks=("commercial group and referral links; Telegram is reference-only",),
+    ),
+    actor(
+        "Victor_0607S", "1225311482864254976", "Victor",
+        "Chinese BSC public-figure narrative and market-context explainer",
+        T.PROPAGATION_KOL, ("bsc", "bnb"), KOL,
+        languages=("zh",), regions=("china",), priority=9,
+        basis=EXACT_POST_REVIEW,
+        evidence=("https://x.com/Victor_0607S/status/2084200014612689118",),
+        risks=("small account and performance claims are not independently verified",),
+    ),
+    actor(
+        "hellduan", "1052034029250260992", "Hellduan",
+        "Chinese RWA and meme narrative commentator spanning Solana, Base, and Robinhood",
+        T.PROPAGATION_KOL, ("solana", "base", "robinhood", "bsc", "rwa"), KOL,
+        languages=("zh", "en"), regions=("china",), priority=10,
+        basis=EXACT_POST_REVIEW,
+        evidence=("https://x.com/hellduan/status/2084853537239171490",),
+        risks=("self-described retail trader; commentary is not performance evidence",),
+    ),
+)

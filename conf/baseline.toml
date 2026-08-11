@@ -1,0 +1,63 @@
+[runtime]
+database = "var/baseline.sqlite3"
+state_path = "var/baseline_state.json"
+event_log_path = "var/baseline_runtime.jsonl"
+loop_seconds = 0.25
+discovery_seconds = 5.0
+dex_discovery_seconds = 2.0
+pair_discovery_seconds = 1.0
+debot_discovery_seconds = 5.0
+candidate_refresh_seconds = 1.0
+mark_refresh_seconds = 0.5
+max_observation_gap_seconds = 20.0
+candidate_ttl_seconds = 1800
+max_candidates = 128
+max_open_buys = 8
+entry_workers = 8
+mark_workers = 8
+notional_usd = "10"
+max_round_trip_loss_bps = 2500
+max_market_quote_skew_seconds = 3.0
+strategy_version = "flow-v4-pair-quorum-atomic-fdv"
+
+[strategy]
+min_market_cap_usd = 20000.0
+max_market_cap_usd = 3000000.0
+min_liquidity_usd = 5000.0
+min_liquidity_to_market_cap = 0.02
+min_pair_age_seconds = 45.0
+max_pair_age_seconds = 86400.0
+min_buys_5m = 4
+min_sells_5m = 1
+min_transactions_5m = 6
+min_volume_5m_usd = 600.0
+min_buy_share_5m = 0.55
+min_change_5m_pct = -8.0
+max_change_5m_pct = 35.0
+max_snapshot_age_seconds = 3.0
+max_future_skew_seconds = 1.0
+
+[dexscreener]
+timeout_seconds = 5.0
+max_response_bytes = 2097152
+max_candidates = 64
+max_pairs = 100
+
+[debot]
+timeout_seconds = 5.0
+max_response_bytes = 4194304
+limit_per_stage = 40
+
+[bsc]
+rpc_endpoints = [
+  "https://bsc-mainnet.public.blastapi.io",
+  "https://bsc.publicnode.com",
+]
+rpc_timeout_seconds = 4.0
+pair_confirmations = 0
+pair_poll_blocks = 256
+
+[evaluation]
+window_seconds = 3600
+target_peak_multiple = 1.5
+stop_multiple = 0.75

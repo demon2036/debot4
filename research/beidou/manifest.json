@@ -1,0 +1,41 @@
+{
+  "artifact": "/home/john/debot4/research/beidou/narrative_corpus_69.jsonl",
+  "record_count": 69,
+  "unique_tweet_ids": 69,
+  "stage_counts": {
+    "unclear": 8,
+    "retrospective": 23,
+    "early": 38
+  },
+  "outcome_counts": {
+    "unknown": 45,
+    "mixed": 11,
+    "success": 9,
+    "failure": 4
+  },
+  "earliest_utc": "2024-06-03T05:44:08Z",
+  "latest_utc": "2026-03-04T03:25:36Z",
+  "fx_http_200": 69,
+  "fx_author_btc2ai": 69,
+  "archive_rows": 840,
+  "archive_source": "/home/john/debot-work/debot-ai-report-ui/backend/example/crypto_beidou_master/raw_fulltext_profile_840_20260304.jsonl",
+  "annotation_source": "/home/john/debot4/research/beidou/annotations_69.psv",
+  "sha256": "26d04355d7b95e4555ecbd5e9d9b4a6b4bb65494a238531b3702519ca8485a16",
+  "stage_definitions": {
+    "early": "公开帖仍提出可执行的未来入场、等待回调或待催化判断；不保证它早于私域讨论。",
+    "retrospective": "公开帖明确引用已发生涨幅、已到高市值、此前群内发现或已发生事故。",
+    "unclear": "方法论、多标的快筛或缺少足够时点信息，不能可靠判定是否可执行。"
+  },
+  "outcome_definitions": {
+    "success": "归档内有作者自报的正向价格路径或事件兑现；不等于已实现PnL。",
+    "failure": "归档内有明确大幅回撤、错误CA或流程性失败。",
+    "mixed": "同时出现显著上涨与大幅回撤，收益依赖退出。",
+    "unknown": "归档内缺少足够后续结果，不能把未跟进视为失败。"
+  },
+  "limitations": [
+    "推文归档截止2026-03-04，不能覆盖之后的行情或已删除内容。",
+    "结果主要来自作者自己的后续推文，不是独立、完整、含手续费的交易账本。",
+    "early只描述公开帖时点；作者多次说明私域群更早讨论，公开读者未必获得同一价格。",
+    "峰值市值不是可执行卖出价，也不是已实现利润。"
+  ]
+}

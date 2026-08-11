@@ -1,0 +1,96 @@
+{
+  "schema": "debot4.v6.causal-replay-baseline.v1",
+  "disclaimer": "Rules-only baseline. Synthetic cases are not historical trades or profit claims.",
+  "cases": [
+    {
+      "case_id": "synthetic-valid-public-causal-chain",
+      "provenance": {"kind": "synthetic", "purpose": "positive control"},
+      "target_address": "0x1111111111111111111111111111111111111111",
+      "trigger_at": "2026-08-09T12:00:00Z",
+      "buy_at": "2026-08-09T12:00:05Z",
+      "expected": {"verdict": "CAUSAL_READY", "reason": "causal_narrative_ready"},
+      "evidence": [
+        {"evidence_id": "origin", "actor": "primary", "claim": "origin", "published_at": "2026-08-09T11:50:00Z", "known_at": "2026-08-09T11:50:01Z"},
+        {"evidence_id": "binding", "actor": "primary", "claim": "ca_binding", "published_at": "2026-08-09T11:51:00Z", "known_at": "2026-08-09T11:51:01Z", "token_address": "0x1111111111111111111111111111111111111111", "exact_ca": true},
+        {"evidence_id": "catalyst", "actor": "authority", "claim": "catalyst", "published_at": "2026-08-09T11:59:00Z", "known_at": "2026-08-09T11:59:01Z", "public": true}
+      ]
+    },
+    {
+      "case_id": "synthetic-source-arrives-after-trigger",
+      "provenance": {"kind": "synthetic", "purpose": "temporal cutoff"},
+      "target_address": "0x1111111111111111111111111111111111111111",
+      "trigger_at": "2026-08-09T12:00:00Z",
+      "buy_at": "2026-08-09T12:00:05Z",
+      "expected": {"verdict": "WAIT", "reason": "evidence_not_prior_to_trigger_and_buy"},
+      "evidence": [
+        {"evidence_id": "late-origin", "actor": "primary", "claim": "origin", "published_at": "2026-08-09T12:00:01Z", "known_at": "2026-08-09T12:00:02Z"},
+        {"evidence_id": "binding", "actor": "primary", "claim": "ca_binding", "published_at": "2026-08-09T11:51:00Z", "known_at": "2026-08-09T11:51:01Z", "token_address": "0x1111111111111111111111111111111111111111", "exact_ca": true},
+        {"evidence_id": "catalyst", "actor": "authority", "claim": "catalyst", "published_at": "2026-08-09T11:59:00Z", "known_at": "2026-08-09T11:59:01Z"}
+      ]
+    },
+    {
+      "case_id": "synthetic-person-speech-without-ca",
+      "provenance": {"kind": "synthetic", "purpose": "prevent arbitrary token binding"},
+      "target_address": "0x2222222222222222222222222222222222222222",
+      "trigger_at": "2026-08-09T12:00:00Z",
+      "buy_at": "2026-08-09T12:00:05Z",
+      "expected": {"verdict": "WAIT", "reason": "exact_ca_binding_missing"},
+      "evidence": [
+        {"evidence_id": "origin", "actor": "primary", "claim": "origin", "published_at": "2026-08-09T11:50:00Z", "known_at": "2026-08-09T11:50:01Z"},
+        {"evidence_id": "ca-less-claim", "actor": "primary", "claim": "ca_binding", "published_at": "2026-08-09T11:51:00Z", "known_at": "2026-08-09T11:51:01Z", "exact_ca": false},
+        {"evidence_id": "catalyst", "actor": "authority", "claim": "catalyst", "published_at": "2026-08-09T11:59:00Z", "known_at": "2026-08-09T11:59:01Z"}
+      ]
+    },
+    {
+      "case_id": "synthetic-authoritative-denial",
+      "provenance": {"kind": "synthetic", "purpose": "denial is counter-evidence only"},
+      "target_address": "0x3333333333333333333333333333333333333333",
+      "trigger_at": "2026-08-09T12:00:00Z",
+      "buy_at": "2026-08-09T12:00:05Z",
+      "expected": {"verdict": "REJECT", "reason": "authoritative_denial"},
+      "evidence": [
+        {"evidence_id": "origin", "actor": "primary", "claim": "origin", "published_at": "2026-08-09T11:40:00Z", "known_at": "2026-08-09T11:40:01Z"},
+        {"evidence_id": "old-binding", "actor": "primary", "claim": "ca_binding", "published_at": "2026-08-09T11:41:00Z", "known_at": "2026-08-09T11:41:01Z", "token_address": "0x3333333333333333333333333333333333333333", "exact_ca": true},
+        {"evidence_id": "denial", "actor": "primary", "claim": "denial", "published_at": "2026-08-09T11:59:00Z", "known_at": "2026-08-09T11:59:01Z", "token_address": "0x3333333333333333333333333333333333333333", "exact_ca": true},
+        {"evidence_id": "kol-denial", "actor": "kol", "claim": "denial", "published_at": "2026-08-09T11:58:00Z", "known_at": "2026-08-09T11:58:01Z", "token_address": "0x3333333333333333333333333333333333333333", "exact_ca": true}
+      ]
+    },
+    {
+      "case_id": "synthetic-kol-wallet-cannot-create-catalyst-or-binding",
+      "provenance": {"kind": "synthetic", "purpose": "capital actors propagate only"},
+      "target_address": "0x4444444444444444444444444444444444444444",
+      "trigger_at": "2026-08-09T12:00:00Z",
+      "buy_at": "2026-08-09T12:00:05Z",
+      "expected": {"verdict": "WAIT", "reason": "kol_wallet_propagation_only"},
+      "evidence": [
+        {"evidence_id": "origin", "actor": "public_source", "claim": "origin", "published_at": "2026-08-09T11:40:00Z", "known_at": "2026-08-09T11:40:01Z"},
+        {"evidence_id": "kol-ca", "actor": "kol", "claim": "ca_binding", "published_at": "2026-08-09T11:50:00Z", "known_at": "2026-08-09T11:50:01Z", "token_address": "0x4444444444444444444444444444444444444444", "exact_ca": true},
+        {"evidence_id": "wallet-catalyst", "actor": "wallet", "claim": "catalyst", "published_at": "2026-08-09T11:55:00Z", "known_at": "2026-08-09T11:55:01Z", "public": false}
+      ]
+    },
+    {
+      "case_id": "synthetic-no-public-catalyst",
+      "provenance": {"kind": "synthetic", "purpose": "WAIT without a public why-now event"},
+      "target_address": "0x5555555555555555555555555555555555555555",
+      "trigger_at": "2026-08-09T12:00:00Z",
+      "buy_at": "2026-08-09T12:00:05Z",
+      "expected": {"verdict": "WAIT", "reason": "public_catalyst_missing"},
+      "evidence": [
+        {"evidence_id": "origin", "actor": "primary", "claim": "origin", "published_at": "2026-08-09T11:40:00Z", "known_at": "2026-08-09T11:40:01Z"},
+        {"evidence_id": "binding", "actor": "primary", "claim": "ca_binding", "published_at": "2026-08-09T11:41:00Z", "known_at": "2026-08-09T11:41:01Z", "token_address": "0x5555555555555555555555555555555555555555", "exact_ca": true},
+        {"evidence_id": "private-rumor", "actor": "public_source", "claim": "catalyst", "published_at": "2026-08-09T11:55:00Z", "known_at": "2026-08-09T11:55:01Z", "public": false}
+      ]
+    },
+    {
+      "case_id": "beidou-xoge-retrospective-not-causal",
+      "provenance": {"kind": "repository_corpus", "path": "research/beidou/narrative_corpus_69.jsonl", "tweet_id": "2014179078740517224", "expected_stage": "retrospective"},
+      "target_address": "HEPvyunjSoiua8rAWZVMjgZ5TLp9vMQ61iGQh2u7pump",
+      "trigger_at": "2026-01-22T03:32:00Z",
+      "buy_at": "2026-01-22T03:32:05Z",
+      "expected": {"verdict": "WAIT", "reason": "postmortem_evidence_not_causal"},
+      "evidence": [
+        {"evidence_id": "beidou-xoge-post", "actor": "kol", "claim": "catalyst", "published_at": "2026-01-22T03:31:28Z", "known_at": null, "token_address": "HEPvyunjSoiua8rAWZVMjgZ5TLp9vMQ61iGQh2u7pump", "exact_ca": true, "scope": "postmortem"}
+      ]
+    }
+  ]
+}

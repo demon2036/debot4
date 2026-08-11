@@ -1,0 +1,84 @@
+[bsc]
+chain_id = 56
+
+[bsc.rpc]
+endpoint = "https://bsc.publicnode.com"
+fallback_endpoints = [
+  "https://bsc.drpc.org",
+  "https://bsc-mainnet.public.blastapi.io",
+  "https://1rpc.io/bnb",
+]
+timeout_seconds = 4
+confirmations = 5
+initial_lookback_blocks = 40
+max_blocks_per_request = 10
+max_blocks_per_poll = 360
+
+[bsc.forward_pairs]
+source_name = "bsc:pancakeswap-v2:pair-created:v2-forward"
+start_at_tail = true
+max_catchup_blocks = 10000
+
+[bsc.swaps]
+enabled = true
+max_response_bytes = 2097152
+max_blocks_per_request = 20
+max_blocks_per_poll = 360
+max_catchup_blocks = 10000
+max_events_per_poll = 64
+max_enrichment_workers = 8
+max_polls_per_cycle = 3
+
+[bsc.wallet_acquisition]
+enabled = true
+max_swaps_per_poll = 64
+max_polls_per_cycle = 6
+max_market_snapshots = 32
+first_acquisition_rpc_max_age_seconds = 300
+
+[dexscreener]
+timeout_seconds = 12
+max_response_bytes = 2097152
+max_pairs_per_token = 64
+
+[goplus]
+timeout_seconds = 8
+max_response_bytes = 1048576
+max_tokens_per_poll = 20
+
+[runtime]
+checkpoint_path = "var/collector_checkpoints.json"
+max_events_per_poll = 128
+
+[debot]
+enabled = true
+page_limit = 64
+timeout_seconds = 12
+max_response_bytes = 4194304
+stages = ["new", "completing", "completed"]
+save_deltas_only = true
+
+[x]
+enabled = true
+primary = "fxtwitter"
+fetch_threads_on_candidate_only = true
+export_browser_cookies = false
+handles = ["BscKOLScanner", "flapdotsh", "fourdotmemezh"]
+poll_seconds = 60
+contract_search_enabled = true
+contract_search_seconds = 30
+contract_search_results = 5
+timeout_seconds = 12
+max_response_bytes = 4194304
+initial_lookback_hours = 6
+posts_per_account = 20
+
+[telegram]
+enabled = true
+incremental_updates_only = true
+history_backfill_on_start = false
+channels = ["Meetinggoldenca"]
+poll_seconds = 60
+timeout_seconds = 12
+max_response_bytes = 2097152
+max_posts_per_channel = 30

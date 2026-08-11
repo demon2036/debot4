@@ -1,0 +1,13 @@
+schema_version = 1
+experiment_id = "E0000"
+parent_id = ""
+hypothesis = "Freeze the current production system before any further data-plane or strategy change."
+single_change = "None. This is the immutable comparison baseline."
+primary_metric = "reproducibility_and_data_plane_integrity"
+data_from_sequence = 1
+data_through_sequence = 225973
+stop_conditions = [
+  "Any future-data violation or broken event reference invalidates the run.",
+  "Any missing code, configuration, prompt, or dataset fingerprint invalidates the run.",
+  "No profitability claim is allowed while executable trade count is zero.",
+]

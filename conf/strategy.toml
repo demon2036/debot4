@@ -1,0 +1,82 @@
+[narrative]
+paper_buy_score = 72
+watch_score = 55
+max_evidence_age_minutes = 360
+require_verified_url = true
+require_token_binding = true
+minimum_independent_sources = 2
+debot_positive_weight_before_validation = 0
+
+[narrative_gate]
+enabled = true
+minimum_review_score = 70
+minimum_source_independence = 2
+source_independence_full_score = 3
+minimum_novelty = 0.45
+minimum_spreadability = 0.55
+minimum_evidence_quality = 0.60
+minimum_confidence = 0.60
+maximum_coordination_risk = 0.45
+maximum_derivative_risk = 0.50
+maximum_review_age_seconds = 600
+maximum_late_5m_gain_pct = 25
+maximum_late_1h_gain_pct = 60
+allowed_token_bindings = ["exact_ca"]
+allowed_phases = ["origin", "emerging", "accelerating"]
+allowed_catalyst_statuses = ["active"]
+allowed_attention_price_states = ["attention_leads", "balanced"]
+review_read_limit = 128
+
+[entry]
+max_gain_since_actionable_evidence_pct = 40
+max_five_minute_gain_pct = 30
+max_one_hour_gain_pct = 60
+caution_five_minute_gain_pct = 12
+caution_one_hour_gain_pct = 35
+caution_since_signal_gain_pct = 30
+max_five_minute_loss_pct = 20
+minimum_five_minute_gain_pct = 0
+minimum_liquidity_usd = 15000
+maximum_entry_market_cap_usd = 1000000
+minimum_quote_reserve_usd = 8000
+maximum_price_impact_pct = 3
+maximum_buy_tax_pct = 10
+maximum_sell_tax_pct = 10
+require_open_source = true
+maximum_single_unlocked_holder_pct = 20
+maximum_top10_unlocked_holder_pct = 50
+maximum_quote_age_seconds = 6
+maximum_market_snapshot_age_seconds = 10
+maximum_security_snapshot_age_seconds = 300
+
+[portfolio]
+initial_cash_usd = 100
+maximum_position_usd = 10
+minimum_position_usd = 5
+maximum_nav_fraction = 0.10
+maximum_quote_reserve_fraction = 0.0025
+maximum_open_positions = 3
+bot_latency_seconds = 1
+human_latency_seconds = 30
+
+[paper]
+enabled = true
+cycle_seconds = 0.5
+start_at_tail = true
+accept_pretrade_quote_candidates = true
+entry_signal_ttl_seconds = 30
+pretrade_market_max_age_seconds = 6
+pretrade_market_timeout_seconds = 4
+max_pretrade_round_trip_loss_pct = 30
+stop_loss_pct = 15
+take_profit_pct = 25
+max_holding_minutes = 120
+max_mark_age_seconds = 90
+exit_retry_delay_seconds = 15
+quote_rpc_timeout_seconds = 6
+quote_max_response_bytes = 65536
+
+[costs]
+dex_fee_fraction = 0.0025
+extra_slippage_fraction = 0.005
+default_gas_usd = 0.12
