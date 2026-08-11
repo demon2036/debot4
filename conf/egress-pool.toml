@@ -1,0 +1,51 @@
+schema = "debot4.egress_pool.v1"
+
+[[nodes]]
+id = "warp-01"
+local_url = "socks5h://127.0.0.1:11201"
+remote_url = "socks5h://172.18.0.1:21201"
+
+[[nodes]]
+id = "warp-02"
+local_url = "socks5h://127.0.0.1:11202"
+remote_url = "socks5h://172.18.0.1:21202"
+
+[[nodes]]
+id = "warp-03"
+local_url = "socks5h://127.0.0.1:11203"
+remote_url = "socks5h://172.18.0.1:21203"
+
+[[nodes]]
+id = "warp-05"
+local_url = "socks5h://127.0.0.1:11205"
+remote_url = "socks5h://172.18.0.1:21205"
+
+[[nodes]]
+id = "warp-06"
+local_url = "socks5h://127.0.0.1:11206"
+remote_url = "socks5h://172.18.0.1:21206"
+
+[[nodes]]
+id = "warp-07"
+local_url = "socks5h://127.0.0.1:11207"
+remote_url = "socks5h://172.18.0.1:21207"
+
+[[nodes]]
+id = "warp-11"
+local_url = "socks5h://127.0.0.1:11211"
+remote_url = "socks5h://172.18.0.1:21211"
+
+[[nodes]]
+id = "warp-12"
+local_url = "socks5h://127.0.0.1:11212"
+remote_url = "socks5h://172.18.0.1:21212"
+
+[[nodes]]
+id = "warp-13"
+local_url = "socks5h://127.0.0.1:11213"
+remote_url = "socks5h://172.18.0.1:21213"
+
+[[nodes]]
+id = "warp-17"
+local_url = "socks5h://127.0.0.1:11217"
+remote_url = "socks5h://172.18.0.1:21217"

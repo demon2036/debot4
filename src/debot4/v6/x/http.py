@@ -10,6 +10,8 @@ import urllib.error
 import urllib.parse
 import urllib.request
 
+from .egress import FxEgressError, RequestOpener, direct_opener
+
 
 class FxTwitterError(RuntimeError):
     """A sanitized FxTwitter transport or response failure."""
@@ -26,17 +28,21 @@ class JsonGetter(Protocol):
     def get_json(self, url: str) -> FxJsonDocument | None: ...
 
 
-class _NoRedirect(urllib.request.HTTPRedirectHandler):
-    def redirect_request(self, *_args: object, **_kwargs: object) -> None:
-        return None
-
-
 @dataclass(slots=True)
 class FxJsonHttp:
     timeout_seconds: float = 8.0
     max_response_bytes: int = 2_000_000
     clock: Callable[[], datetime] = lambda: datetime.now(timezone.utc)
     allowed_hosts: tuple[str, ...] = ("api.fxtwitter.com",)
+    opener: RequestOpener | None = None
+
+    def __post_init__(self) -> None:
+        if self.timeout_seconds <= 0:
+            raise ValueError("FxTwitter timeout must be positive")
+        if not 1_024 <= self.max_response_bytes <= 8 * 1_024 * 1_024:
+            raise ValueError("FxTwitter byte limit is invalid")
+        if self.opener is None:
+            self.opener = direct_opener()
 
     def get_json(self, url: str) -> FxJsonDocument | None:
         self._validate_url(url)
@@ -46,9 +52,7 @@ class FxJsonHttp:
             method="GET",
         )
         try:
-            with urllib.request.build_opener(_NoRedirect()).open(
-                request, timeout=self.timeout_seconds
-            ) as response:
+            with self.opener.open(request, timeout=self.timeout_seconds) as response:
                 status = int(response.status)
                 if response.geturl() != url or status not in {200, 204}:
                     raise FxTwitterError("FxTwitter returned an unexpected response")
@@ -59,7 +63,7 @@ class FxJsonHttp:
             raise
         except urllib.error.HTTPError as exc:
             raise FxTwitterError(f"FxTwitter returned HTTP {exc.code}") from None
-        except (urllib.error.URLError, TimeoutError, OSError):
+        except (FxEgressError, urllib.error.URLError, TimeoutError, OSError):
             raise FxTwitterError("FxTwitter connection failed") from None
         if len(raw) > self.max_response_bytes:
             raise FxTwitterError("FxTwitter response exceeded the byte limit")

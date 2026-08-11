@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections import deque
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 import math
@@ -85,6 +86,7 @@ class FxTwitterRepostMonitor:
     limit: int = 20
     recent_limit: int = 50
     seen_limit: int = 2_048
+    max_workers: int = 10
     clock: Callable[[], float] = monotonic
     _next_due: dict[str, float] = field(init=False, repr=False)
     _initialized: set[str] = field(init=False, repr=False)
@@ -105,6 +107,8 @@ class FxTwitterRepostMonitor:
             raise ValueError("invalid repost monitor result limit")
         if not self.recent_limit <= self.seen_limit <= 100_000:
             raise ValueError("invalid repost seen window")
+        if isinstance(self.max_workers, bool) or not 1 <= self.max_workers <= 32:
+            raise ValueError("repost workers must be between 1 and 32")
         handles = [target.handle for target in self.targets]
         if len(handles) != len(set(handles)):
             raise ValueError("duplicate repost monitor target")
@@ -129,9 +133,13 @@ class FxTwitterRepostMonitor:
         for target in due:
             self._next_due[target.handle] = now + target.interval_seconds
         found: list[XRepostObservation] = []
+        fetched = self._fetch_due(due)
         for target in due:
+            result = fetched[target.handle]
             try:
-                observations, fetched_at = self._fetch(target)
+                if isinstance(result, Exception):
+                    raise result
+                observations, fetched_at = result
                 fresh = self._accept(target, observations)
                 found.extend(fresh)
                 self.last_error_types[target.handle] = None
@@ -140,6 +148,29 @@ class FxTwitterRepostMonitor:
                 self.last_error_types[target.handle] = type(exc).__name__
         self.last_polled_targets = len(due)
         return tuple(found)
+
+    def _fetch_due(
+        self, due: list[XRepostTarget]
+    ) -> dict[
+        str,
+        tuple[dict[str, XRepostObservation], datetime] | Exception,
+    ]:
+        if not due:
+            return {}
+        results: dict[
+            str,
+            tuple[dict[str, XRepostObservation], datetime] | Exception,
+        ] = {}
+        workers = min(self.max_workers, len(due))
+        with ThreadPoolExecutor(max_workers=workers) as pool:
+            futures = {pool.submit(self._fetch, target): target for target in due}
+            for future in as_completed(futures):
+                target = futures[future]
+                try:
+                    results[target.handle] = future.result()
+                except Exception as exc:
+                    results[target.handle] = exc
+        return results
 
     def snapshot(self) -> dict[str, object]:
         with self._lock:

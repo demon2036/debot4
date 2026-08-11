@@ -1,5 +1,6 @@
 """Browser-free X monitoring for narrative triggers."""
 
+from .egress import FxEgressError, FxEgressNode, FxEgressPool
 from .http import FxJsonDocument, FxJsonHttp, FxTwitterError
 from .models import XCheckpoint, XPost, XProfile, XTimelineBatch
 from .profile import XProfileClient, XProfileError, parse_fxtwitter_profile
@@ -17,6 +18,9 @@ from .timeline import (
 )
 
 __all__ = [
+    "FxEgressError",
+    "FxEgressNode",
+    "FxEgressPool",
     "FxJsonDocument",
     "FxJsonHttp",
     "FxTwitterError",

@@ -42,4 +42,9 @@ def app_status_snapshot(app: NarrativeApp) -> dict[str, Any]:
             app.market_monitor.last_rejection_counts
         ),
     }
+    snapshot["egress"] = (
+        {"available": False, "configured_nodes": 0}
+        if app.x_egress_pool is None
+        else app.x_egress_pool.snapshot()
+    )
     return snapshot

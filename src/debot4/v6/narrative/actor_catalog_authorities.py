@@ -6,7 +6,6 @@ from .actors import ActorTier as T
 
 AUTHORITY_ACTORS = (
     actor("elonmusk", "44196397", "Elon Musk", "X owner; global agenda setter", T.GLOBAL_AGENDA, ("x", "global"), AGENDA, priority=1),
-    actor("X", "783214", "X", "official X platform account", T.ECOSYSTEM_AUTHORITY, ("x",), AGENDA, priority=2),
     actor("XDevelopers", "2244994945", "X Developers", "official X developer updates", T.ECOSYSTEM_AUTHORITY, ("x",), CATALYST, priority=3),
     actor("cz_binance", "902926941413453824", "CZ", "Binance founder", T.ECOSYSTEM_AUTHORITY, ("bsc", "bnb", "binance"), AGENDA, languages=("en", "zh"), priority=1),
     actor("heyibinance", "1003840309166366721", "Yi He", "Binance co-founder", T.ECOSYSTEM_AUTHORITY, ("bsc", "bnb", "binance"), AGENDA, languages=("zh", "en"), priority=1),

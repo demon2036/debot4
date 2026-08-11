@@ -7,12 +7,13 @@ from datetime import datetime, timezone
 from hashlib import sha256
 import json
 import re
-from typing import Any, Callable
+from typing import Callable
 import urllib.error
 import urllib.parse
 import urllib.request
 
 from ..x.content import content_text
+from ..x.egress import FxEgressError, RequestOpener, direct_opener
 
 FXTWITTER_API_ORIGIN = "https://api.fxtwitter.com"
 _HANDLE = re.compile(r"[A-Za-z0-9_]{1,15}")
@@ -67,19 +68,6 @@ class FxTwitterObservation:
             raise ValueError("FxTwitter response identity is required")
 
 
-class _NoRedirect(urllib.request.HTTPRedirectHandler):
-    def redirect_request(
-        self,
-        req: Any,
-        fp: Any,
-        code: int,
-        msg: str,
-        headers: Any,
-        newurl: str,
-    ) -> None:
-        return None
-
-
 class FxTwitterClient:
     def __init__(
         self,
@@ -87,6 +75,7 @@ class FxTwitterClient:
         timeout_seconds: float = 8.0,
         max_response_bytes: int = 1024 * 1024,
         clock: Callable[[], datetime] = lambda: datetime.now(timezone.utc),
+        opener: RequestOpener | None = None,
     ) -> None:
         if timeout_seconds <= 0:
             raise ValueError("timeout_seconds must be positive")
@@ -95,6 +84,7 @@ class FxTwitterClient:
         self.timeout_seconds = float(timeout_seconds)
         self.max_response_bytes = int(max_response_bytes)
         self.clock = clock
+        self.opener = opener or direct_opener()
 
     def fetch_status(self, status_url: str) -> FxTwitterTweet:
         return self.fetch_observation(status_url).tweet
@@ -108,9 +98,7 @@ class FxTwitterClient:
             method="GET",
         )
         try:
-            with urllib.request.build_opener(_NoRedirect()).open(
-                request, timeout=self.timeout_seconds
-            ) as response:
+            with self.opener.open(request, timeout=self.timeout_seconds) as response:
                 if response.geturl() != url or int(response.status) != 200:
                     raise FxTwitterError("FxTwitter returned an unexpected response")
                 raw = response.read(self.max_response_bytes + 1)
@@ -119,7 +107,7 @@ class FxTwitterClient:
             raise
         except urllib.error.HTTPError as exc:
             raise FxTwitterError(f"FxTwitter returned HTTP {exc.code}") from None
-        except (urllib.error.URLError, TimeoutError, OSError):
+        except (FxEgressError, urllib.error.URLError, TimeoutError, OSError):
             raise FxTwitterError("FxTwitter connection failed") from None
         if len(raw) > self.max_response_bytes:
             raise FxTwitterError("FxTwitter response exceeded the byte limit")

@@ -132,3 +132,6 @@ find . -type f -name '*.py' -not -path './.venv/*' -print0 \
 Every Python source and test file is required to stay at or below 300 physical
 lines. Engineering rules and contribution constraints are documented in
 [`AGENTS.md`](AGENTS.md).
+
+The latest honest implementation and deployment snapshot is documented in
+[`docs/current_status_2026-08-11.md`](docs/current_status_2026-08-11.md).

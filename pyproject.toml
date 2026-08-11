@@ -7,7 +7,7 @@ name = "debot4"
 version = "0.1.0"
 description = "Low-resource, evidence-first BSC meme narrative and paper-trading system"
 requires-python = ">=3.12"
-dependencies = ["httpx>=0.27,<1"]
+dependencies = ["httpx>=0.27,<1", "requests[socks]>=2.32,<3"]
 
 [project.optional-dependencies]
 telegram = [

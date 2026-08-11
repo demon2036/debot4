@@ -15,6 +15,7 @@ from ..telegram import (
 )
 from ..telegram.http import TelegramHtmlHttp
 from ..x import (
+    FxEgressPool,
     FxJsonHttp,
     FxTwitterRepostMonitor,
     XRepostTarget,
@@ -55,6 +56,7 @@ class NarrativeApp:
     market_monitor: MarketAnomalyMonitor
     queue: NarrativeJobQueue
     collector: NarrativeCollector
+    x_egress_pool: FxEgressPool | None = None
     grok: Grok2ApiClient | None = None
     verifier: XStatusVerifier | None = None
     telegram_verifier: TelegramPostVerifier | None = None
@@ -108,12 +110,21 @@ def build_narrative_app(
     config = settings or NarrativeSettings.from_env()
     resources = ExitStack()
     try:
-        x_client = XTimelineClient(http=FxJsonHttp(
+        x_egress_pool = _x_egress(config)
+        if x_egress_pool is not None:
+            resources.callback(x_egress_pool.close)
+        x_http = FxJsonHttp(
             timeout_seconds=config.x_timeout_seconds,
             max_response_bytes=config.max_response_bytes,
-        ))
-        monitor = NarrativeMonitor(config.x_checkpoint_path, client=x_client)
-        x_repost_monitor = _x_reposts(config)
+            opener=x_egress_pool,
+        )
+        x_client = XTimelineClient(http=x_http)
+        monitor = NarrativeMonitor(
+            config.x_checkpoint_path,
+            client=x_client,
+            max_workers=config.x_monitor_workers,
+        )
+        x_repost_monitor = _x_reposts(config, x_http)
         telegram_client = TelegramPublicClient(http=TelegramHtmlHttp(
             timeout_seconds=config.telegram_timeout_seconds,
             max_response_bytes=config.max_response_bytes,
@@ -157,6 +168,7 @@ def build_narrative_app(
             market_monitor=market_monitor,
             queue=queue,
             collector=collector,
+            x_egress_pool=x_egress_pool,
             _resources=resources,
         )
         if not research:
@@ -164,7 +176,11 @@ def build_narrative_app(
 
         realtime = _telegram_realtime(config)
         grok = Grok2ApiClient.from_env()
-        verifier = XStatusVerifier(fetcher=FxTwitterClient())
+        verifier = XStatusVerifier(fetcher=FxTwitterClient(
+            timeout_seconds=config.x_timeout_seconds,
+            max_response_bytes=config.max_response_bytes,
+            opener=x_egress_pool,
+        ))
         telegram_verifier = TelegramPostVerifier(fetcher=telegram_client)
         store = NarrativeResearchStore(config.research_database)
         resources.callback(store.close)
@@ -234,7 +250,9 @@ def _telegram_realtime(
     )
 
 
-def _x_reposts(settings: NarrativeSettings) -> FxTwitterRepostMonitor | None:
+def _x_reposts(
+    settings: NarrativeSettings, http: FxJsonHttp
+) -> FxTwitterRepostMonitor | None:
     targets = tuple(
         XRepostTarget(actor.handle, registration.author_ids[0])
         for registration in DEFAULT_ACTOR_REGISTRY.registrations()
@@ -246,8 +264,17 @@ def _x_reposts(settings: NarrativeSettings) -> FxTwitterRepostMonitor | None:
         return None
     return FxTwitterRepostMonitor(
         targets,
-        http=FxJsonHttp(
-            timeout_seconds=settings.x_timeout_seconds,
-            max_response_bytes=settings.max_response_bytes,
-        ),
+        http=http,
+        max_workers=settings.x_repost_workers,
+    )
+
+
+def _x_egress(settings: NarrativeSettings) -> FxEgressPool | None:
+    path = settings.x_egress_pool_file
+    if path is None:
+        return None
+    return FxEgressPool.from_toml(
+        path,
+        location=settings.x_egress_location,
+        max_attempts=settings.x_egress_attempts,
     )

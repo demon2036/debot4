@@ -26,6 +26,11 @@ class NarrativeSettings:
     retry_delay_seconds: float = 5.0
     lease_seconds: float = 240.0
     x_timeout_seconds: float = 8.0
+    x_egress_pool_file: Path | None = None
+    x_egress_location: str = "local"
+    x_egress_attempts: int = 3
+    x_monitor_workers: int = 40
+    x_repost_workers: int = 10
     telegram_timeout_seconds: float = 8.0
     telegram_realtime_retry_seconds: float = 2.0
     debot_timeout_seconds: float = 5.0
@@ -39,6 +44,11 @@ class NarrativeSettings:
             None
             if self.telegram_realtime_config is None
             else Path(self.telegram_realtime_config).expanduser().resolve()
+        )
+        egress = (
+            None
+            if self.x_egress_pool_file is None
+            else Path(self.x_egress_pool_file).expanduser().resolve()
         )
         cadences = (
             self.collector_tick_seconds,
@@ -67,9 +77,18 @@ class NarrativeSettings:
             raise ValueError("worker lease must be between 30 and 3600 seconds")
         if not 1_024 <= self.max_response_bytes <= 8 * 1_024 * 1_024:
             raise ValueError("response byte limit must be between 1 KiB and 8 MiB")
+        if self.x_egress_location not in {"local", "remote"}:
+            raise ValueError("X egress location must be local or remote")
+        if isinstance(self.x_egress_attempts, bool) or not 1 <= self.x_egress_attempts <= 10:
+            raise ValueError("X egress attempts must be between 1 and 10")
+        if isinstance(self.x_monitor_workers, bool) or not 1 <= self.x_monitor_workers <= 64:
+            raise ValueError("X monitor workers must be between 1 and 64")
+        if isinstance(self.x_repost_workers, bool) or not 1 <= self.x_repost_workers <= 32:
+            raise ValueError("X repost workers must be between 1 and 32")
         object.__setattr__(self, "state_dir", state)
         object.__setattr__(self, "debot_cookie_file", debot_cookie)
         object.__setattr__(self, "telegram_realtime_config", realtime)
+        object.__setattr__(self, "x_egress_pool_file", egress)
 
     @classmethod
     def from_env(
@@ -95,6 +114,21 @@ class NarrativeSettings:
             retry_delay_seconds=_number(env, "DEBOT4_RETRY_DELAY_SECONDS", 5.0),
             lease_seconds=_number(env, "DEBOT4_JOB_LEASE_SECONDS", 240.0),
             x_timeout_seconds=_number(env, "DEBOT4_X_TIMEOUT_SECONDS", 8.0),
+            x_egress_pool_file=_optional_path(env.get(
+                "DEBOT4_X_EGRESS_POOL_FILE", str(PROJECT_ROOT / "conf" / "egress-pool.toml")
+            )),
+            x_egress_location=env.get(
+                "DEBOT4_X_EGRESS_LOCATION", "local"
+            ).strip().casefold(),
+            x_egress_attempts=_integer(
+                env, "DEBOT4_X_EGRESS_ATTEMPTS", 3
+            ),
+            x_monitor_workers=_integer(
+                env, "DEBOT4_X_MONITOR_WORKERS", 40
+            ),
+            x_repost_workers=_integer(
+                env, "DEBOT4_X_REPOST_WORKERS", 10
+            ),
             telegram_timeout_seconds=_number(
                 env, "DEBOT4_TELEGRAM_TIMEOUT_SECONDS", 8.0
             ),

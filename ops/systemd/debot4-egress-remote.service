@@ -1,0 +1,29 @@
+[Unit]
+Description=Expose the local DeBot4 egress pool to the remote private Docker bridge
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/ssh -N -T -i /home/john/.ssh/id_ed25519 \
+  -o BatchMode=yes \
+  -o ExitOnForwardFailure=yes \
+  -o ServerAliveInterval=15 \
+  -o ServerAliveCountMax=3 \
+  -o StrictHostKeyChecking=yes \
+  -R 172.18.0.1:21201:127.0.0.1:11201 \
+  -R 172.18.0.1:21202:127.0.0.1:11202 \
+  -R 172.18.0.1:21203:127.0.0.1:11203 \
+  -R 172.18.0.1:21205:127.0.0.1:11205 \
+  -R 172.18.0.1:21206:127.0.0.1:11206 \
+  -R 172.18.0.1:21207:127.0.0.1:11207 \
+  -R 172.18.0.1:21211:127.0.0.1:11211 \
+  -R 172.18.0.1:21212:127.0.0.1:11212 \
+  -R 172.18.0.1:21213:127.0.0.1:11213 \
+  -R 172.18.0.1:21217:127.0.0.1:11217 \
+  root@45.77.1.146
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=default.target
