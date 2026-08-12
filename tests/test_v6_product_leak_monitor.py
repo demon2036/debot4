@@ -42,12 +42,15 @@ class Response:
 
 
 class Opener:
-    def __init__(self, responses: list[Response]) -> None:
+    def __init__(self, responses: list[Response | Exception]) -> None:
         self.responses = responses
 
     def open(self, _request, *, timeout):
         assert timeout == 8.0
-        return self.responses.pop(0)
+        response = self.responses.pop(0)
+        if isinstance(response, Exception):
+            raise response
+        return response
 
 
 def _client(*bodies: bytes) -> PublicResourceClient:
@@ -82,12 +85,34 @@ def test_client_fetches_mirror_but_keeps_canonical_evidence_url() -> None:
     target = PublicResourceTarget(
         "xai-bot-page", "x:spacexai", "official_company",
         "https://x.ai/bot", ("grok bot",),
-        "https://r.jina.ai/https://x.ai/bot",
+        ("https://r.jina.ai/https://x.ai/bot",),
     )
-    response = Response(target.fetch_url, b"Grok Bot", "text/plain")
-    client = PublicResourceClient(opener=Opener([response]), clock=lambda: NOW)
+    mirror = target.fallback_urls[0]
+    client = PublicResourceClient(
+        opener=Opener([
+            OSError("primary blocked"), Response(mirror, b"Grok Bot", "text/plain"),
+        ]),
+        clock=lambda: NOW,
+    )
 
-    assert client.fetch(target).source_url == "https://x.ai/bot"
+    snapshot = client.fetch(target)
+
+    assert snapshot.source_url == "https://x.ai/bot"
+    assert snapshot.retrieved_url == mirror
+
+
+def test_client_prefers_canonical_url_before_fallback() -> None:
+    target = PublicResourceTarget(
+        "xai-bot-page", "x:spacexai", "official_company",
+        "https://x.ai/bot", ("grok bot",),
+        ("https://r.jina.ai/https://x.ai/bot",),
+    )
+    client = PublicResourceClient(
+        opener=Opener([Response(target.source_url, b"Grok Bot")]),
+        clock=lambda: NOW,
+    )
+
+    assert client.fetch(target).retrieved_url == target.source_url
 
 
 def test_monitor_baselines_then_emits_only_added_semantics(tmp_path) -> None:

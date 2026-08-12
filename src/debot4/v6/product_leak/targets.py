@@ -7,12 +7,12 @@ BOT_PUBLIC_RESOURCES = (
     PublicResourceTarget(
         "xai-sitemap", "x:spacexai", "official_company",
         "https://x.ai/sitemap.xml", ("grok bot", "/bot"),
-        "https://r.jina.ai/https://x.ai/sitemap.xml",
+        ("https://r.jina.ai/https://x.ai/sitemap.xml",),
     ),
     PublicResourceTarget(
         "xai-bot-page", "x:spacexai", "official_company",
         "https://x.ai/bot", ("grok bot", "early beta", "ai teammates"),
-        "https://r.jina.ai/https://x.ai/bot",
+        ("https://r.jina.ai/https://x.ai/bot",),
     ),
     PublicResourceTarget(
         "xai-docs-overview", "x:spacexai", "official_company",

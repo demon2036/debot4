@@ -49,14 +49,16 @@ class PublicResourceTarget:
     actor_role: str
     source_url: str
     watched_terms: tuple[str, ...]
-    fetch_url: str = ""
+    fallback_urls: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         resource_id = self.resource_id.strip().casefold()
         parsed = urllib.parse.urlsplit(self.source_url)
-        fetch = urllib.parse.urlsplit(self.fetch_url or self.source_url)
         terms = tuple(dict.fromkeys(
             item.strip().casefold() for item in self.watched_terms if item.strip()
+        ))
+        fallbacks = tuple(dict.fromkeys(
+            item.strip() for item in self.fallback_urls if item.strip()
         ))
         if not _RESOURCE_ID.fullmatch(resource_id):
             raise ValueError("public resource target ID is invalid")
@@ -68,16 +70,13 @@ class PublicResourceTarget:
             or parsed.port not in {None, 443} or parsed.fragment
         ):
             raise ValueError("public resource target URL is invalid")
-        if (
-            fetch.scheme != "https" or not fetch.hostname
-            or fetch.username is not None or fetch.password is not None
-            or fetch.port not in {None, 443} or fetch.fragment
-        ):
-            raise ValueError("public resource fetch URL is invalid")
+        if len(fallbacks) > 4 or any(not _safe_https(item) for item in fallbacks):
+            raise ValueError("public resource fallback URL is invalid")
         if len(terms) > 64 or any(len(item) > 120 for item in terms):
             raise ValueError("public resource watched terms are invalid")
         object.__setattr__(self, "resource_id", resource_id)
         object.__setattr__(self, "watched_terms", terms)
+        object.__setattr__(self, "fallback_urls", fallbacks)
 
 
 @dataclass(slots=True)
@@ -94,7 +93,20 @@ class PublicResourceClient:
             self.opener = urllib.request.build_opener(_NoRedirect())
 
     def fetch(self, target: PublicResourceTarget) -> PublicResourceSnapshot:
-        fetch_url = target.fetch_url or target.source_url
+        last_error: PublicResourceError | None = None
+        routes = (target.source_url, *target.fallback_urls)
+        for fetch_url in routes:
+            try:
+                raw = self._download(fetch_url)
+            except PublicResourceError as exc:
+                last_error = exc
+                continue
+            return self._snapshot(target, fetch_url, raw)
+        if len(routes) == 1 and last_error is not None:
+            raise last_error
+        raise PublicResourceError("all public resource routes failed") from last_error
+
+    def _download(self, fetch_url: str) -> bytes:
         request = urllib.request.Request(
             fetch_url,
             headers={
@@ -116,6 +128,11 @@ class PublicResourceClient:
             raise PublicResourceError("public resource response size is invalid")
         if not any(content_type.startswith(item) for item in _ALLOWED_TYPES):
             raise PublicResourceError("public resource content type is unsupported")
+        return raw
+
+    def _snapshot(
+        self, target: PublicResourceTarget, fetch_url: str, raw: bytes,
+    ) -> PublicResourceSnapshot:
         observed = self.clock()
         if observed.tzinfo is None or observed.utcoffset() is None:
             raise ValueError("public resource clock must be timezone-aware")
@@ -134,7 +151,17 @@ class PublicResourceClient:
             ),
             artifacts=_artifacts(text, target.source_url),
             title=_title(text),
+            retrieved_url=fetch_url,
         )
+
+
+def _safe_https(url: str) -> bool:
+    parsed = urllib.parse.urlsplit(url)
+    return bool(
+        parsed.scheme == "https" and parsed.hostname
+        and parsed.username is None and parsed.password is None
+        and parsed.port in {None, 443} and not parsed.fragment
+    )
 
 
 def _title(text: str) -> str:

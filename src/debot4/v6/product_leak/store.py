@@ -62,6 +62,7 @@ class JsonPublicResourceSnapshotStore:
                 token_addresses=frozenset(_strings(row, "token_addresses")),
                 artifacts=frozenset(_strings(row, "artifacts")),
                 title=str(row.get("title") or ""),
+                retrieved_url=str(row.get("retrieved_url") or row.get("source_url") or ""),
             )
             if key != item.resource_id or key in output:
                 raise ValueError("public resource snapshot key mismatch")

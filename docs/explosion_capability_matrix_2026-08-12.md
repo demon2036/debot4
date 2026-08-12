@@ -59,8 +59,8 @@ ecosystem_authority ExplosionEvent
 
 ```text
 公开官方资源
-├── x.ai/sitemap.xml            经只读镜像抓取，证据 URL 保留官方地址
-├── x.ai/bot                    经只读镜像抓取，证据 URL 保留官方地址
+├── x.ai/sitemap.xml            官方直连优先，审核过的只读镜像回退
+├── x.ai/bot                    官方直连优先，审核过的只读镜像回退
 ├── docs.x.ai/overview          直连
 └── api.github.com/orgs/xai-org/repos  直连
     ↓
@@ -71,7 +71,7 @@ ecosystem_authority ExplosionEvent
 product_leak ExplosionEvent
 ```
 
-限制：X 专用 WARP 出口实测不能稳定读取这些站点，所以没有复用 X 出口池；镜像内容必须回查官方 URL。公开网页没有来源自带变更时间时，`occurred_at` 只能等于系统首次看到时间；内容哈希报警也不代表已绑定任何社区代币。
+限制：X 专用 WARP 出口实测不能稳定读取这些站点，所以没有复用 X 出口池；每份快照分别保存官方证据 URL 和实际读取 URL，镜像内容必须回查官方 URL。公开网页没有来源自带变更时间时，`occurred_at` 只能等于系统首次看到时间；内容哈希报警也不代表已绑定任何社区代币。
 
 ## 交易门禁
 

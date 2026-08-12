@@ -27,11 +27,13 @@ class PublicResourceSnapshot:
     token_addresses: frozenset[str] = frozenset()
     artifacts: frozenset[str] = frozenset()
     title: str = ""
+    retrieved_url: str = ""
 
     def __post_init__(self) -> None:
         resource_id = self.resource_id.strip().casefold()
         observed = self.observed_at
         parsed = urlsplit(self.source_url)
+        retrieved = urlsplit(self.retrieved_url or self.source_url)
         terms = frozenset(item.strip().casefold() for item in self.terms if item.strip())
         addresses = frozenset(item.strip().casefold() for item in self.token_addresses)
         artifacts = frozenset(item.strip() for item in self.artifacts if item.strip())
@@ -43,6 +45,8 @@ class PublicResourceSnapshot:
             raise ValueError("public resource time must be timezone-aware")
         if parsed.scheme != "https" or not parsed.hostname or parsed.fragment:
             raise ValueError("public resource source URL must be HTTPS")
+        if retrieved.scheme != "https" or not retrieved.hostname or retrieved.fragment:
+            raise ValueError("public resource retrieved URL must be HTTPS")
         if not _HASH.fullmatch(self.evidence_hash):
             raise ValueError("public resource evidence hash is invalid")
         if any(not _EVM_CA.fullmatch(item) for item in addresses):
@@ -55,6 +59,7 @@ class PublicResourceSnapshot:
         object.__setattr__(self, "token_addresses", addresses)
         object.__setattr__(self, "artifacts", artifacts)
         object.__setattr__(self, "title", self.title.strip()[:500])
+        object.__setattr__(self, "retrieved_url", self.retrieved_url or self.source_url)
 
     def as_dict(self) -> dict[str, object]:
         return {
@@ -68,6 +73,7 @@ class PublicResourceSnapshot:
             "token_addresses": sorted(self.token_addresses),
             "artifacts": sorted(self.artifacts),
             "title": self.title,
+            "retrieved_url": self.retrieved_url,
         }
 
 
