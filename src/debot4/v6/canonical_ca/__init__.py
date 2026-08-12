@@ -6,9 +6,11 @@ from .rules import (
     leader_change_event,
     resolve_canonical_ca,
 )
+from .monitor import CanonicalCaMonitor
 
 __all__ = [
     "CaCandidate",
+    "CanonicalCaMonitor",
     "CanonicalDecision",
     "leader_change_event",
     "resolve_canonical_ca",

@@ -9,11 +9,13 @@ from .replay import (
     load_replay,
 )
 from .store import ExplosionEventStore
+from .state_store import JsonEvidenceStateStore
 
 __all__ = [
     "ExplosionCategory",
     "ExplosionEvent",
     "ExplosionEventStore",
+    "JsonEvidenceStateStore",
     "ExplosionReplay",
     "MarketWave",
     "ReplayMoment",

@@ -24,6 +24,9 @@ PROFILE_REVIEW = "FxTwitter stable ID and public profile reviewed 2026-08-10"
 EXACT_POST_REVIEW = (
     "FxTwitter stable ID, public profile, and exact authored status reviewed 2026-08-10"
 )
+WALLET_BINDING_REVIEW = (
+    "FxTwitter stable ID and provider wallet-X binding reviewed 2026-08-12"
+)
 
 
 @dataclass(frozen=True, slots=True)

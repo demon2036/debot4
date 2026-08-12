@@ -62,14 +62,14 @@ SQLite research store + 只读看板
 ### 1. 代码与回归
 
 - Python 生产代码和测试执行 300 行硬限制；本次已把超限的 app 装配测试按职责拆分。
-- 2026-08-12 补充审计后的最新全量回归：`251 passed`。
+- 2026-08-12 爆炸叙事与 BOT 回归补齐后的最新全量回归：`384 passed`。
 - X 出口池、并发 timeline、并发 repost、首次启动限量回放、DeBot/TG/市场任务入队、Grok 结构化结果和看板接口均有单元或集成级回归。
 - 这些测试大部分使用受控 fake/fixture，证明规则与装配边界，不等于真实市场盈利验证。
 
 ### 2. X / FxTwitter
 
-- 人物目录覆盖 BSC、Robinhood、Solana、Ethereum、Base、中日韩和全球英文圈；泛账号 `@base` 与 `@XDevelopers` 已删除，CZ、何一、Musk 等可能直接产生 meme 催化的账号保留。
-- 数量不是质量证明：当前目录仍混有“已核验身份”“有具体历史帖子证据”和“只做候选观察”三种成熟度，尚未拆成正式 active/candidate/disabled 三层。
+- 人物目录覆盖 BSC、Robinhood、Solana、Ethereum、Base、中日韩和全球英文圈；当前 140 条记录、139 个启用 X 监控。泛账号 `@base` 与 `@XDevelopers` 已删除，CZ、何一、Musk 等可能直接产生 meme 催化的账号保留。
+- 数量不是质量证明：目录仍混有“已核验身份”“有具体历史帖子证据”和“只做候选观察”三种成熟度，尚未拆成正式 active/candidate/disabled 三层；BOT 新增钱包绑定账号也只有传播权限。
 - X timeline 按人物等级设为 5–15 秒目标轮询，并支持最多 40 个并发 worker；这只是调度目标，实际发现延迟仍受 FxTwitter、网络和限流影响。
 - 首次启动不会再无条件吞掉全部最新帖子：只回放最多 1 条、且必须在最近 5 分钟内，其余仅写 checkpoint。
 - repost 路径已实现并发轮询。目前只有 `jtitordemon2036` 被设为 repost canary；尚未完成一次由真人转发触发、网页可见的端到端延迟验收。
@@ -105,6 +105,14 @@ SQLite research store + 只读看板
 - 已归档并结构化 69 条“北斗”历史叙事语料，区分方法论、前瞻、进行中和事后复盘。
 - 已有因果回放候选，使用发帖后下一完整分钟的历史 OHLC 估算 1h 窗口；结果明确标注不是可成交报价，未包含滑点、税、gas、MEV 和历史深度重建。
 - 已新增历史案例不可变数据模型，可记录 source/amplifier/posthoc、exact CA、时间、峰值代理和风险说明；模型尚未接入数据库与看板。
+
+### 7. BOT 两波与爆炸叙事监控
+
+- BOT 主 CA 为 `0xbcad9b1b85af1cd81437252bf50b87235c0b7777`；回放明确拆成 2026-08-09 首发波与 2026-08-11 身份催化波。
+- 第二波最早可验证信号是 `@bot` 头像资源时间 `09:46:59.958 PDT`，市场在 `09:47:00` 启动；Banner 在 `09:47:51`，官方帖在 `10:09:05`，即晚于启动 22 分 5 秒、晚于 09:50 记录峰值 19 分 5 秒。
+- X 身份、完整 following 关系与产品页面已有真实适配器；确权、权威钱包、现实事件、分发、风险解除和正统 CA 已补持久化/幂等应用边界，但外部采集适配器仍未完成。
+- BOT 首波新增 `mstzera`、`Stigman__`、`rawrstarxdd`、`0xfanfanfan` 四个 provider 钱包绑定研究账号，全部只允许提供传播线索；`cryptomoon520` 因高频套利特征被降级。
+- 当前没有任何 BOT 人物或钱包达到 `active_verified` 或自动买入门槛，结论仍为 `WAIT`。
 
 ## 已做但不能夸大的能力
 
@@ -211,8 +219,8 @@ SQLite research store + 只读看板
 
 - GitHub：`demon2036/debot4`，PRIVATE，默认分支 `main`。
 - 本机仓库：`/home/john/debot4`。
-- 远程代码目录：`/opt/debot4`。
-- 本次交付要求：本机、GitHub `origin/main` 与远程 `/opt/debot4` 的 HEAD 一致；远程只拉代码，不启动 DeBot4。
+- 远程原目录 `/opt/debot4` 有既有未提交修改，本轮保持原样。
+- 爆炸叙事分支部署到独立目录 `/opt/debot4-explosion-20260812`；通过 Git bundle 同步同一提交，远程只做有限验证，不启动 DeBot4 常驻服务。
 - 凭证、cookies、Telegram session、SQLite 运行库和日志均被 Git 忽略；仓库只提交无密码的出口拓扑。
 
 ## 安全提醒

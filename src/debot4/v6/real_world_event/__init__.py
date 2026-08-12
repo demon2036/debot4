@@ -1,5 +1,6 @@
 """Real-world source-event contracts."""
 
 from .rules import RealWorldObservation
+from .monitor import RealWorldEventMonitor
 
-__all__ = ["RealWorldObservation"]
+__all__ = ["RealWorldEventMonitor", "RealWorldObservation"]

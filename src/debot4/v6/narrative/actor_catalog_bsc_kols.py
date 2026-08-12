@@ -1,6 +1,6 @@
 """BSC propagation accounts promoted from exact-CA historical audits."""
 
-from .actor_catalog_types import EXACT_POST_REVIEW, KOL, actor
+from .actor_catalog_types import EXACT_POST_REVIEW, KOL, WALLET_BINDING_REVIEW, actor
 from .actors import ActorTier as T
 
 
@@ -183,5 +183,65 @@ BSC_AUDIT_KOL_ACTORS = (
         priority=6, basis=EXACT_POST_REVIEW,
         evidence=("https://x.com/yig168168/status/2064955544411275680",),
         risks=("community-building and promotion incentives require discounting",),
+    ),
+    actor(
+        "mstzera", "1047951613934100484", "mstzera",
+        "Provider-bound BSC wallet account observed in early BOT and CLIPPY buys",
+        T.PROPAGATION_KOL, ("bsc", "bnb"), KOL,
+        languages=("en", "pt"), regions=("global",), priority=5,
+        basis=WALLET_BINDING_REVIEW,
+        evidence=(
+            "https://gmgn.ai/bsc/token/0xbcad9b1b85af1cd81437252bf50b87235c0b7777",
+            "https://bscscan.com/tx/0x338b9629989277b9ea547c588bb02975b5b5d8f66cb3ab6733bac5c1cfffcf1f",
+        ),
+        risks=(
+            "only two eligible tokens were retained, so the outcome denominator is incomplete",
+            "provider wallet binding is not proof that public posts caused either move",
+        ),
+    ),
+    actor(
+        "Stigman__", "1272354183677644800", "Stigman",
+        "Provider-bound BSC wallet account observed 69 seconds into BOT launch",
+        T.PROPAGATION_KOL, ("bsc", "bnb"), KOL,
+        languages=("en",), regions=("global",), priority=5,
+        basis=WALLET_BINDING_REVIEW,
+        evidence=(
+            "https://gmgn.ai/bsc/token/0xbcad9b1b85af1cd81437252bf50b87235c0b7777",
+            "https://bscscan.com/tx/0xba2343e8cf04c1b1addf352af2333930a433eb937179485c04d1fed7969d4203",
+        ),
+        risks=(
+            "ten eligible tokens and five pre-peak tokens do not form a complete outcome denominator",
+            "provider wallet binding is not proof of narrative origin or public influence",
+        ),
+    ),
+    actor(
+        "rawrstarxdd", "1928506739915419648", "rawrstarxdd",
+        "Provider-bound BSC wallet account with two BOT buys before the first peak",
+        T.PROPAGATION_KOL, ("bsc", "bnb"), KOL,
+        languages=("en",), regions=("global",), priority=6,
+        basis=WALLET_BINDING_REVIEW,
+        evidence=(
+            "https://gmgn.ai/bsc/token/0xbcad9b1b85af1cd81437252bf50b87235c0b7777",
+            "https://bscscan.com/tx/0xc39b502578dcb00f6409f44a92db0ab0ec37c7c311ff046ea54608c308d630c4",
+        ),
+        risks=(
+            "five retained eligible tokens all preceded their local peaks, but outcomes remain incomplete",
+            "two BOT transactions are one launch episode rather than independent wins",
+        ),
+    ),
+    actor(
+        "0xfanfanfan", "1862446599378743296", "凡",
+        "Provider-bound Chinese BSC wallet account observed before the BOT first-wave peak",
+        T.PROPAGATION_KOL, ("bsc", "bnb"), KOL,
+        languages=("zh",), regions=("china",), priority=7,
+        basis=WALLET_BINDING_REVIEW,
+        evidence=(
+            "https://gmgn.ai/bsc/token/0xbcad9b1b85af1cd81437252bf50b87235c0b7777",
+            "https://bscscan.com/tx/0xab152a3364dc0e7889cd8df254c955e48cece2405a07dd7d8a0819e70980e20f",
+        ),
+        risks=(
+            "only four eligible tokens and two pre-peak tokens were retained",
+            "no reviewed pre-peak exact-CA post establishes public discovery or causation",
+        ),
     ),
 )

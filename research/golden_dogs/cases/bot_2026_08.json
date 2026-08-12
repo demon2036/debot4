@@ -27,8 +27,24 @@
           "occurred_at": "2026-08-09T19:52:00Z",
           "role": "candidate",
           "source_url": "https://gmgn.ai/bsc/token/0xbcad9b1b85af1cd81437252bf50b87235c0b7777",
-          "evidence": "mstzera-tagged wallet bought about $1,185; wallet-X binding and longitudinal win rate remain unqualified",
+          "evidence": "provider-bound mstzera wallet bought 60 seconds after launch; stable X identity is verified, but only two eligible tokens are retained and longitudinal outcomes remain unqualified",
           "offset_from_move_seconds": 60
+        },
+        {
+          "label": "stigman_provider_bound_buy",
+          "occurred_at": "2026-08-09T19:52:09Z",
+          "role": "candidate",
+          "source_url": "https://bscscan.com/tx/0xba2343e8cf04c1b1addf352af2333930a433eb937179485c04d1fed7969d4203",
+          "evidence": "provider-bound Stigman__ wallet bought about $415.11 at +69 seconds; ten eligible tokens and five pre-peak tokens are retained, but the complete denominator and outcomes are missing",
+          "offset_from_move_seconds": 69
+        },
+        {
+          "label": "cryptomoon_provider_bound_buy",
+          "occurred_at": "2026-08-09T19:52:34Z",
+          "role": "candidate",
+          "source_url": "https://bscscan.com/tx/0x6422ee8ff2bae3e4ccc7deffa6d6cf4ed5558369d26af0a41806c1374683bd97",
+          "evidence": "provider-bound cryptomoon520 wallet bought about $347.84 at +94 seconds, but its seven-day provider record shows 273 buys, 582 transactions, an arbitrager tag, and 39.7% provider win rate; excluded from priority monitoring pending a complete independent audit",
+          "offset_from_move_seconds": 94
         },
         {
           "label": "false2z_selects_main_ca",
@@ -37,6 +53,30 @@
           "source_url": "https://x.com/false2z/status/2086541464171860432",
           "evidence": "published the exact main BOT CA 165 seconds after launch and warned that the competing contract charged developer fees; useful canonical-CA selection evidence, not an origin signal",
           "offset_from_move_seconds": 165
+        },
+        {
+          "label": "rawrstarxdd_first_provider_bound_buy",
+          "occurred_at": "2026-08-09T19:54:14Z",
+          "role": "candidate",
+          "source_url": "https://bscscan.com/tx/0xc39b502578dcb00f6409f44a92db0ab0ec37c7c311ff046ea54608c308d630c4",
+          "evidence": "provider-bound rawrstarxdd wallet bought about $295.82 at +194 seconds; five retained eligible tokens were pre-peak, but complete outcomes are missing",
+          "offset_from_move_seconds": 194
+        },
+        {
+          "label": "rawrstarxdd_second_provider_bound_buy",
+          "occurred_at": "2026-08-09T19:54:26Z",
+          "role": "candidate",
+          "source_url": "https://bscscan.com/tx/0x5d7835a9ad27914a957c05b1c09c79cb36304159b0caec82870d990a3e5b81ca",
+          "evidence": "second rawrstarxdd BOT buy of about $295.60 at +206 seconds; this is the same launch episode and cannot count as a separate win",
+          "offset_from_move_seconds": 206
+        },
+        {
+          "label": "fanfanfan_provider_bound_buy",
+          "occurred_at": "2026-08-09T19:55:15Z",
+          "role": "candidate",
+          "source_url": "https://gmgn.ai/bsc/token/0xbcad9b1b85af1cd81437252bf50b87235c0b7777",
+          "evidence": "provider-bound 0xfanfanfan wallet bought 255 seconds after launch; four eligible tokens and only two pre-peak tokens are retained, so it is not a qualified smart wallet",
+          "offset_from_move_seconds": 255
         },
         {
           "label": "9999btcname_position_post",
@@ -119,7 +159,38 @@
       "kind": "provider_tagged_wallet",
       "status": "research_candidate",
       "evidence_urls": ["https://gmgn.ai/bsc/token/0xbcad9b1b85af1cd81437252bf50b87235c0b7777"],
-      "reason": "earliest clean BOT buy in retained provider audit, but complete performance denominator and author-wallet proof are missing"
+      "reason": "earliest clean BOT buy in retained provider audit; the provider wallet-X binding and stable identity pass, but only two eligible tokens are retained and complete outcomes are missing"
+    },
+    {
+      "subject": "@Stigman__ / 0xdd6f338b91f40e5a02c468b7cb49cccc569a3134",
+      "kind": "provider_tagged_wallet",
+      "status": "research_candidate",
+      "evidence_urls": ["https://bscscan.com/tx/0xba2343e8cf04c1b1addf352af2333930a433eb937179485c04d1fed7969d4203"],
+      "reason": "provider wallet-X binding passes and the BOT buy was 69 seconds after launch; ten eligible tokens and five pre-peak tokens are retained, but the complete denominator and outcomes remain missing"
+    },
+    {
+      "subject": "@cryptomoon520 / 0xb90d9ea599c2634069ae4d5eecc5ab7234a81a05",
+      "kind": "high_frequency_provider_wallet",
+      "status": "disabled_no_evidence",
+      "evidence_urls": ["https://bscscan.com/tx/0x6422ee8ff2bae3e4ccc7deffa6d6cf4ed5558369d26af0a41806c1374683bd97"],
+      "reason": "the +94 second BOT buy is early, but the seven-day provider record shows 273 buys, 582 transactions, an arbitrager tag, and only 39.7% provider win rate; high activity is not selective discovery"
+    },
+    {
+      "subject": "@rawrstarxdd / 0x41ccc209d3ba4e81ef0c1fcb6d191127fb5b42f5",
+      "kind": "provider_tagged_wallet",
+      "status": "research_candidate",
+      "evidence_urls": [
+        "https://bscscan.com/tx/0xc39b502578dcb00f6409f44a92db0ab0ec37c7c311ff046ea54608c308d630c4",
+        "https://bscscan.com/tx/0x5d7835a9ad27914a957c05b1c09c79cb36304159b0caec82870d990a3e5b81ca"
+      ],
+      "reason": "two BOT buys occurred at +194 and +206 seconds and all five retained eligible tokens were pre-peak; the sample and complete outcomes remain insufficient for smart-wallet promotion"
+    },
+    {
+      "subject": "@0xfanfanfan / 0xd722c57366b09c6c44c6b0e1a80760c5760f68ce",
+      "kind": "provider_tagged_wallet",
+      "status": "research_candidate",
+      "evidence_urls": ["https://gmgn.ai/bsc/token/0xbcad9b1b85af1cd81437252bf50b87235c0b7777"],
+      "reason": "provider wallet-X binding passes and the BOT buy was 255 seconds after launch, but only four eligible tokens and two pre-peak tokens are retained; no reviewed public discovery post exists"
     },
     {
       "subject": "0xac750ab07179c569035c6d0eee5c26556dfc7777",

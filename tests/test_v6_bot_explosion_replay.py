@@ -42,5 +42,14 @@ def test_bot_first_wave_separates_early_ca_selection_from_origin() -> None:
 
     assert moments["false2z_selects_main_ca"].offset_from_move_seconds == 165
     assert moments["9999btcname_position_post"].offset_from_move_seconds == 740
+    assert moments["earliest_clean_provider_tagged_buy"].offset_from_move_seconds == 60
+    assert moments["stigman_provider_bound_buy"].offset_from_move_seconds == 69
+    assert moments["cryptomoon_provider_bound_buy"].offset_from_move_seconds == 94
+    assert moments["rawrstarxdd_first_provider_bound_buy"].offset_from_move_seconds == 194
+    assert moments["rawrstarxdd_second_provider_bound_buy"].offset_from_move_seconds == 206
+    assert moments["fanfanfan_provider_bound_buy"].offset_from_move_seconds == 255
     assert candidates["@false2z"].kind == "canonical_ca_amplifier"
     assert candidates["@false2z"].status == "research_candidate"
+    assert candidates[
+        "@cryptomoon520 / 0xb90d9ea599c2634069ae4d5eecc5ab7234a81a05"
+    ].status == "disabled_no_evidence"

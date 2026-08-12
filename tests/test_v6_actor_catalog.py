@@ -56,6 +56,10 @@ REQUIRED_HANDLES = {
     "false2z",
     "sizzlezzzzzzzzz",
     "9999btcname",
+    "mstzera",
+    "stigman__",
+    "rawrstarxdd",
+    "0xfanfanfan",
 }
 
 
@@ -157,6 +161,25 @@ def test_bsc_audit_kols_keep_exact_post_evidence_and_propagation_only_power() ->
         assert "exact authored status" in item.basis
         assert "/status/" in item.evidence_urls[1]
         assert item.capabilities == (ActorCapability.PROPAGATE,)
+
+
+def test_wallet_bound_bot_candidates_remain_research_clues_only() -> None:
+    candidates = {
+        item.handle.casefold(): item
+        for item in DEFAULT_ACTOR_CATALOG
+        if item.handle.casefold() in {
+            "mstzera", "stigman__", "rawrstarxdd", "0xfanfanfan",
+        }
+    }
+
+    assert set(candidates) == {
+        "mstzera", "stigman__", "rawrstarxdd", "0xfanfanfan",
+    }
+    for item in candidates.values():
+        assert "wallet-X binding" in item.basis
+        assert any("bscscan.com/tx/" in url for url in item.evidence_urls)
+        assert item.capabilities == (ActorCapability.PROPAGATE,)
+        assert DEFAULT_ACTOR_REGISTRY.resolve(item.handle).is_propagation_only
 
 
 def test_only_reviewed_public_telegram_channels_enter_automatic_monitoring() -> None:
