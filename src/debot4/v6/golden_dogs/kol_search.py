@@ -96,13 +96,13 @@ list is a ranking, fan nomination, performance claim, or merely an unordered dir
 
 
 def _directory_snowball_prompt(bounds: str) -> str:
-    return _common(bounds) + """
-\nStart from this independently verified Chinese community directory:
+    return f"""Search public X posts in {bounds}. Start from this Chinese community directory:
 https://x.com/facai988/status/1982437570467504565 . Inspect its literal handles,
 replies, quotes and later related list posts. Find additional Chinese meme callers not
 literally present in that directory and return the original status proving each addition.
-Do not promote a reply author, fan nomination or copied list into a KOL without saying
-exactly what the source establishes.
+For every result return only the direct x.com profile/status URLs and quote the source.
+Do not infer wallets or a token contract, and do not promote a fan nomination into a
+verified KOL. It is acceptable to return no result.
 """
 
 
@@ -148,13 +148,14 @@ claims. Return source URL, full wallet, claimed owner and attribution strength s
 
 
 def _shadow_prompt(bounds: str) -> str:
-    return _common(bounds) + """
-\nSearch the public web for explicit attribution of secondary X accounts or secondary BSC
+    return f"""Search the public web and X in {bounds} for published attribution of
+secondary X accounts or secondary BSC
 wallets to major Chinese meme KOLs, especially the handles literally listed in
 https://x.com/facai988/status/1982437570467504565. A secondary wallet may buy days before
-an authored call and need not repeat across calls. Require a self-disclosure, signed proof,
-provider-bound X profile, or named independent investigation with a full wallet and direct
-URL. Report rumors as unverified and never infer ownership from timing alone.
+an authored post. Return direct URLs and exact quoted claims only. Accept self-disclosure,
+signed proof, provider-bound X profiles, or named investigations. Do not infer ownership
+from timing or similar names. It is acceptable to return no result.
+Never substitute a token contract for a wallet address.
 """
 
 

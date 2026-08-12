@@ -299,5 +299,271 @@
     "semantic": "market_thesis",
     "reason": "Says the token may be worth researching while explicitly identifying it as a community-promotion token; current audit lacks verified clean KOL-buy evidence.",
     "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/aBbeGGnEl2OxaAs/status/2060670945447252267",
+    "address": "0xa3b2e6fe983ac7193f2e098ad6f7c195a3824444",
+    "semantic": "market_thesis",
+    "reason": "Calls hey stock a strong setup, gives a $1M target and a possible Binance catalyst; this is a forward thesis, not proof of origin or an unmanipulated market.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/0xcaesarr/status/2078200970522030335",
+    "address": "0xcefbf00b3732fe91e46989037e4b2564a4fc7777",
+    "semantic": "reply_mention",
+    "reason": "Contains only another handle and the exact CA, with no authored position or thesis.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/Researchcai/status/2083183423976526056",
+    "address": "0xe9337dde3dd9e97f1f45a56412767ce5098e7777",
+    "semantic": "market_context",
+    "reason": "Compares a short-name CA already at $900K with a lower-valued long-name CA; it supplies context but no clear forward view for this exact CA.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/Researchcai/status/2083514456257282297",
+    "address": "0xe9337dde3dd9e97f1f45a56412767ce5098e7777",
+    "semantic": "recap",
+    "reason": "Updates the earlier comparison after the short-name token reached $2.9M and the long-name token had also risen; this is an outcome update.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/jiucaicai250131/status/2085673024880341442",
+    "address": "0x244b112cf746e62a5df723cbde9906a6defd7777",
+    "semantic": "market_context",
+    "reason": "Lists three competing bStocks/Binance slogan contracts and asks readers which they support; no position or directional claim is stated.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/jiucaicai250131/status/2085673024880341442",
+    "address": "0xdc5e4d5f157482059126eb15d84f2ff9368b7777",
+    "semantic": "market_context",
+    "reason": "Lists three competing bStocks/Binance slogan contracts and asks readers which they support; no position or directional claim is stated.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/monkeyd_long/status/2085732755074318643",
+    "address": "0x244b112cf746e62a5df723cbde9906a6defd7777",
+    "semantic": "market_context",
+    "reason": "Frames two BSC stock memes as competitors and supplies both exact CAs, without claiming a position or a forward target.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/zhuilong888/status/2086359629999776017",
+    "address": "0x9ecfbb6c0ce91d5ac00e1f7378880523cb8d7777",
+    "semantic": "market_thesis",
+    "reason": "Says the Binance-themed contract deserves attention and appears to have won against competing contracts; this is a forward selection thesis with referral conflicts.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/qkl2058/status/2060611483848097826",
+    "address": "0x446914100390a21e810a41649ef1f56018b04444",
+    "semantic": "recap",
+    "reason": "Claims a scanner already caught the move from $1.64K to $11.5K and reports the current cap; the remaining catalyst copy does not make it an original call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/bigfopq/status/2069738621792608599",
+    "address": "0x76675350578292817467aa9c3df13fbd0e987777",
+    "semantic": "recap",
+    "reason": "Claims an automated GMGN scan already captured a rise and describes the project narrative at the current price; this is promotional retrospective copy.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/BscKOLScanner/status/2070547374804795628",
+    "address": "0x539dd1725772abff8b057e91b634e5d8ffcc7777",
+    "semantic": "market_context",
+    "reason": "Automated JUST MOVED metrics alert with explicit high-risk warning; it is scanner output, not an authored call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/BladeStrikeX/status/2070665154946289938",
+    "address": "0x539dd1725772abff8b057e91b634e5d8ffcc7777",
+    "semantic": "project_announcement",
+    "reason": "Project-side account posts only its exact CA; no independent market thesis is present.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/qkl2058/status/2073759482862338241",
+    "address": "0xa4390b901a63641c92327e5793b45fcb46954444",
+    "semantic": "recap",
+    "reason": "Leads with a claimed scanner catch and then repeats a multi-contract ANSEM comparison; this exact CA mention is retrospective promotional context.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/dex_event_live/status/2073785219669205279",
+    "address": "0xf735b2f40d3c0a338eaf1123d7b27b02d00e4444",
+    "semantic": "relay",
+    "reason": "Automated event account relays a named Telegram influencer post and prior events; it is not the source call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/dex_event_live/status/2073833002052776194",
+    "address": "0xf735b2f40d3c0a338eaf1123d7b27b02d00e4444",
+    "semantic": "relay",
+    "reason": "Automated event account relays a named Telegram influencer post and prior events; it is not the source call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/dex_event_live/status/2074089656463810759",
+    "address": "0x0b6d8934fc8838b1027b510364a2087317bd4444",
+    "semantic": "relay",
+    "reason": "Automated Four Meme migration event with templated market data and trade links; no authored thesis.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/dex_event_live/status/2074108866376151047",
+    "address": "0x0b6d8934fc8838b1027b510364a2087317bd4444",
+    "semantic": "relay",
+    "reason": "Automated event account relays a BscHouse Telegram signal and migration history; it is not the source call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/CoinWingsAI/status/2074122116077854772",
+    "address": "0x0b6d8934fc8838b1027b510364a2087317bd4444",
+    "semantic": "relay",
+    "reason": "Automated product account reports aggregated smart-money sells and links its service; no human-authored position or thesis.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/Qitiandasheng79/status/2081701099929763906",
+    "address": "0x6b2e72600b62d4131b95eeca6def537777777777",
+    "semantic": "project_announcement",
+    "reason": "Project-side account publishes its CA without independent analysis.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/BscKOLScanner/status/2081701747329061035",
+    "address": "0x6b2e72600b62d4131b95eeca6def537777777777",
+    "semantic": "market_context",
+    "reason": "Automated JUST MOVED metrics alert after a large one-hour move; not an authored source call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/BscKOLScanner/status/2082194722333065536",
+    "address": "0x25c36129cd3a9eac54287803a6e33d2cfc287777",
+    "semantic": "market_context",
+    "reason": "Automated JUST MOVED metrics alert with risk fields and a swap link; not an authored source call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/thexcaller/status/2082202745155563751",
+    "address": "0x25c36129cd3a9eac54287803a6e33d2cfc287777",
+    "semantic": "market_context",
+    "reason": "Templated JUST MOVED market alert from a scanner account; no independent thesis.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/BscKOLScanner/status/2082224925172248776",
+    "address": "0x25c36129cd3a9eac54287803a6e33d2cfc287777",
+    "semantic": "market_context",
+    "reason": "Automated sniper metrics alert, including high phishing risk; not an authored KOL call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/nmg_BLD/status/2082392668223742377",
+    "address": "0x25c36129cd3a9eac54287803a6e33d2cfc287777",
+    "semantic": "market_context",
+    "reason": "Automated Flap burn and migration status with market metrics; no authored directional view.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/thexcaller/status/2082898503693414738",
+    "address": "0xb82535e74b03ffe4910efea1c759b6bbbf0a7777",
+    "semantic": "market_context",
+    "reason": "Templated market-intelligence metrics report from a scanner account; no independent thesis.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/BscKOLScanner/status/2082900018303025166",
+    "address": "0xbcbdc52ea0d5bfe8b29d3c0afe91341e0ffd7777",
+    "semantic": "relay",
+    "reason": "Automated wallet-entry analysis relaying another labelled wallet's activity; not the wallet owner's authored call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/sol_jingou/status/2083199097889231090",
+    "address": "0x2ec39b165e22944d2fee389219ee64e4924cffff",
+    "semantic": "recap",
+    "reason": "Daily hot-meme roundup reports current market caps across seven tokens; it is a retrospective list, not an origin call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/SkeletonDegens/status/2083276768744464800",
+    "address": "0x2ec39b165e22944d2fee389219ee64e4924cffff",
+    "semantic": "market_context",
+    "reason": "Scanner-style market-cap, liquidity and volume snapshot with a chart link; no authored thesis.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/sol_jingou/status/2083796123165323648",
+    "address": "0x8554d38b95e4f7ca11d391008627df30b2b07777",
+    "semantic": "recap",
+    "reason": "States the token already made 25x and promotes following a labelled wallet; this is retrospective wallet-promotion content.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/BscKOLScanner/status/2084283872041468136",
+    "address": "0x57aedac0ccaafdec0ec62fc4fbfd8252735affff",
+    "semantic": "market_context",
+    "reason": "Automated market-intelligence report with an extreme one-hour move already recorded; no authored call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/BscKOLScanner/status/2085295120534962294",
+    "address": "0xc73e1b136c576d1429cb84522a8c35c81d9d7777",
+    "semantic": "relay",
+    "reason": "Automated analysis of a labelled wallet entry; it relays wallet activity rather than an authored thesis.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/BscKOLScanner/status/2085322201448816954",
+    "address": "0xc73e1b136c576d1429cb84522a8c35c81d9d7777",
+    "semantic": "relay",
+    "reason": "Automated analysis of a labelled wallet's possible FOMO entry; it is not the wallet owner's authored call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/LSXS_888/status/2085561586077634914",
+    "address": "0xc73e1b136c576d1429cb84522a8c35c81d9d7777",
+    "semantic": "recap",
+    "reason": "Claims an AI scanner already caught a rise from $113 to $9.64K and promotes a tracking link; retrospective promotional copy.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/googoocalls/status/2086056356487008742",
+    "address": "0xdc5e4d5f157482059126eb15d84f2ff9368b7777",
+    "semantic": "recap",
+    "reason": "Automated call bot reports a 1330% gain since its first call; this status is an outcome recap, not the first call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/AiSolanaKols/status/2086070327411405245",
+    "address": "0x4ac85f2a2d22956a15a95ebe142d442da35e7777",
+    "semantic": "relay",
+    "reason": "Automated trading-flow report for another labelled wallet with a quick-swap link; no authored thesis.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/qkl2058/status/2086278325883089362",
+    "address": "0xe9d476ce8ba9431a6c1ae39c00e84dab5c717777",
+    "semantic": "recap",
+    "reason": "Leads with a claimed scanner catch from $409 to $2.89K before adding promotional narrative copy; this is not an independently sourced early call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/DexEventcat/status/2086745859224429026",
+    "address": "0xf225e70162837a811c77dc2bb413a5c06e97ffff",
+    "semantic": "relay",
+    "reason": "Automated event account relays a named Telegram influencer signal and trade route; not the source call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/BscKOLScanner/status/2086881290524008889",
+    "address": "0x530227c569960ba0fa345f19cf743a477f147777",
+    "semantic": "market_context",
+    "reason": "Automated token metrics snapshot with a quick-swap link; no authored position or thesis.",
+    "reviewed_source": "independently fetched immutable X status"
   }
 ]

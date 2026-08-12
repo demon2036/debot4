@@ -1,6 +1,9 @@
+import json
+
 from debot4.v6.golden_dogs.grok_journal import (
     prompt_is_complete,
     reusable_x_verification_rows,
+    row_is_research_success,
     successful_candidate_urls,
     successful_prompt_digests,
 )
@@ -22,6 +25,17 @@ def test_latest_successful_digest_wins_for_append_only_retry_history() -> None:
         '{"key":"batch-1","prompt_sha256":"new","status":"success"}',
     ))
     assert completed == {"batch-1": "new"}
+
+
+def test_transport_success_with_explicit_refusal_is_not_complete() -> None:
+    refusal = {
+        "key": "shadow", "prompt_sha256": "abc", "status": "success",
+        "answer": "I cannot comply with this request. I will not search.",
+    }
+    completed = successful_prompt_digests((json.dumps(refusal),))
+
+    assert completed == {}
+    assert row_is_research_success(refusal) is False
 
 
 def test_successful_urls_are_monotonic_when_batch_key_is_reused() -> None:

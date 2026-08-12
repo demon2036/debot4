@@ -1,16 +1,16 @@
 {
   "accounts": 1471,
-  "generated_at": "2026-08-12T14:37:07.314681Z",
-  "manual_role_reviews": 69,
+  "generated_at": "2026-08-12T14:51:47.709112Z",
+  "manual_role_reviews": 71,
   "pre_peak_exact_ca_accounts": 86,
   "role_counts": {
     "catalyst": 34,
     "coordinated_promotion": 6,
-    "kol_candidate": 84,
+    "kol_candidate": 86,
     "project": 7,
     "research": 31,
     "scanner": 18,
-    "unreviewed": 1291
+    "unreviewed": 1289
   },
   "schema": "debot4.x_account_candidate_summary.v1",
   "wallet_bound_accounts": 202,
