@@ -98,7 +98,7 @@ For EACH exact CA, find the X identities behind pre-peak calls and any DeBot/GMG
 label. Resolve Chinese aliases, old/new handles, stable identity clues, attribution
 pages, and optional wallets/buy transactions. A KOL can be real without a wallet.
 An alleged shadow wallet may buy several days before a call; one such buy is only a candidate,
-while repeated independent exact-CA hits strengthen attribution.
+and repeated independent exact-CA hits are optional corroboration, never a requirement.
 """.strip()
     return f"""
 BSC fixed UTC window [{start}, {end}). These tokens were independently measured at

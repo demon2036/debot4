@@ -114,7 +114,8 @@ def _profiles() -> dict[str, dict[str, object]]:
     for name in ("grok_bsc_market_x_verified.jsonl",
                  "grok_x_account_identity_verified.jsonl",
                  "grok_wallet_x_identity_verified.jsonl",
-                 "grok_chinese_x_verified.jsonl"):
+                 "grok_chinese_x_verified.jsonl",
+                 "grok_tintin_x_verified.jsonl"):
         for row in _optional_jsonl(name):
             if row.get("status") != "verified" or not row.get("profile_user_id"):
                 continue
@@ -131,6 +132,15 @@ def _profiles() -> dict[str, dict[str, object]]:
             output[str(profile["user_id"])] = {
                 **profile, "source_url": row.get("source_url"),
                 "payload_sha256": row.get("payload_sha256"),
+            }
+    for row in _optional_jsonl("tintin_directory_profiles.jsonl"):
+        profile = row.get("profile") or {}
+        if row.get("status") == "verified":
+            output[str(profile["user_id"])] = {
+                **profile, "source_url": row.get("profile_source_url"),
+                "payload_sha256": row.get("profile_payload_sha256"),
+                "directory_section": row.get("directory_section"),
+                "directory_source_url": row.get("source_status_url"),
             }
     return output
 
@@ -198,6 +208,7 @@ def _joined_x_markets() -> tuple[dict, ...]:
         *_optional_jsonl("x_account_identity_market_joins.jsonl"),
         *_optional_jsonl("x_wallet_identity_market_joins.jsonl"),
         *_optional_jsonl("chinese_x_market_joins.jsonl"),
+        *_optional_jsonl("tintin_x_market_joins.jsonl"),
     )
 
 

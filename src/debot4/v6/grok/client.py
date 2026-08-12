@@ -12,6 +12,7 @@ from .request import (
     FORMAT_ONLY,
     GrokRequestPolicy,
     execute_chat,
+    execute_image_chat,
     execute_x_search,
 )
 from .response import parse_answer, parse_responses_answer
@@ -24,6 +25,8 @@ _KEY_FILE_ENV = "DEBOT4_GROK2API_KEY_FILE"
 _BASE_URL_ENV = "DEBOT4_GROK2API_BASE_URL"
 _MODEL_ENV = "DEBOT4_GROK2API_MODEL"
 _TIMEOUT_ENV = "DEBOT4_GROK2API_TIMEOUT_SECONDS"
+_IMAGE_LIMIT = 4 * 1024 * 1024
+_IMAGE_MEDIA_TYPES = frozenset({"image/jpeg", "image/png", "image/webp"})
 
 
 @dataclass(slots=True)
@@ -105,6 +108,37 @@ class Grok2ApiClient:
         """Repair formatting without granting the model another web search."""
 
         return self._request(prompt, instructions, FORMAT_ONLY)
+
+    def analyze_image(
+        self,
+        prompt: str,
+        *,
+        image: bytes,
+        media_type: str,
+        instructions: str,
+    ) -> GrokSearchAnswer:
+        """Analyze bounded frozen image bytes; this lane cannot search the web."""
+
+        prompt, instructions = _validate_prompt(prompt, instructions)
+        media_type = media_type.strip().casefold()
+        if media_type not in _IMAGE_MEDIA_TYPES:
+            raise ValueError("unsupported image media type")
+        if not isinstance(image, bytes) or not 1 <= len(image) <= _IMAGE_LIMIT:
+            raise ValueError("image must contain between 1 byte and 4 MiB")
+        if self.transport is None:
+            raise RuntimeError("Grok2API transport is not configured")
+        payload = execute_image_chat(
+            self.transport,
+            base_url=self.base_url,
+            api_key=self.api_key,
+            model=self.model,
+            prompt=prompt,
+            instructions=instructions,
+            image=image,
+            media_type=media_type,
+            policy=GrokRequestPolicy(self.timeout_seconds, self.attempts, False),
+        )
+        return parse_answer(payload, self.model)
 
     def _request(
         self,

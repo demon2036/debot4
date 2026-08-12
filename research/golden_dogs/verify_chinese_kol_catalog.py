@@ -25,6 +25,7 @@ SOURCE_POSTS = (
     ("facai-community-directory", "https://x.com/facai988/status/1982437570467504565"),
     ("mintclub-corroboration", "https://x.com/Mintclub002/status/1985234545114030477"),
     ("gcsheng-exact-ca-post", "https://x.com/GCsheng/status/2064388171040010417"),
+    ("tintin-top-tier-directory", "https://x.com/Tintinx2021/status/1978501606682558735"),
 )
 
 

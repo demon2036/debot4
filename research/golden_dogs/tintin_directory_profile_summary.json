@@ -1,0 +1,15 @@
+{
+  "generated_at": "2026-08-12T16:40:05.402873Z",
+  "profile_unavailable": 2,
+  "schema": "debot4.tintin_directory_profile_summary.v1",
+  "transcribed_handles": 57,
+  "transcription_response_id": "resp_e53b68eb141a934824ab7b91a014a1b2",
+  "unique_stable_user_ids": 55,
+  "verified_by_directory_section": {
+    "1. Chinese Memecoin Trunk/ Alpha": 21,
+    "2. Chinese Elite Traders & Strategic Minds ($10M+)": 19,
+    "3. Chinese Researchers, Airdrop Farmers & Community Builders": 15
+  },
+  "verified_profiles": 55,
+  "warning": "Directory membership and profile verification do not prove KOL quality"
+}

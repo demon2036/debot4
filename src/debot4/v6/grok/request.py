@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import base64
 import math
 import time
 from typing import Mapping
@@ -86,6 +87,50 @@ def execute_x_search(
     return _execute(
         transport,
         url=f"{base_url}/v1/responses",
+        api_key=api_key,
+        payload=payload,
+        policy=policy,
+    )
+
+
+def execute_image_chat(
+    transport: JsonTransport,
+    *,
+    base_url: str,
+    api_key: str,
+    model: str,
+    prompt: str,
+    instructions: str,
+    image: bytes,
+    media_type: str,
+    policy: GrokRequestPolicy,
+) -> Mapping[str, object]:
+    """Analyze exact caller-supplied image bytes without granting web search."""
+
+    encoded = base64.b64encode(image).decode("ascii")
+    payload: dict[str, object] = {
+        "model": model,
+        "stream": False,
+        "messages": [
+            {"role": "system", "content": instructions},
+            {
+                "role": "user",
+                "content": [
+                    {"type": "text", "text": prompt},
+                    {
+                        "type": "image_url",
+                        "image_url": {
+                            "url": f"data:{media_type};base64,{encoded}",
+                            "detail": "high",
+                        },
+                    },
+                ],
+            },
+        ],
+    }
+    return _execute(
+        transport,
+        url=f"{base_url}/v1/chat/completions",
         api_key=api_key,
         payload=payload,
         policy=policy,

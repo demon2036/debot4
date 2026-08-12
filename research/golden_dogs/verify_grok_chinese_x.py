@@ -182,7 +182,11 @@ def _summary(
         "schema": schema,
         "generated_at": datetime.now(UTC),
         "lead_count": lead_count,
-        "unique_profile_count": len({str(row["claimed_handle"]) for row in rows}),
+        "unique_profile_count": len({
+            str(row["profile_user_id"])
+            for row in rows
+            if row.get("status") == "verified" and row.get("profile_user_id")
+        }),
         "status_counts": dict(sorted(counts.items())),
         "warning": "verified means X identity and authored post only, not KOL quality or wallet",
     }

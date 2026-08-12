@@ -33,6 +33,7 @@ def test_shadow_wallet_is_optional_and_may_be_days_early() -> None:
     assert "KOL can be real without a wallet" in prompts
     assert "several days before" in prompts
     assert "only a candidate" in prompts
+    assert "never a requirement" in prompts
 
 
 def test_bucketed_peak_may_precede_second_precision_creation_time() -> None:

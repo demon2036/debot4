@@ -1,12 +1,12 @@
 {
   "accounts": 52,
   "causal_research_candidates": 21,
-  "generated_at": "2026-08-12T14:51:48.019011Z",
+  "generated_at": "2026-08-12T15:49:19.744397Z",
   "grades": {
     "A": 4,
-    "B": 44,
+    "B": 42,
     "C": 3,
-    "EXCLUDE": 30
+    "EXCLUDE": 32
   },
   "manually_reviewed_posts": 81,
   "pairs": 81,

@@ -157,6 +157,7 @@ def _joins() -> tuple[dict, ...]:
         *_optional_jsonl("x_account_identity_market_joins.jsonl"),
         *_optional_jsonl("x_wallet_identity_market_joins.jsonl"),
         *_optional_jsonl("chinese_x_market_joins.jsonl"),
+        *_optional_jsonl("tintin_x_market_joins.jsonl"),
     )
 
 

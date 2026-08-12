@@ -154,6 +154,20 @@ def test_format_lane_never_uses_web_search() -> None:
     assert "tool_choice" not in payload
 
 
+def test_image_lane_sends_exact_bytes_without_search() -> None:
+    transport = FakeTransport([_response()])
+    client = Grok2ApiClient("secret", transport=transport)
+
+    client.analyze_image(
+        "read rows", image=b"jpeg", media_type="image/jpeg", instructions="literal",
+    )
+
+    payload = transport.calls[0][2]
+    content = payload["messages"][1]["content"]
+    assert content[1]["image_url"]["url"] == "data:image/jpeg;base64,anBlZw=="
+    assert "tools" not in payload
+
+
 def test_client_rejects_missing_answer() -> None:
     client = Grok2ApiClient("secret", transport=FakeTransport([{"choices": []}]))
 

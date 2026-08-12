@@ -1,6 +1,6 @@
 {
   "exact_ca_mentions": 123,
-  "generated_at": "2026-08-12T14:34:35.589655Z",
+  "generated_at": "2026-08-12T15:09:55.214016Z",
   "joined_by_chain": {
     "bsc": 26,
     "robinhood": 5
@@ -13,6 +13,6 @@
     "pre_peak": 4
   },
   "unique_exact_cas": 107,
-  "verified_status_rows": 641,
+  "verified_status_rows": 661,
   "warning": "An authored exact-CA post is not proof of KOL status, a buy, causality, or absence of manipulation"
 }

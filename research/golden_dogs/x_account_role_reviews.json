@@ -495,5 +495,110 @@
     "role": "kol_candidate",
     "evidence_url": "https://x.com/zhuilong888/status/2086359629999776017",
     "reason": "Directory-listed human meme account authored a pre-peak exact-CA selection thesis; referral and commercial-promotion conflicts remain explicit."
+  },
+  {
+    "stable_user_id": "1884981760481751040",
+    "handle": "jiucaicai250131",
+    "role": "coordinated_promotion",
+    "evidence_url": "https://x.com/jiucaicai250131/status/2085673024880341442",
+    "reason": "Profile explicitly offers packaged project promotion; the audited post promotes three competing contracts and a Telegram group, so it is not treated as an independent call."
+  },
+  {
+    "stable_user_id": "1170963765283549184",
+    "handle": "monkeyd_long",
+    "role": "research",
+    "evidence_url": "https://x.com/monkeyd_long/status/2085732755074318643",
+    "reason": "Authored a pre-peak comparison of two BSC stock-meme contracts; retained as market research, with no position or wallet inferred."
+  },
+  {
+    "stable_user_id": "1905302953864413184",
+    "handle": "0xcaesarr",
+    "role": "research",
+    "evidence_url": "https://x.com/0xcaesarr/status/2078200970522030335",
+    "reason": "The only audited evidence is an exact-CA reply to another account, insufficient for an independent call."
+  },
+  {
+    "stable_user_id": "1358519592830660611",
+    "handle": "cellmejiwa",
+    "role": "research",
+    "evidence_url": "https://x.com/cellmejiwa/status/2082729729233453555",
+    "reason": "The audited posts are a market-reaction note and a later CA reply, not an explicit position or developed forward thesis."
+  },
+  {
+    "stable_user_id": "1471160154800504832",
+    "handle": "dudeslavius",
+    "role": "research",
+    "evidence_url": "https://x.com/dudeslavius/status/2083246077252382976",
+    "reason": "The exact-CA post complains that stock rewards were not received; it is negative product evidence rather than a buy call."
+  },
+  {
+    "stable_user_id": "2018770817333518336",
+    "handle": "ghostbulla",
+    "role": "research",
+    "evidence_url": "https://x.com/ghostbulla/status/2084881897369338056",
+    "reason": "Two audited posts only reply to other accounts with a bare contract; authorship is verified but independent thesis and origin are absent."
+  },
+  {
+    "stable_user_id": "1890432271179739137",
+    "handle": "gq68264704",
+    "role": "research",
+    "evidence_url": "https://x.com/GQ68264704/status/2081361272835276822",
+    "reason": "A single bare CA and token name establish a post, not an affirmative thesis, position, automated-scanner role, or wallet."
+  },
+  {
+    "stable_user_id": "562613627",
+    "handle": "ianwk2011",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/Ianwk2011/status/2085740703183753642",
+    "reason": "Stable human account authored an explicit pre-peak 100x exact-CA call; identity quality, origin, wallet and promotion risk remain separate."
+  },
+  {
+    "stable_user_id": "1899808203048730624",
+    "handle": "jeffdubby",
+    "role": "project",
+    "evidence_url": "https://x.com/JEFFDUBBY/status/2070557006813905003",
+    "reason": "Profile identifies the account as a developer and the audited post only announces one BSC ticker and contract; independent-caller status is not evidenced."
+  },
+  {
+    "stable_user_id": "1897173543093481472",
+    "handle": "molemole240569",
+    "role": "research",
+    "evidence_url": "https://x.com/MOLEMOLE240569/status/2077723842513150385",
+    "reason": "The post asks another account whether the exact CA is their project; this is a manipulation query, not an endorsement."
+  },
+  {
+    "stable_user_id": "1879234410459066368",
+    "handle": "researchcai",
+    "role": "research",
+    "evidence_url": "https://x.com/Researchcai/status/2083183423976526056",
+    "reason": "Self-described chain researcher compared competing contracts and current valuations; the separately bound wallet is retained as optional evidence, not used to rewrite the post as a call."
+  },
+  {
+    "stable_user_id": "2054969158899798016",
+    "handle": "sherlockedyu",
+    "role": "research",
+    "evidence_url": "https://x.com/sherlockedyu/status/2064510192365269452",
+    "reason": "The only audited evidence is a small test-transfer reply containing the CA, insufficient for an independent public call."
+  },
+  {
+    "stable_user_id": "63428978",
+    "handle": "sungcrypt0",
+    "role": "research",
+    "evidence_url": "https://x.com/SungCrypt0/status/2082964560634429477",
+    "reason": "The post asks why nobody shared the CA and therefore documents market context, not a first-person entry or developed thesis."
+  },
+  {
+    "stable_user_id": "2062140995890982912",
+    "handle": "wangshuqimvf",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/wangshuqimvf/status/2066654919181144508",
+    "reason": "Stable human account made an explicit pre-peak exact-CA conviction claim; wallet, promotion, origin and repeat performance remain unproven."
+  },
+  {
+    "stable_user_id": "2030952841003900928",
+    "handle": "yangtuo940815",
+    "role": "research",
+    "evidence_url": "https://x.com/yangtuo940815/status/2073775576285159543",
+    "reason": "The audited status is an airdrop-claim reply to another account; it is not independently established as an authored buy call."
   }
 ]
