@@ -9,7 +9,8 @@ from urllib.parse import urlsplit
 
 
 _HANDLE = re.compile(r"[A-Za-z0-9_]{1,15}")
-_ID = re.compile(r"[1-9][0-9]{5,24}")
+_USER_ID = re.compile(r"[1-9][0-9]{0,24}")
+_POST_ID = re.compile(r"[1-9][0-9]{5,24}")
 
 
 def _utc(value: datetime, name: str) -> datetime:
@@ -34,7 +35,7 @@ class XPost:
     def __post_init__(self) -> None:
         author = self.author.strip().lstrip("@").lower()
         target = self.target_author.strip().lstrip("@").lower()
-        if not _ID.fullmatch(self.tweet_id) or not _HANDLE.fullmatch(author):
+        if not _POST_ID.fullmatch(self.tweet_id) or not _HANDLE.fullmatch(author):
             raise ValueError("invalid X post identity")
         if not self.text.strip() or self.post_type not in {"post", "reply", "quote", "repost"}:
             raise ValueError("invalid X post content")
@@ -63,9 +64,9 @@ class XCheckpoint:
         handle = self.handle.strip().lstrip("@").lower()
         if not _HANDLE.fullmatch(handle):
             raise ValueError("invalid checkpoint handle")
-        if self.user_id and not _ID.fullmatch(self.user_id):
+        if self.user_id and not _USER_ID.fullmatch(self.user_id):
             raise ValueError("invalid checkpoint user_id")
-        if self.latest_tweet_id and not _ID.fullmatch(self.latest_tweet_id):
+        if self.latest_tweet_id and not _POST_ID.fullmatch(self.latest_tweet_id):
             raise ValueError("invalid checkpoint latest_tweet_id")
         object.__setattr__(self, "handle", handle)
 
@@ -111,7 +112,7 @@ class XProfile:
 
     def __post_init__(self) -> None:
         handle = self.handle.strip().lstrip("@").lower()
-        if not _HANDLE.fullmatch(handle) or not _ID.fullmatch(self.user_id):
+        if not _HANDLE.fullmatch(handle) or not _USER_ID.fullmatch(self.user_id):
             raise ValueError("invalid X profile identity")
         object.__setattr__(self, "handle", handle)
         object.__setattr__(self, "display_name", self.display_name.strip())

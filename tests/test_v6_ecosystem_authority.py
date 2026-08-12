@@ -4,13 +4,16 @@ import pytest
 
 from debot4.v6.ecosystem_authority import (
     AuthorityNode,
+    AuthorityRelationshipMonitor,
     BOT_AUTHORITY_NODES,
     FollowingClient,
     FollowingError,
     FollowingSnapshot,
     following_change_events,
 )
-from debot4.v6.x import FxJsonDocument
+from debot4.v6.explosion import ExplosionEventStore
+from debot4.v6.ecosystem_authority import JsonFollowingSnapshotStore
+from debot4.v6.x import FxJsonDocument, XProfileClient
 
 
 NOW = datetime(2026, 8, 12, 18, tzinfo=timezone.utc)
@@ -76,6 +79,44 @@ def test_following_client_rejects_truncated_pagination() -> None:
 
     with pytest.raises(FollowingError, match="exceeded"):
         FollowingClient(http=http, max_pages=1).fetch(BOT)
+
+
+def test_following_client_accepts_legacy_short_user_ids() -> None:
+    base = "https://api.fxtwitter.com/2/profile/bot/following"
+    snapshot = FollowingClient(http=FakeHttp({
+        base: _page([("107", "pud"), ("13348", "Scobleizer")], "0|done"),
+    })).fetch(BOT)
+
+    assert snapshot.following == {"107": "pud", "13348": "scobleizer"}
+
+
+class UnexpectedFollowing:
+    def fetch(self, _actor):
+        raise AssertionError("zero-following profiles must not call the list endpoint")
+
+
+def test_relationship_monitor_uses_profile_receipt_for_verified_zero(tmp_path) -> None:
+    payload = {
+        "code": 200,
+        "user": {
+            "id": BOT.user_id, "screen_name": BOT.handle, "name": "Grok Bot",
+            "description": "official", "following": 0,
+        },
+    }
+    profiles = XProfileClient(http=FakeHttp({
+        "https://api.fxtwitter.com/2/profile/bot?about_account=1": payload,
+    }))
+    snapshots = JsonFollowingSnapshotStore(tmp_path / "following.json")
+    with ExplosionEventStore(tmp_path / "events.sqlite3") as events:
+        monitor = AuthorityRelationshipMonitor(
+            profiles, UnexpectedFollowing(), snapshots, events,
+        )
+        assert monitor.poll(BOT) == ()
+
+    stored = snapshots.load(BOT.user_id)
+    assert stored is not None
+    assert stored.following == {}
+    assert stored.source_url.endswith("/profile/bot?about_account=1")
 
 
 def test_following_diff_emits_added_and_removed_without_fake_action_time() -> None:

@@ -25,12 +25,15 @@ class XProfileObservation:
     response_bytes: int
     sha256: str
     response_identity: str | None
+    following_count_verified: bool = False
 
     def __post_init__(self) -> None:
         if not self.source_url.startswith("https://api.fxtwitter.com/"):
             raise ValueError("X profile evidence URL is invalid")
         if self.response_bytes <= 0 or not _SHA256.fullmatch(self.sha256):
             raise ValueError("X profile evidence receipt is invalid")
+        if not isinstance(self.following_count_verified, bool):
+            raise ValueError("X profile following verification flag is invalid")
 
 
 @dataclass(slots=True)
@@ -64,6 +67,7 @@ class XProfileClient:
         return XProfileObservation(
             profile, source_url, document.response_bytes,
             document.sha256, document.response_identity,
+            _verified_count(_user_value(document.payload, "following")),
         )
 
 
@@ -136,3 +140,18 @@ def _count(value: object) -> int:
 
 def _bool(value: object) -> bool:
     return value is True or str(value).strip().casefold() == "true"
+
+
+def _user_value(payload: object, key: str) -> object:
+    if not isinstance(payload, Mapping):
+        return None
+    user = payload.get("user")
+    return user.get(key) if isinstance(user, Mapping) else None
+
+
+def _verified_count(value: object) -> bool:
+    if isinstance(value, bool):
+        return False
+    if isinstance(value, int):
+        return value >= 0
+    return bool(re.fullmatch(r"0|[1-9][0-9]*", str(value).strip()))

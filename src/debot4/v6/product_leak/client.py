@@ -22,6 +22,9 @@ _PLAIN_TITLE = re.compile(r"^Title:\s*(.+?)\s*$", re.I | re.M)
 _URL = re.compile(r"https://[^\s\"'<>\\]+", re.I)
 _ATTRIBUTE = re.compile(r"(?:href|src)=[\"']([^\"'#]+)[\"']", re.I)
 _LOC = re.compile(r"<loc[^>]*>(.*?)</loc>", re.I | re.S)
+_STATIC_CODE_SUFFIXES = frozenset({
+    ".css", ".eot", ".js", ".map", ".ttf", ".woff", ".woff2",
+})
 _ALLOWED_TYPES = (
     "text/", "application/json", "application/xml", "application/xhtml+xml",
     "application/javascript", "application/ld+json",
@@ -181,8 +184,17 @@ def _artifacts(text: str, base_url: str) -> frozenset[str]:
     for value in values:
         absolute = urllib.parse.urljoin(base_url, html.unescape(value))
         parsed = urllib.parse.urlsplit(absolute)
-        if parsed.scheme == "https" and parsed.hostname:
+        if parsed.scheme == "https" and parsed.hostname and not _static_code(parsed.path):
             output[urllib.parse.urlunsplit((parsed.scheme, parsed.netloc, parsed.path, "", ""))] = None
         if len(output) >= 5_000:
             break
     return frozenset(output)
+
+
+def _static_code(path: str) -> bool:
+    folded = path.casefold()
+    return (
+        "/_next/static/chunks/" in folded
+        or "/_next/static/css/" in folded
+        or any(folded.endswith(suffix) for suffix in _STATIC_CODE_SUFFIXES)
+    )

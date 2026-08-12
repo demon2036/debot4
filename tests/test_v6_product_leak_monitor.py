@@ -73,6 +73,20 @@ def test_client_extracts_terms_ca_title_and_public_artifacts() -> None:
     assert snapshot.title == "Grok Bot"
 
 
+def test_client_ignores_framework_code_but_keeps_product_media() -> None:
+    body = b"""
+        <script src='/_next/static/chunks/app-abc.js'></script>
+        <link href='/_next/static/css/site.css'>
+        <img src='/_next/static/media/new-bot-avatar.abc123.webp'>
+        <a href='/api/bot'>Grok Bot</a>
+    """
+
+    assert _client(body).fetch(TARGET).artifacts == frozenset({
+        "https://x.ai/_next/static/media/new-bot-avatar.abc123.webp",
+        "https://x.ai/api/bot",
+    })
+
+
 def test_client_extracts_title_from_text_mirror() -> None:
     snapshot = _client(b"Title: Grok Bot: A new kind of colleague\nGrok Bot").fetch(
         TARGET

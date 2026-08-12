@@ -2,7 +2,7 @@ from datetime import datetime, timezone
 
 import pytest
 
-from debot4.v6.x import FxJsonDocument, XProfileClient, XProfileError
+from debot4.v6.x import FxJsonDocument, XCheckpoint, XProfileClient, XProfileError
 
 
 NOW = datetime(2026, 8, 10, 20, tzinfo=timezone.utc)
@@ -77,6 +77,7 @@ def test_profile_observation_keeps_provider_receipt() -> None:
     )
     assert evidence.sha256 == "0" * 64
     assert evidence.response_identity == "cf-ray:test"
+    assert evidence.following_count_verified is True
 
 
 def test_profile_client_rejects_handle_substitution() -> None:
@@ -91,3 +92,9 @@ def test_json_document_can_retain_raw_response_fingerprint() -> None:
 
     assert document.sha256 == "0" * 64
     assert document.response_identity == "cf-ray:test"
+
+
+def test_legacy_short_x_user_ids_are_valid_but_short_post_ids_are_not() -> None:
+    assert XCheckpoint("pud", "107").user_id == "107"
+    with pytest.raises(ValueError, match="latest_tweet_id"):
+        XCheckpoint("pud", "107", "107")
