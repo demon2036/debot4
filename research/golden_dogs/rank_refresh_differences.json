@@ -1,0 +1,63 @@
+[
+  {
+    "chain": "bsc",
+    "missing_after_refresh": [
+      "0x7f010ce5bf8097313373cce2f53f474961ec7777",
+      "0x8109cff76bc5ccb7aa8d2f997b70f91e9add7777"
+    ],
+    "new_after_refresh": [],
+    "previous_count": 3071,
+    "rank_receipts": 109,
+    "rank_slices_unsaturated": true,
+    "refreshed_count": 3069,
+    "saturated_slices": []
+  },
+  {
+    "chain": "robinhood",
+    "missing_after_refresh": [
+      "0x0020b7f6db0ace6b3631947dfd495dfaf6aed70d",
+      "0x016e3a162dd31a4e5c9d525be76014c7ed67f75d",
+      "0x08e1e84c98d478c62a3b78ce69652b374e1369e7",
+      "0x0c64c5546fd19039cf41415652c8142cb4c88726",
+      "0x0ce82e94fe01c9b38ac4dbe851bcde5346d87042",
+      "0x14d2ed72e16ee69841ad43e21a71599f9e444227",
+      "0x2094daa984bed1ad89ced79c385f53429e29caec",
+      "0x2e618673577d398ace545f75206b557baa5371c8",
+      "0x2eaae57e42a8d3d1e53fec8595c7edd5bc58fb79",
+      "0x343ffec0da56b025fc6348e766766c6f8a21cec2",
+      "0x368b522578bcc33fbde96206a7f119ad8e4ae281",
+      "0x38938566b1117882d168aecf4c98e8ab6b8b9f76",
+      "0x6161719edc04459885535f6c2fdb59806d550623",
+      "0x66e2db10c9cb4d72faea5f029e92a916f3b6f49a",
+      "0x798caf1204f1fc4a25cbc15d0319a4ccbe5f0f99",
+      "0x7e75d011d9436921ee95660733812b8f8295b699",
+      "0x8519b05173d30deb20f92be8eeeba5133a10f2e2",
+      "0x95112e9ee5885cbd1d8c82d1d77705f9a33a9c05",
+      "0x955bfcc6d31aafaff4a542bef6cc19fa7f330986",
+      "0x98b5d938cfee458f1c08de57fb26c32f9975a642",
+      "0xa203c0d3176af8b685d49504220d49f11260feca",
+      "0xa8ed5699c59e0784d3bd608726e0d6b8e0b0eee1",
+      "0xaa0ecefbcf379ea0e9ece1ee6e8271b4aad1aaf6",
+      "0xad1b6d75f598c18190ad4a144fa2c8915865ee03",
+      "0xadfdc40fd70089c1457c50e7378d9ed554134268",
+      "0xb193825335ddb8abeb0cf999fc8c7235666c1869",
+      "0xb8c30dde829965af3dd215798eadb24a81beb60e",
+      "0xc734f8a6a7fb53e699ae088bd91238430aa5b7db",
+      "0xc9a59803b502b5bd1a0c1e10185ff1f905bb03e4",
+      "0xcab499af56f1e8baa3d6bf93cf12fd19d8095548",
+      "0xd18814a4731860ed29c4c1e00cceb4e5f65d7611",
+      "0xd21cf4fb1d42c49dbc2ef8e5ef8bdf857516e52d",
+      "0xd4d006a15a210665b7b7424bf65efd001caead0b",
+      "0xd916c17126d9b5239f16719c004cdc9379c6896e",
+      "0xeb6b985f974f194d279357ab74c330089e75f692",
+      "0xf65820125bc915c5d4e5ca1d1e5d323714d9cd2f",
+      "0xf6fa700f560bee626be7a59fbed3c08bbb71cc5d"
+    ],
+    "new_after_refresh": [],
+    "previous_count": 4615,
+    "rank_receipts": 192,
+    "rank_slices_unsaturated": true,
+    "refreshed_count": 4578,
+    "saturated_slices": []
+  }
+]

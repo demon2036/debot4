@@ -6,7 +6,6 @@ from .actors import ActorTier as T
 
 AUTHORITY_ACTORS = (
     actor("elonmusk", "44196397", "Elon Musk", "X owner; global agenda setter", T.GLOBAL_AGENDA, ("x", "global"), AGENDA, priority=1),
-    actor("XDevelopers", "2244994945", "X Developers", "official X developer updates", T.ECOSYSTEM_AUTHORITY, ("x",), CATALYST, priority=3),
     actor("cz_binance", "902926941413453824", "CZ", "Binance founder", T.ECOSYSTEM_AUTHORITY, ("bsc", "bnb", "binance"), AGENDA, languages=("en", "zh"), priority=1),
     actor("heyibinance", "1003840309166366721", "Yi He", "Binance co-founder", T.ECOSYSTEM_AUTHORITY, ("bsc", "bnb", "binance"), AGENDA, languages=("zh", "en"), priority=1),
     actor("binance", "877807935493033984", "Binance", "official exchange account", T.ECOSYSTEM_AUTHORITY, ("bsc", "bnb", "binance"), AGENDA, priority=2),
@@ -31,7 +30,6 @@ AUTHORITY_ACTORS = (
     actor("BagsApp", "1578322323559485441", "Bags", "token-launch and trading product with a Robinhood API", T.ECOSYSTEM_AUTHORITY, ("solana", "robinhood", "meme", "social-trading"), CATALYST, priority=3, basis=EXACT_POST_REVIEW, evidence=("https://x.com/BagsApp/status/2076540933349298686",), risks=("authoritative for Bags product actions; revenue claims require independent audit",)),
     actor("moonshot", "1788966273814339584", "Moonshot", "consumer meme trading and creation product", T.ECOSYSTEM_AUTHORITY, ("solana", "meme", "social-trading"), CATALYST, priority=5, basis=EXACT_POST_REVIEW, evidence=("https://x.com/moonshot/status/2085431121450278971",), risks=("authoritative for Moonshot listings and product actions only",)),
     actor("believeapp", "1849494185151168512", "Believe", "social sentiment market and token-launch product", T.ECOSYSTEM_AUTHORITY, ("solana", "meme", "social-trading"), CATALYST, priority=5, basis=EXACT_POST_REVIEW, evidence=("https://x.com/believeapp/status/2011226811716513941",), risks=("authoritative for Believe product actions, not independent market demand",)),
-    actor("base", "1628067904083181570", "Base", "official L2 account", T.ECOSYSTEM_AUTHORITY, ("base", "ethereum"), AGENDA, priority=2),
     actor("jessepollak", "18876842", "Jesse Pollak", "Base creator", T.ECOSYSTEM_AUTHORITY, ("base", "ethereum"), AGENDA, priority=2),
     actor("coinbase", "574032254", "Coinbase", "official exchange account", T.ECOSYSTEM_AUTHORITY, ("base", "ethereum"), CATALYST, priority=3),
     actor("ethereum", "2312333412", "Ethereum", "official ecosystem account", T.ECOSYSTEM_AUTHORITY, ("ethereum",), AGENDA, priority=3),

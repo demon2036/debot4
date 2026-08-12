@@ -1,0 +1,303 @@
+[
+  {
+    "status_url": "https://x.com/99X_FJTL/status/2060676250897916297",
+    "address": "0xa3b2e6fe983ac7193f2e098ad6f7c195a3824444",
+    "semantic": "market_thesis",
+    "reason": "Author describes strong momentum and asks whether meme activity is returning; exact bound wallet had bought before the post. It does not explicitly claim origin.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/52Hz_eth/status/2082780087515304051",
+    "address": "0x276c86cea6c0e200ca13211cf2db0434cc0d7777",
+    "semantic": "market_thesis",
+    "reason": "Forward narrative thesis lists four exact CAs; the author's exact bound wallet bought this CA before the post. It does not prove the author originated the coin.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/52Hz_eth/status/2082780087515304051",
+    "address": "0xd3f4d386db69657bb5a61c99276bcf0d97837777",
+    "semantic": "market_thesis",
+    "reason": "Same forward multi-token narrative thesis; no exact author-wallet purchase was established for this CA.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/52Hz_eth/status/2083509162525512115",
+    "address": "0x276c86cea6c0e200ca13211cf2db0434cc0d7777",
+    "semantic": "recap",
+    "reason": "The post explicitly says the token already reached 20x and names other buyers; it is outcome narration, not the initial public signal.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/meligamble/status/2057855535513501856",
+    "address": "0x11f0cb24a91ab181413a8abbc4965dd80ea76666",
+    "semantic": "own_position",
+    "reason": "The author explicitly says 'aped some bag' before the audited peak. No exact author wallet is asserted.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/meligamble/status/2058011771101937872",
+    "address": "0x11f0cb24a91ab181413a8abbc4965dd80ea76666",
+    "semantic": "recap",
+    "reason": "Later update says the move is loading one million market cap; retained as follow-up, not first-position evidence.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/0x__117/status/2069690773675843603",
+    "address": "0x76675350578292817467aa9c3df13fbd0e987777",
+    "semantic": "market_thesis",
+    "reason": "Author compares three exact-CA gold-dividend tokens and states all look acceptable, while warning two appear actively operated.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/BYweb3cc/status/2069726565081198705",
+    "address": "0x76675350578292817467aa9c3df13fbd0e987777",
+    "semantic": "own_position",
+    "reason": "Author explicitly says they bought the exact CA, while also disclosing it is a community-promotion token.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/SuperL9/status/2073734939267461248",
+    "address": "0xa4390b901a63641c92327e5793b45fcb46954444",
+    "semantic": "market_context",
+    "reason": "Claims TCC already reheated BSC; at roughly $3.02M reference FDV this is retrospective context, not early origin evidence.",
+    "reviewed_source": "independently fetched immutable X status plus one-minute market receipt"
+  },
+  {
+    "status_url": "https://x.com/SuperL9/status/2073758111035457981",
+    "address": "0xa4390b901a63641c92327e5793b45fcb46954444",
+    "semantic": "market_context",
+    "reason": "Multi-token BSC taxonomy posted around $7.22M reference FDV; useful context but not an early call.",
+    "reviewed_source": "independently fetched immutable X status plus one-minute market receipt"
+  },
+  {
+    "status_url": "https://x.com/ZephyrTrading/status/2074606340471976359",
+    "address": "0x4c42e2217b4c28ab0df322373dd25e974a024444",
+    "semantic": "market_thesis",
+    "reason": "Forward sector-rotation thesis names old and new art/IP tokens, including this exact CA; no origin or personal-position claim.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/meliboi_sama/status/2082792674902655205",
+    "address": "0xd60fe961b473dca9027f228167193d834e247777",
+    "semantic": "market_thesis",
+    "reason": "Explains the CZ-derived narrative at about $261K reference FDV and cautions against buying the top; not a personal-position claim.",
+    "reviewed_source": "independently fetched immutable X status plus one-minute market receipt"
+  },
+  {
+    "status_url": "https://x.com/treyerl/status/2082793042193666326",
+    "address": "0xd60fe961b473dca9027f228167193d834e247777",
+    "semantic": "market_thesis",
+    "reason": "Explains the CZ-derived narrative and comments on the market-cap/volume spread; forward analysis with an NFA disclaimer, not a position claim.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/PredictedWAXX/status/2082879470541971962",
+    "address": "0xb82535e74b03ffe4910efea1c759b6bbbf0a7777",
+    "semantic": "market_thesis",
+    "reason": "Names charts being watched and a conditional plan to engage liquidity; this CA was already about $3.30M, so it is not an early-origin example.",
+    "reviewed_source": "independently fetched immutable X status plus one-minute market receipt"
+  },
+  {
+    "status_url": "https://x.com/nineteen_888/status/2083908814282334579",
+    "address": "0x9dbef6496134c151b9f9855cc5a1ee77f0324444",
+    "semantic": "negative_warning",
+    "reason": "The exact CA is explicitly rejected while a competing CA is supported; an exact mention must not be counted as a call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/52Hz_eth/status/2084335800020578731",
+    "address": "0xd3f4d386db69657bb5a61c99276bcf0d97837777",
+    "semantic": "recap",
+    "reason": "Explicitly reports prior 30x/20x/50x outcomes and promotes the channel; not the initial signal.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/52Hz_eth/status/2085753595056828444",
+    "address": "0x244b112cf746e62a5df723cbde9906a6defd7777",
+    "semantic": "recap",
+    "reason": "Explicitly says the token already made 10x and that the channel called it; the X post itself is a recap.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/lhkayy11/status/2085761080333349375",
+    "address": "0x244b112cf746e62a5df723cbde9906a6defd7777",
+    "semantic": "negative_warning",
+    "reason": "The post labels this exact CA fake and supplies a competing real CA; it cannot be scored as support.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/MATTPRINTS_22/status/2057927263014867332",
+    "address": "0x11f0cb24a91ab181413a8abbc4965dd80ea76666",
+    "semantic": "relay",
+    "reason": "Contains only the exact CA and a Telegram message link; no authored position or thesis is present in the X text.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/yangtuo940815/status/2073775576285159543",
+    "address": "0xf735b2f40d3c0a338eaf1123d7b27b02d00e4444",
+    "semantic": "reply_mention",
+    "reason": "Addresses another user and asks them to claim an airdrop; it is not an independent market thesis.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/qiqi_eth/status/2078522429538992582",
+    "address": "0xcefbf00b3732fe91e46989037e4b2564a4fc7777",
+    "semantic": "market_thesis",
+    "reason": "Compares BSC community tokens with Robinhood and says to hold, but the reference FDV was already about $29.39M; not origin evidence.",
+    "reviewed_source": "independently fetched immutable X status plus one-minute market receipt"
+  },
+  {
+    "status_url": "https://x.com/cellmejiwa/status/2082729729233453555",
+    "address": "0xb82535e74b03ffe4910efea1c759b6bbbf0a7777",
+    "semantic": "market_context",
+    "reason": "Says 'just woke up, what happened' with the CA; it reacts to an existing move rather than expressing a forward thesis.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/cellmejiwa/status/2082850722941661572",
+    "address": "0xb82535e74b03ffe4910efea1c759b6bbbf0a7777",
+    "semantic": "reply_mention",
+    "reason": "A reply containing only another handle and the CA, with no independent claim.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/2a87558f94d84e1/status/2082853741884293342",
+    "address": "0xbcbdc52ea0d5bfe8b29d3c0afe91341e0ffd7777",
+    "semantic": "market_thesis",
+    "reason": "Calls the exact token unusual/not simple; a weak but forward qualitative thesis, not a position or origin claim.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/bossukgor/status/2082885173038002627",
+    "address": "0xb82535e74b03ffe4910efea1c759b6bbbf0a7777",
+    "semantic": "market_thesis",
+    "reason": "Asks whether the exact token will be next on Binance Alpha; forward speculation, not a purchase claim.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/jeery314159/status/2082940922074112367",
+    "address": "0xb82535e74b03ffe4910efea1c759b6bbbf0a7777",
+    "semantic": "recap",
+    "reason": "Says the token already speed-ran to $4M and another trader won the lottery; retrospective outcome attribution.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/SungCrypt0/status/2082964560634429477",
+    "address": "0xb82535e74b03ffe4910efea1c759b6bbbf0a7777",
+    "semantic": "market_context",
+    "reason": "Asks why meme traders did not share the CA; reaction to visibility, without a position or price thesis.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/jiaodu6688/status/2083222423739187492",
+    "address": "0x2ec39b165e22944d2fee389219ee64e4924cffff",
+    "semantic": "reply_mention",
+    "reason": "Reply directed at BNB Chain and Four.meme asking them to send it to CZ; not an independent thesis.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/jiaodu6688/status/2083225514521854086",
+    "address": "0x2ec39b165e22944d2fee389219ee64e4924cffff",
+    "semantic": "market_thesis",
+    "reason": "Says the exact token is unusual and worth not missing; forward qualitative interest, not a position claim.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/jiaodu6688/status/2083227950393246128",
+    "address": "0x2ec39b165e22944d2fee389219ee64e4924cffff",
+    "semantic": "market_thesis",
+    "reason": "States crypto needs community and RTX with the exact CA; forward support but no purchase or origin assertion.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/dudeslavius/status/2083246077252382976",
+    "address": "0x2ec39b165e22944d2fee389219ee64e4924cffff",
+    "semantic": "negative_warning",
+    "reason": "Complains to the project that stock rewards are not working; exact CA is evidence of the complaint, not a positive call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/qqc9499/status/2083260687825125408",
+    "address": "0x2ec39b165e22944d2fee389219ee64e4924cffff",
+    "semantic": "negative_warning",
+    "reason": "Attacks the launch platform for failing to copy the mechanism; not support for the exact CA.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/0xNra1/status/2083553643547222267",
+    "address": "0xe9bc5c6a86caa44fd7b469bf3cc7c563e4f77777",
+    "semantic": "market_thesis",
+    "reason": "Says price looks good while marking DYOR; a weak forward valuation view, not a position claim.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/0xSweep/status/2083789745973543033",
+    "address": "0x8554d38b95e4f7ca11d391008627df30b2b07777",
+    "semantic": "market_thesis",
+    "reason": "Explicit forward target that the exact token is going to $10M market cap; no wallet or origin claim.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/ghostbulla/status/2084987808276508812",
+    "address": "0x5460b5e88799d27bbdf8a210926c17dec18d7777",
+    "semantic": "reply_mention",
+    "reason": "Contains only another handle and the CA; insufficient authored meaning.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/ghostbulla/status/2084881897369338056",
+    "address": "0x5460b5e88799d27bbdf8a210926c17dec18d7777",
+    "semantic": "reply_mention",
+    "reason": "Contains only another handle and the exact CA; no authored thesis or position claim.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/qqc9499/status/2085548965085507842",
+    "address": "0xc73e1b136c576d1429cb84522a8c35c81d9d7777",
+    "semantic": "negative_warning",
+    "reason": "Asks whether holders are about to be dumped on while listing two CAs; caution rather than a positive call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/0x__117/status/2086816323636793544",
+    "address": "0x7ef2bea4942c338f2d0f9044bd14950993377777",
+    "semantic": "own_position",
+    "reason": "Says the exact token resembles a prior meme and explicitly states a small defensive buy; no exact author wallet is asserted.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/moneymancalls/status/2085695771261739426",
+    "address": "0x244b112cf746e62a5df723cbde9906a6defd7777",
+    "semantic": "own_position",
+    "reason": "Says 'Very good read I blasted' and gives a forward Binance/CZ/Yi He KOL thesis; wording supports a position claim but no exact wallet attribution.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/ccsj1026/status/2086040065285963778",
+    "address": "0xdc5e4d5f157482059126eb15d84f2ff9368b7777",
+    "semantic": "market_context",
+    "reason": "Lists many b-series tokens and labels their themes; ecosystem taxonomy without a position or forward price claim.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/BTC2168/status/2073711229399601487",
+    "address": "0x7a848a5a8169aa6a2f603d056a749f924f504444",
+    "semantic": "market_thesis",
+    "reason": "Says the token is strong and seeks a lower entry; forward interest, but this token lacks the required verified clean KOL-buy evidence in the current audit.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/bscpumppvp/status/2082559496044630178",
+    "address": "0x25c36129cd3a9eac54287803a6e33d2cfc287777",
+    "semantic": "project_announcement",
+    "reason": "Long-term community promotion copy with an imperative not to sell; treated as project-side promotion until independent role evidence exists.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/shequbi/status/2082872854442565719",
+    "address": "0x25c36129cd3a9eac54287803a6e33d2cfc287777",
+    "semantic": "market_thesis",
+    "reason": "Says the token may be worth researching while explicitly identifying it as a community-promotion token; current audit lacks verified clean KOL-buy evidence.",
+    "reviewed_source": "independently fetched immutable X status"
+  }
+]

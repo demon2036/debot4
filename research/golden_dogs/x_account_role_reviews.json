@@ -1,0 +1,485 @@
+[
+  {
+    "stable_user_id": "1981435433218449408",
+    "handle": "bsckolscanner",
+    "role": "scanner",
+    "evidence_url": "https://x.com/BscKOLScanner/status/2076583407895908835",
+    "reason": "Profile says BSC KOL scanner; posts automated market alerts."
+  },
+  {
+    "stable_user_id": "2069083651397042176",
+    "handle": "dex_event_live",
+    "role": "scanner",
+    "evidence_url": "https://x.com/dex_event_live/status/2074089656463810759",
+    "reason": "Templated migration and influencer-event relay, not an own call."
+  },
+  {
+    "stable_user_id": "2071168396310503424",
+    "handle": "nmg_bld",
+    "role": "scanner",
+    "evidence_url": "https://x.com/nmg_BLD/status/2076585616893227423",
+    "reason": "Automated Flap burn/migration status template."
+  },
+  {
+    "stable_user_id": "3001310558",
+    "handle": "dex_kolwatcher",
+    "role": "scanner",
+    "evidence_url": "https://x.com/dex_kolwatcher/status/2074621799304946045",
+    "reason": "DEX signal relay account with a signal-list profile."
+  },
+  {
+    "stable_user_id": "1918669396274221056",
+    "handle": "aisolanakols",
+    "role": "scanner",
+    "evidence_url": "https://api.fxtwitter.com/aisolanakols",
+    "reason": "Profile explicitly describes a real-time whale-buy scanner."
+  },
+  {
+    "stable_user_id": "1782551130175893504",
+    "handle": "coinwingsai",
+    "role": "scanner",
+    "evidence_url": "https://api.fxtwitter.com/coinwingsai",
+    "reason": "Product account publishing automated on-chain signals."
+  },
+  {
+    "stable_user_id": "1641082320731131904",
+    "handle": "googoocalls",
+    "role": "scanner",
+    "evidence_url": "https://api.fxtwitter.com/googoocalls",
+    "reason": "Profile identifies the account as a smart-wallet call bot."
+  },
+  {
+    "stable_user_id": "2082787668769804289",
+    "handle": "dexeventcat",
+    "role": "scanner",
+    "evidence_url": "https://x.com/DexEventcat/status/2086745859224429026",
+    "reason": "Automated DEX event and influencer-signal relay."
+  },
+  {
+    "stable_user_id": "2054572459613974528",
+    "handle": "sillvahneloi",
+    "role": "scanner",
+    "evidence_url": "https://api.fxtwitter.com/sillvahneloi",
+    "reason": "Profile explicitly identifies a Robinhood migration scanner."
+  },
+  {
+    "stable_user_id": "1969089197639168001",
+    "handle": "anubisgtrade",
+    "role": "scanner",
+    "evidence_url": "https://x.com/anubisgtrade/status/2086783754584936958",
+    "reason": "Templated DEXScreener update relay."
+  },
+  {
+    "stable_user_id": "2067682778968166401",
+    "handle": "thexcaller",
+    "role": "scanner",
+    "evidence_url": "https://x.com/thexcaller/status/2082898503693414738",
+    "reason": "Automated market-intelligence report template."
+  },
+  {
+    "stable_user_id": "1159398741826084864",
+    "handle": "2shixiong_bsc",
+    "role": "project",
+    "evidence_url": "https://api.fxtwitter.com/2shixiong_bsc",
+    "reason": "Official 2SHIT IP/token promotion account."
+  },
+  {
+    "stable_user_id": "1752287902439235584",
+    "handle": "cubus_global",
+    "role": "project",
+    "evidence_url": "https://x.com/Cubus_Global/status/2079212653487300801",
+    "reason": "Official Cubus project account announcing its own contract."
+  },
+  {
+    "stable_user_id": "1494786810102353920",
+    "handle": "qitiandasheng79",
+    "role": "project",
+    "evidence_url": "https://api.fxtwitter.com/qitiandasheng79",
+    "reason": "Token/IP promotion profile rather than an independent caller."
+  },
+  {
+    "stable_user_id": "1985792992389816320",
+    "handle": "starship9188",
+    "role": "project",
+    "evidence_url": "https://api.fxtwitter.com/starship9188",
+    "reason": "Profile advertises one unique StarShip contract."
+  },
+  {
+    "stable_user_id": "451655914",
+    "handle": "bladestrikex",
+    "role": "project",
+    "evidence_url": "https://api.fxtwitter.com/bladestrikex",
+    "reason": "Web3 field-marketing team profile with its own contract."
+  },
+  {
+    "stable_user_id": "594717639",
+    "handle": "superl9",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/SuperL9/status/2073758111035457981",
+    "reason": "Human BSC meme broadcaster with a pre-peak exact-CA post; wallet evidence stays separate."
+  },
+  {
+    "stable_user_id": "1477655961905303554",
+    "handle": "cryptohtdi",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/CryptoHtdi/status/2073844852643799496",
+    "reason": "Authored pre-peak exact-CA call and independently bound GMGN KOL wallet."
+  },
+  {
+    "stable_user_id": "1872719104416858115",
+    "handle": "52hz_eth",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/52Hz_eth/status/2085753595056828444",
+    "reason": "Human channel operator; this X post is a 10x recap, so it is not origin evidence."
+  },
+  {
+    "stable_user_id": "1755186363085783040",
+    "handle": "zephyrtrading",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/ZephyrTrading/status/2074606340471976359",
+    "reason": "Human alpha-channel profile with a pre-peak exact-CA market diary."
+  },
+  {
+    "stable_user_id": "1515321304777629697",
+    "handle": "99x_fjtl",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/99X_FJTL/status/2060676250897916297",
+    "reason": "Human community/KOL promotion account with a pre-peak exact-CA thesis; commercial promotion risk remains explicit."
+  },
+  {
+    "stable_user_id": "333762244",
+    "handle": "meligamble",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/meligamble/status/2057855535513501856",
+    "reason": "Profile explicitly identifies low-cap and meme calls; authored a pre-peak exact-CA position post."
+  },
+  {
+    "stable_user_id": "1639851624431767553",
+    "handle": "meliboi_sama",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/meliboi_sama/status/2082792674902655205",
+    "reason": "Human meme/alpha profile with a pre-peak exact-CA narrative post and a directly disclosed low-cap secondary X account."
+  },
+  {
+    "stable_user_id": "1844399053783867392",
+    "handle": "qkl2058",
+    "role": "scanner",
+    "evidence_url": "https://x.com/qkl2058/status/2086278325883089362",
+    "reason": "Templated retrospective GMGN scanner promotion and referral copy; not an own-call source."
+  },
+  {
+    "stable_user_id": "1771563953187155968",
+    "handle": "sol_jingou",
+    "role": "scanner",
+    "evidence_url": "https://x.com/sol_jingou/status/2083199097889231090",
+    "reason": "Publishes multi-token hot-meme summaries and post-pump wallet recaps rather than an independently established origin call."
+  },
+  {
+    "stable_user_id": "1330132454607376386",
+    "handle": "bigfopq",
+    "role": "scanner",
+    "evidence_url": "https://x.com/bigfopq/status/2069738621792608599",
+    "reason": "Templated retrospective scanner/tool advertisement with claimed prior capture."
+  },
+  {
+    "stable_user_id": "226720615",
+    "handle": "skeletondegens",
+    "role": "scanner",
+    "evidence_url": "https://x.com/SkeletonDegens/status/2083276768744464800",
+    "reason": "Templated market-stat and quick-swap signal post."
+  },
+  {
+    "stable_user_id": "779449063",
+    "handle": "lsxs_888",
+    "role": "scanner",
+    "evidence_url": "https://x.com/LSXS_888/status/2085561586077634914",
+    "reason": "Templated AI/DeBot scanner promotion with retrospective price claims."
+  },
+  {
+    "stable_user_id": "1909173490630225920",
+    "handle": "0x__117",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/0x__117/status/2069690773675843603",
+    "reason": "Human BSC-focused account authored exact-CA comparative theses and a separate position disclosure; wallet attribution remains independent."
+  },
+  {
+    "stable_user_id": "1701946359086186496",
+    "handle": "qqc9499",
+    "role": "research",
+    "evidence_url": "https://x.com/qqc9499/status/2083260687825125408",
+    "reason": "The audited exact-CA posts are platform criticism and negative context, not affirmative calls."
+  },
+  {
+    "stable_user_id": "1663173058180571137",
+    "handle": "shequbi",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/shequbi/status/2082872854442565719",
+    "reason": "Self-described primary-market meme commentator authored an exact-CA view; promotional bias requires post-level review."
+  },
+  {
+    "stable_user_id": "933464098779656193",
+    "handle": "0xmoonl",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/0xMooNL/status/2072511155365642321",
+    "reason": "Personal-channel operator disclosed involvement with community promotion; retained as a conflicted human signal, not an independent origin by default."
+  },
+  {
+    "stable_user_id": "2073040424412082176",
+    "handle": "0xnra1",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/0xNra1/status/2083553643547222267",
+    "reason": "Human on-chain trader authored a pre-peak exact-CA price thesis."
+  },
+  {
+    "stable_user_id": "1375396777348698115",
+    "handle": "0xsweep",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/0xSweep/status/2083789745973543033",
+    "reason": "Identified founder/trader authored an exact-CA target; commercial affiliations are an explicit conflict risk."
+  },
+  {
+    "stable_user_id": "3308846796",
+    "handle": "2a87558f94d84e1",
+    "role": "research",
+    "evidence_url": "https://x.com/2a87558f94d84e1/status/2082853741884293342",
+    "reason": "Technology and crypto trend account supplied a weak exact-CA observation without a position or developed call thesis."
+  },
+  {
+    "stable_user_id": "2043032917660831744",
+    "handle": "arkk666",
+    "role": "research",
+    "evidence_url": "https://x.com/Arkk666/status/2076303807584391486",
+    "reason": "Authored a detailed concentration and liquidity risk review; treated as analysis rather than a buy call."
+  },
+  {
+    "stable_user_id": "1845285991801815044",
+    "handle": "bao7688",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/Bao7688/status/2067600956863504398",
+    "reason": "Human account disclosed a long-position preference and exact-CA community-token thesis; high-control-token bias remains explicit."
+  },
+  {
+    "stable_user_id": "1431708032220602368",
+    "handle": "bossukgor",
+    "role": "research",
+    "evidence_url": "https://x.com/bossukgor/status/2082885173038002627",
+    "reason": "Self-described alpha researcher posed an exact-CA market question, insufficient alone for an affirmative call."
+  },
+  {
+    "stable_user_id": "1656093687691227136",
+    "handle": "bscpumppvp",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/bscpumppvp/status/2082559496044630178",
+    "reason": "Human BSC community operator authored a long-hold exact-CA promotion; community-building and position bias are explicit."
+  },
+  {
+    "stable_user_id": "1587996276549124096",
+    "handle": "btc2168",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/BTC2168/status/2073711229399601487",
+    "reason": "Human trader discussed exact entries and missed entries; exchange and tool referral conflicts require discounting."
+  },
+  {
+    "stable_user_id": "2031528554291408898",
+    "handle": "byweb3cc",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/BYweb3cc/status/2069726565081198705",
+    "reason": "Human product operator explicitly disclosed buying the exact CA; no wallet address is inferred from that claim."
+  },
+  {
+    "stable_user_id": "1888592353780502528",
+    "handle": "ccsj1026",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/ccsj1026/status/2086040065285963778",
+    "reason": "Personal meme-trading channel authored a multi-token exact-CA taxonomy; every token still needs separate attribution."
+  },
+  {
+    "stable_user_id": "1759533763640365056",
+    "handle": "cryptogiio",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/CryptoGiio/status/2079182644169019728",
+    "reason": "Human crypto-sharing account authored a long promotional exact-CA thesis; business-contact and ground-promotion risks are explicit."
+  },
+  {
+    "stable_user_id": "1137771059833446401",
+    "handle": "dalai77988",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/DaLai77988/status/2065238495702982770",
+    "reason": "Long-running human account disclosed building a position and an exact-CA valuation view."
+  },
+  {
+    "stable_user_id": "1458761629563523074",
+    "handle": "dwen_exchange",
+    "role": "project",
+    "evidence_url": "https://x.com/Dwen_Exchange/status/2073960945811104012",
+    "reason": "Incubator and launchpad partner promoting ecosystem contracts; not treated as an independent caller."
+  },
+  {
+    "stable_user_id": "54270499",
+    "handle": "iluvsporks",
+    "role": "coordinated_promotion",
+    "evidence_url": "https://x.com/iluvsporks/status/2067774899326984640",
+    "reason": "One of six accounts posting the same MMT exact CA with similar promotional language between 00:43:57 and 01:17:43 UTC; coordination pattern only, not common-control proof."
+  },
+  {
+    "stable_user_id": "26488001",
+    "handle": "jpw226",
+    "role": "coordinated_promotion",
+    "evidence_url": "https://x.com/jpw226/status/2067770325694361637",
+    "reason": "One of six accounts posting the same MMT exact CA with similar promotional language between 00:43:57 and 01:17:43 UTC; coordination pattern only, not common-control proof."
+  },
+  {
+    "stable_user_id": "72715195",
+    "handle": "katieakey",
+    "role": "coordinated_promotion",
+    "evidence_url": "https://x.com/KatieAKey/status/2067775414404350218",
+    "reason": "One of six accounts posting the same MMT exact CA with similar promotional language between 00:43:57 and 01:17:43 UTC; coordination pattern only, not common-control proof."
+  },
+  {
+    "stable_user_id": "1622583673",
+    "handle": "kikyyunea",
+    "role": "coordinated_promotion",
+    "evidence_url": "https://x.com/KikyYunea/status/2067770888922247276",
+    "reason": "One of six accounts posting the same MMT exact CA with similar promotional language between 00:43:57 and 01:17:43 UTC; coordination pattern only, not common-control proof."
+  },
+  {
+    "stable_user_id": "386359588",
+    "handle": "maudydiniyati",
+    "role": "coordinated_promotion",
+    "evidence_url": "https://x.com/maudydiniyati/status/2067772236946350479",
+    "reason": "One of six accounts posting the same MMT exact CA with similar promotional language between 00:43:57 and 01:17:43 UTC; coordination pattern only, not common-control proof."
+  },
+  {
+    "stable_user_id": "247369547",
+    "handle": "reliable8527",
+    "role": "coordinated_promotion",
+    "evidence_url": "https://x.com/reliable8527/status/2067778821307416947",
+    "reason": "One of six accounts posting the same MMT exact CA with similar promotional language between 00:43:57 and 01:17:43 UTC; coordination pattern only, not common-control proof."
+  },
+  {
+    "stable_user_id": "1480363730374311939",
+    "handle": "jeery314159",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/jeery314159/status/2082940922074112367",
+    "reason": "Human meme hunter with a public EVM-address claim; the audited exact-CA status is a later success recap, not an origin call."
+  },
+  {
+    "stable_user_id": "2034634079153606656",
+    "handle": "jiaodu6688",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/jiaodu6688/status/2083225512591573478",
+    "reason": "Self-disclosed secondary X account authored exact-CA market theses; the suspended main handle is not named."
+  },
+  {
+    "stable_user_id": "2053545435986337793",
+    "handle": "johncryptopeow",
+    "role": "scanner",
+    "evidence_url": "https://x.com/JohnCryptopeow/status/2087141031296778479",
+    "reason": "Templated market-cap, liquidity, volume and quick-swap alert feed."
+  },
+  {
+    "stable_user_id": "2043712754033348608",
+    "handle": "keimoon_vie",
+    "role": "scanner",
+    "evidence_url": "https://x.com/keimoon_vie/status/2060122941535498669",
+    "reason": "Templated launch metrics and GMGN link without an authored investment thesis."
+  },
+  {
+    "stable_user_id": "1206170564521390080",
+    "handle": "lhkayy11",
+    "role": "research",
+    "evidence_url": "https://x.com/lhkayy11/status/2085761080333349375",
+    "reason": "Authored exact-CA fake-versus-real contract analysis; the audited target is explicitly rejected."
+  },
+  {
+    "stable_user_id": "3322153737",
+    "handle": "maddere7",
+    "role": "research",
+    "evidence_url": "https://x.com/Maddere7/status/2079206938991272314",
+    "reason": "Authored chain-funding and ground-promotion risk criticism, not a buy call."
+  },
+  {
+    "stable_user_id": "1761191641145135104",
+    "handle": "mattprints_22",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/MATTPRINTS_22/status/2057927263014867332",
+    "reason": "Human alpha-channel operator relayed an exact CA to a Telegram post; source and paid-call risk require separate verification."
+  },
+  {
+    "stable_user_id": "1355151884248621056",
+    "handle": "moneymancalls",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/moneymancalls/status/2085695771261739426",
+    "reason": "Human account disclosed taking a position and supplied a catalyst thesis around an exact CA."
+  },
+  {
+    "stable_user_id": "1387395726880223233",
+    "handle": "nineteen_888",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/nineteen_888/status/2083908814282334579",
+    "reason": "Human meme-research channel contrasted a supported contract with a rejected exact CA; polarity must be preserved per contract."
+  },
+  {
+    "stable_user_id": "1600931469874061312",
+    "handle": "predictedwaxx",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/PredictedWAXX/status/2082879470541971962",
+    "reason": "Self-described liquidity provider authored a multi-contract BSC watchlist; every CA requires separate timing and outcome analysis."
+  },
+  {
+    "stable_user_id": "2890720723",
+    "handle": "qiqi_eth",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/qiqi_eth/status/2078522429538992582",
+    "reason": "Human trading diary with exact-CA holding views; profile explicitly says scattershot buying, so any wallet is excluded from smart-wallet ranking."
+  },
+  {
+    "stable_user_id": "1253208847033876480",
+    "handle": "rightrh",
+    "role": "research",
+    "evidence_url": "https://x.com/RightRH/status/2074044109958877425",
+    "reason": "Researcher/ambassador supplied a developer and launchpad narrative; affiliations remain explicit and the post is not a disclosed buy."
+  },
+  {
+    "stable_user_id": "907173314833117184",
+    "handle": "shenzhuan888",
+    "role": "research",
+    "evidence_url": "https://x.com/shenzhuan888/status/2074108295292526939",
+    "reason": "Experienced investment diarist authored ground-promotion and business-model context with explicit caution."
+  },
+  {
+    "stable_user_id": "2065389857355317248",
+    "handle": "tangyinhn7",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/tangyinhn7/status/2066341923301036486",
+    "reason": "Human account authored an exact-CA catalyst thesis citing a He Yi post; the claimed catalyst still requires direct source chronology."
+  },
+  {
+    "stable_user_id": "574166659",
+    "handle": "treyerl",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/treyerl/status/2082793042193666326",
+    "reason": "Human meme-news account authored a valuation/narrative thesis and publicly claims affiliation with meliboi_sama; no same-person inference."
+  },
+  {
+    "stable_user_id": "1884707335454810112",
+    "handle": "ts65855",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/ts65855/status/2074161865102688652",
+    "reason": "Human early-value account made an exact-CA 50K-position claim; no wallet is inferred from the amount claim."
+  },
+  {
+    "stable_user_id": "875363226157957121",
+    "handle": "ulagmt",
+    "role": "project",
+    "evidence_url": "https://x.com/ULAgmt/status/2060274996984139968",
+    "reason": "Official UL protocol account announcing its own launch contract."
+  },
+  {
+    "stable_user_id": "1908874937861120001",
+    "handle": "yig168168",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/yig168168/status/2064955544411275680",
+    "reason": "Human trading/community account authored a direct exact-CA entry prompt; team-building and promotion conflicts remain explicit."
+  }
+]

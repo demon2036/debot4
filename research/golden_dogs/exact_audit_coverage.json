@@ -1,0 +1,63 @@
+{
+  "blockscout_current_cap_floor_usd": "1000000",
+  "blockscout_pages": 2,
+  "blockscout_rows_above_floor": 58,
+  "blockscout_stopped_below_usd": "888285.8705979032",
+  "blockscout_threshold_traversal_complete": true,
+  "detail_errors": [
+    [
+      "robinhood",
+      "0xa1e58d83493f2402e460180f3edf17a8f4ce11c2",
+      "ValueError"
+    ]
+  ],
+  "detail_receipts": 33,
+  "exact_ca_targets": 34,
+  "excluded_known_external_or_stock_symbols": [
+    "1INCH",
+    "AAPL",
+    "AMD",
+    "AMZN",
+    "APE",
+    "DEGEN",
+    "FLAY",
+    "GME",
+    "GOOGL",
+    "GRID",
+    "KARMA",
+    "NPC",
+    "NVDA",
+    "SFI",
+    "SNDK",
+    "SPCX",
+    "SPY",
+    "SYRUPUSDG",
+    "TSLA",
+    "USDE",
+    "USDG",
+    "USDUC",
+    "USO",
+    "VIRTUAL",
+    "WETH"
+  ],
+  "market_errors": [
+    [
+      "robinhood",
+      "0x8b7daf8ca650ab30df4c686e1e3689e9248732c6",
+      "PublicDeBotError"
+    ]
+  ],
+  "market_observations": 32,
+  "ranked_universe_addresses": 4615,
+  "schema": "debot4.golden_dog_exact_audit.v1",
+  "scope_warning": "Blockscout supplement is complete only for tokens currently above $1M in its cap-sorted index; it cannot recover tokens that peaked above $1M then fell below it",
+  "unresolved_kol_claims": [
+    {
+      "handle": "yeonwoo1102",
+      "posted_at": 1786385031,
+      "reason": "tweet_has_no_chain_specific_exact_ca_or_wallet",
+      "token": "JACKET",
+      "tweet_id": "2086876192154800248"
+    }
+  ]
+}

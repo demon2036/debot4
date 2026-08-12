@@ -1,0 +1,115 @@
+{
+  "chains": [
+    {
+      "chain": "bsc",
+      "market_candidates": 243,
+      "market_error_count": 0,
+      "market_observations": 3071,
+      "market_statuses": {
+        "complete": 3059,
+        "no_market_history": 12
+      },
+      "multiple_tiers": {
+        "100x": 204,
+        "10x": 1300,
+        "30x": 548,
+        "3x": 2039
+      },
+      "rank_evidence_reused": true,
+      "rank_receipts": null,
+      "rank_slices_unsaturated": null,
+      "saturated_slices": null,
+      "source_catalog_evidence": "DeBot web client 2.1.786 launch-source filters reviewed 2026-08-12",
+      "source_scope_complete": false,
+      "sources_queried": [
+        "cheesepad",
+        "cheesepad_melt",
+        "flap",
+        "flap_stocks_vault",
+        "four_meme",
+        "four_meme_agent",
+        "memecoinfun_v4",
+        "openfour_creator_incentives",
+        "openfour_cubepeg",
+        "openfour_likwid",
+        "openfour_royalty",
+        "stoxes",
+        "stoxes_v3"
+      ],
+      "universe_tokens": 3071,
+      "window_end_exclusive": "2026-08-12T00:00:00Z",
+      "window_start": "2025-08-12T00:00:00Z"
+    },
+    {
+      "chain": "robinhood",
+      "market_candidates": 349,
+      "market_error_count": 0,
+      "market_observations": 4615,
+      "market_statuses": {
+        "complete": 4561,
+        "no_market_history": 54
+      },
+      "multiple_tiers": {
+        "100x": 224,
+        "10x": 1274,
+        "30x": 629,
+        "3x": 2939
+      },
+      "rank_evidence_reused": true,
+      "rank_receipts": null,
+      "rank_slices_unsaturated": null,
+      "saturated_slices": null,
+      "source_catalog_evidence": "DeBot web client 2.1.786 launch-source filters reviewed 2026-08-12",
+      "source_scope_complete": false,
+      "sources_queried": [
+        "apestore",
+        "arrow",
+        "bags",
+        "bankr",
+        "bowfun",
+        "circus",
+        "clanker",
+        "dyorfun",
+        "dyorfun_v3",
+        "flap",
+        "flap_stocks_vault",
+        "klik",
+        "letscash",
+        "livo",
+        "long",
+        "memecoinfun_v4",
+        "noxafi",
+        "noxafun",
+        "pons",
+        "pons_v2",
+        "realfun",
+        "robinfun",
+        "sushi",
+        "sushiswap",
+        "trench",
+        "uni_crowd",
+        "uni_instant",
+        "uniswap",
+        "varo",
+        "virtuals_unicorn"
+      ],
+      "universe_tokens": 4615,
+      "window_end_exclusive": "2026-08-12T00:00:00Z",
+      "window_start": "2026-05-12T00:00:00Z"
+    }
+  ],
+  "collected_at": "2026-08-12T09:22:03.881477Z",
+  "market_candidate_definition": {
+    "min_approx_peak_fdv_usd": "500000",
+    "note": "multiple tiers are measurements, not eligibility gates",
+    "sensitivity_tiers": [
+      "3x",
+      "10x",
+      "30x",
+      "100x"
+    ],
+    "window": "fixed consecutive UTC windows of at most seven days"
+  },
+  "schema": "debot4.golden_dog_coverage.v1",
+  "scope_warning": "DeBot launch-source snapshot only; not all pools, and historical completed rows can disappear between identical rank queries"
+}

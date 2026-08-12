@@ -15,7 +15,7 @@ class FakeHttp:
 
     def get_json(self, url: str) -> FxJsonDocument:
         self.urls.append(url)
-        return FxJsonDocument(self.payload, NOW, 100)
+        return FxJsonDocument(self.payload, NOW, 100, "0" * 64, "cf-ray:test")
 
 
 def _payload(handle: str = "yeonwoo1102", user_id: str = "1444971805618302988"):
@@ -42,8 +42,26 @@ def test_profile_client_preserves_stable_identity_and_bio() -> None:
     assert http.urls == ["https://api.fxtwitter.com/yeonwoo1102"]
 
 
+def test_profile_observation_keeps_provider_receipt() -> None:
+    evidence = XProfileClient(http=FakeHttp(_payload())).fetch_observation(
+        "yeonwoo1102",
+    )
+
+    assert evidence.profile.user_id == "1444971805618302988"
+    assert evidence.source_url == "https://api.fxtwitter.com/yeonwoo1102"
+    assert evidence.sha256 == "0" * 64
+    assert evidence.response_identity == "cf-ray:test"
+
+
 def test_profile_client_rejects_handle_substitution() -> None:
     client = XProfileClient(http=FakeHttp(_payload(handle="imposter")))
 
     with pytest.raises(XProfileError, match="unexpected profile handle"):
         client.fetch("yeonwoo1102")
+
+
+def test_json_document_can_retain_raw_response_fingerprint() -> None:
+    document = FxJsonDocument(_payload(), NOW, 100, "0" * 64, "cf-ray:test")
+
+    assert document.sha256 == "0" * 64
+    assert document.response_identity == "cf-ray:test"

@@ -1,0 +1,12 @@
+{
+  "at_least_2x_after_post": 43,
+  "at_least_5x_after_post": 15,
+  "candidate_pairs": 71,
+  "complete_accounts": 46,
+  "complete_pairs": 71,
+  "error_pairs": 0,
+  "generated_at": "2026-08-12T14:39:19.873353Z",
+  "schema": "debot4.x_post_market_summary.v1",
+  "unique_tokens": 30,
+  "warning": "Market trajectory does not establish post authorship role or causation."
+}

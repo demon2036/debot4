@@ -1,6 +1,10 @@
-# DeBot4 当前进展与交接
+# DeBot4 当前进展与交接（2026-08-12 更新）
 
-更新日期：2026-08-11（America/Los_Angeles）
+原状态冻结日：2026-08-11（America/Los_Angeles）；金狗/KOL 审计更新：2026-08-12 UTC。
+
+> 金狗章节的权威最新口径是固定 7 天窗口峰值 MC/FDV `>= $500K`，并要求 DeBot 或
+> GMGN 的真实 KOL 买入。下文若仍出现旧的 `10x + $1M` 或 `156` 统计，均已被
+> [`../research/golden_dogs/REPORT.md`](../research/golden_dogs/REPORT.md) 取代。
 
 ## 一句话结论
 
@@ -58,19 +62,19 @@ SQLite research store + 只读看板
 ### 1. 代码与回归
 
 - Python 生产代码和测试执行 300 行硬限制；本次已把超限的 app 装配测试按职责拆分。
-- 本次最终全量回归：`243 passed`。
+- 2026-08-12 补充审计后的最新全量回归：`251 passed`。
 - X 出口池、并发 timeline、并发 repost、首次启动限量回放、DeBot/TG/市场任务入队、Grok 结构化结果和看板接口均有单元或集成级回归。
 - 这些测试大部分使用受控 fake/fixture，证明规则与装配边界，不等于真实市场盈利验证。
 
 ### 2. X / FxTwitter
 
-- 人物目录共有 112 条记录，其中 111 条当前允许 X timeline 监控，覆盖 BSC、Robinhood、Solana、Ethereum、Base、中日韩和全球英文圈。
+- 人物目录覆盖 BSC、Robinhood、Solana、Ethereum、Base、中日韩和全球英文圈；泛账号 `@base` 与 `@XDevelopers` 已删除，CZ、何一、Musk 等可能直接产生 meme 催化的账号保留。
 - 数量不是质量证明：当前目录仍混有“已核验身份”“有具体历史帖子证据”和“只做候选观察”三种成熟度，尚未拆成正式 active/candidate/disabled 三层。
 - X timeline 按人物等级设为 5–15 秒目标轮询，并支持最多 40 个并发 worker；这只是调度目标，实际发现延迟仍受 FxTwitter、网络和限流影响。
 - 首次启动不会再无条件吞掉全部最新帖子：只回放最多 1 条、且必须在最近 5 分钟内，其余仅写 checkpoint。
 - repost 路径已实现并发轮询。目前只有 `jtitordemon2036` 被设为 repost canary；尚未完成一次由真人转发触发、网页可见的端到端延迟验收。
 - 公开 FxTwitter 不能稳定提供点赞事件；点赞监控尚未实现。
-- 泛官方账号 `@X` 已从目录删除；`XDevelopers` 等泛产品源仍需在第二轮按“历史金狗/明确催化关系”重新审核。
+- 泛官方账号 `@X`、`@base`、`@XDevelopers` 已从目录删除。
 
 ### 3. 10 路出口池
 
@@ -84,11 +88,10 @@ SQLite research store + 只读看板
 
 ### 4. Grok2API
 
-- 本机容器健康，健康接口返回 HTTP 200，监听 `:8000`。
-- 远程容器健康，健康接口返回 HTTP 200，仅监听 `127.0.0.1:8340`。
+- 本机 Grok2API 容器健康，健康接口返回 HTTP 200，仅通过本机 `127.0.0.1:8340` 调用。
 - 远程数据库只读核对到 69 条 account credential / provider account 记录；这只证明已经导入，不代表 69 个账号此刻全部健康或有额度。
 - 远程实际模型请求此前已跑通；本次交接只做健康复核，没有在系统暂停期间重新触发事件研究。
-- DeBot4 当前不会自动消费 Grok：collector 和 Grok worker 都处于停止状态。
+- 生产 collector/Grok worker 仍停止；本轮研究脚本独立调用 Grok 并把回答严格当作 lead。
 
 ### 5. Telegram
 
@@ -147,16 +150,18 @@ SQLite research store + 只读看板
 
 ### P0：人物与金狗证据库
 
-- 把 112 条人物记录拆成 `active_verified`、`research_candidate`、`disabled_no_evidence`。
+- 把人物记录拆成 `active_verified`、`research_candidate`、`disabled_no_evidence`。
 - 每个 active 人物必须记录：关联币、chain、CA、原帖时间、创建时间、角色、触发前后位置、峰值 MC、证据 URL 和是否事后分析。
-- 需要纠正或复核剩余泛官方账号、Yeon 的个别证据 ID，以及只做 profile review、没有具体案例的候选。
-- 已确认的 BSC 样本线索包括齐天大圣、PIZZA/House、MarsCoin、GME、Just a Jacket、MEMEFI、FSTOCK、TST/Broccoli、币安人生；当前还只是研究线索，不是完整可审计案例库。
+- 最新 BSC 审计：243 个市场达标 CA，136 个聚合 KOL 候选中，125 个存在 GMGN 买入、122 个经 RPC 验真且无已知 wash tag、112 个在峰值前；因操纵检查不完整，最终 0 PASS / 90 WAIT / 46 REJECT。
+- 从真实买入反查 228 个钱包：207 个 X 主页可拉取、193 个钱包/X 稳定身份一致；这是账号调查池，不是聪明钱包榜单。
+- “深大高财生/深大高材生”已核验为 `@GCsheng`（stable user ID `1344963706657017858`），且有一个 Golden Age 的 GMGN/RPC 峰值前买入案例；操纵门禁仍 WAIT。
+- 详细原帖、钱包、行情和 Grok 采纳/驳回证据见 [`../research/golden_dogs/REPORT.md`](../research/golden_dogs/REPORT.md)。
 
 ### P0：历史覆盖
 
-- BSC 最近 1 年突然拉升项目尚未系统补齐。
-- Robinhood 最近 3 个月数据尚未补齐；现有本地 Robinhood 数据只覆盖 2026-07-10 至 2026-07-12，不能代表 3 个月。
-- 需要独立用 1h gainers 真值集检查漏报，而不是只看系统自己发现的币。
+- 已按固定 UTC 7 天窗口自行跑数据：BSC 3,071 个 exact CA 中有 243 个窗口峰值 MC/FDV `>= $500K`；Robinhood 4,615 个中有 349 个达标。
+- 这不是全链完整覆盖：DeBot 动态历史端点会删旧行，且 launch-source 快照不覆盖所有池；不能把早期空白说成“没有金狗”。
+- 仍需要独立用全链历史 1h gainers 真值集检查漏报，并冻结可重放的 launch/pool 索引；在此之前不能报告召回率。
 
 ### P1：运行与展示
 
@@ -176,13 +181,14 @@ SQLite research store + 只读看板
 
 ```text
 1. 案例真值层
-├── 补齐 BSC 1 年 + Robinhood 3 个月
-└── 固化 source / amplifier / posthoc 证据
+├── BSC 243 CA：补齐 X 原帖角色和操纵门禁
+├── Robinhood 349 CA：补齐 provider KOL 买入与链上闭环
+└── 再用独立全链 gainers 真值检查 DeBot 快照漏报
 
 2. 人物层
-├── active_verified
-├── research_candidate
-└── disabled_no_evidence
+├── active_verified：稳定 X ID + 有角色证据
+├── research_candidate：GMGN/RPC/X 线索池
+└── disabled_no_evidence：扫描器、项目号、事后汇总与噪声
 
 3. 运行层
 ├── dashboard-only

@@ -1,0 +1,10 @@
+{
+  "binding_pass": 193,
+  "complete_x_profiles": 207,
+  "generated_at": "2026-08-12T11:01:38.804255Z",
+  "multi_token_wallets": 171,
+  "pre_peak_multi_token_wallets": 141,
+  "schema": "debot4.bsc_audit_wallet_x_summary.v1",
+  "wallets": 228,
+  "warning": "This is an X/KOL investigation queue from verified buys. It is not a smart-wallet ranking; complete activity denominators are absent."
+}

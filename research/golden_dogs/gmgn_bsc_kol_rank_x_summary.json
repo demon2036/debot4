@@ -1,0 +1,10 @@
+{
+  "binding_pass": 60,
+  "complete": 70,
+  "generated_at": "2026-08-12T10:58:29.281137Z",
+  "high_frequency_reject": 32,
+  "provider_rows": 100,
+  "schema": "debot4.gmgn_kol_rank_x_summary.v1",
+  "warning": "Wallet rank is an X/account lead pool, not a smart-wallet leaderboard.",
+  "x_attributed_rows": 73
+}

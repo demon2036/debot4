@@ -1,0 +1,14 @@
+{
+  "candidate_rows": 136,
+  "generated_at": "2026-08-12T10:56:11.490682Z",
+  "history_complete": 132,
+  "outcomes": {
+    "REJECT": 46,
+    "WAIT": 90
+  },
+  "schema": "debot4.bsc_gmgn_audit_summary.v1",
+  "tokens_with_pre_peak_rpc_verified_clean_buy": 112,
+  "tokens_with_provider_tagged_buy": 125,
+  "tokens_with_rpc_verified_clean_buy": 122,
+  "warning": "PASS requires market>=500K, a clean GMGN KOL buy verified by BSC RPC, and complete manipulation checks. Missing wash/circular evidence remains WAIT."
+}

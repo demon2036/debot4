@@ -1,0 +1,1134 @@
+{
+  "auditable_x_bound_rows": 73,
+  "fetched_at": 1786522491,
+  "provider_ordered_by": "winrate_7d",
+  "provider_rows": 100,
+  "receipt": {
+    "fetched_at": 1786522491,
+    "kind": "gmgn_public_json",
+    "request_context": null,
+    "request_sha256": null,
+    "sha256": "ccfe07ae704e3b827cc5c03206219b722d7a5be7df2f45d14c7eb18fb3ebfca9",
+    "url": "https://gmgn.ai/api/v1/rank/bsc/wallets/7d?tag=kol&orderby=winrate_7d&direction=desc"
+  },
+  "rows": [
+    {
+      "buys_7d": 4,
+      "name": "BlueMoon",
+      "realized_profit_7d": "1038.63738743300863702416",
+      "sells_7d": 3,
+      "tags": [
+        "arbitrager",
+        "gmgn",
+        "kol",
+        "top_followed",
+        "top_renamed"
+      ],
+      "transactions_7d": 7,
+      "wallet": "0x5f9bc316d8473d8c6634bd26f3e0932cd6bf0718",
+      "winrate_7d": "1",
+      "x_handle": "BMooon97_"
+    },
+    {
+      "buys_7d": 2,
+      "name": "Doc 🧲",
+      "realized_profit_7d": "13.84501667140160772582",
+      "sells_7d": 1,
+      "tags": [
+        "gmgn",
+        "kol",
+        "padre"
+      ],
+      "transactions_7d": 3,
+      "wallet": "0x6f7897a08bda8150b1abd1c29a535b5e2283c4e1",
+      "winrate_7d": "1",
+      "x_handle": "KayTheDoc"
+    },
+    {
+      "buys_7d": 0,
+      "name": "Rains ☔️",
+      "realized_profit_7d": "0.0009707859752825",
+      "sells_7d": 1,
+      "tags": [
+        "kol"
+      ],
+      "transactions_7d": 1,
+      "wallet": "0xebe7e229783dc3fadfa4dd8b2e3c42e5e9180337",
+      "winrate_7d": "1",
+      "x_handle": "r_rainss"
+    },
+    {
+      "buys_7d": 0,
+      "name": "甜饼sweet",
+      "realized_profit_7d": "29.083799338042170782",
+      "sells_7d": 1,
+      "tags": [
+        "kol"
+      ],
+      "transactions_7d": 1,
+      "wallet": "0xc58686fedf9504576fc06199ebca62cee00750b3",
+      "winrate_7d": "1",
+      "x_handle": "sweet919268"
+    },
+    {
+      "buys_7d": 8,
+      "name": "JeromeLoo 老王 🀄️🦞",
+      "realized_profit_7d": "91.32951111005515170925",
+      "sells_7d": 1,
+      "tags": [
+        "arbitrager",
+        "kol"
+      ],
+      "transactions_7d": 9,
+      "wallet": "0x76149d87a6ba9ea3c864d0643210e71393dd7777",
+      "winrate_7d": "1",
+      "x_handle": "V1JeromeLoo"
+    },
+    {
+      "buys_7d": 4,
+      "name": "Mumu(🍀,🍀)",
+      "realized_profit_7d": "268.47218846087887358983",
+      "sells_7d": 3,
+      "tags": [
+        "arbitrager",
+        "kol",
+        "top_followed"
+      ],
+      "transactions_7d": 7,
+      "wallet": "0xb9ff27372bedd2515c20515bb7d89d0ec962e0e8",
+      "winrate_7d": "1",
+      "x_handle": "Mumu_yay"
+    },
+    {
+      "buys_7d": 3,
+      "name": "MenaceToSociety 🥶",
+      "realized_profit_7d": "6181.43596618533612853465",
+      "sells_7d": 10,
+      "tags": [
+        "fomo",
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 13,
+      "wallet": "0xcef99ab15ef93ba9f523e57bf8039a19f1cea636",
+      "winrate_7d": "1",
+      "x_handle": "NFTsAreNice"
+    },
+    {
+      "buys_7d": 21,
+      "name": "十八哥哥🔶BNB",
+      "realized_profit_7d": "1061.69391161549573804065",
+      "sells_7d": 20,
+      "tags": [
+        "kol"
+      ],
+      "transactions_7d": 41,
+      "wallet": "0x1da7f7b6069cdbfe53f96db760275836e43b66de",
+      "winrate_7d": "0.8333333333333334",
+      "x_handle": "shibaxiaogege"
+    },
+    {
+      "buys_7d": 48,
+      "name": "0xAA",
+      "realized_profit_7d": "-8865.41466560749720576942",
+      "sells_7d": 55,
+      "tags": [
+        "kol"
+      ],
+      "transactions_7d": 103,
+      "wallet": "0x8d5624fa29526c879a1ca7560961e4c5a08089ae",
+      "winrate_7d": "0.75",
+      "x_handle": "0xAA_Science"
+    },
+    {
+      "buys_7d": 4,
+      "name": "GiGi 發財豬",
+      "realized_profit_7d": "495.26858049669082806786",
+      "sells_7d": 6,
+      "tags": [
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 10,
+      "wallet": "0xe35e3cb17a2a39ef82ff6ed564642782d58dc64b",
+      "winrate_7d": "0.75",
+      "x_handle": "gigiz_eth"
+    },
+    {
+      "buys_7d": 15,
+      "name": "Coasty",
+      "realized_profit_7d": "125.48641391779845574959",
+      "sells_7d": 16,
+      "tags": [
+        "axiom",
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 31,
+      "wallet": "0xd4e297af7e7a60889a4c44e408e5bc73432165f3",
+      "winrate_7d": "0.7142857142857143",
+      "x_handle": "coasty_sol"
+    },
+    {
+      "buys_7d": 432,
+      "name": "枯坐p小将",
+      "realized_profit_7d": "104505.88184395289263854893",
+      "sells_7d": 571,
+      "tags": [
+        "gmgn",
+        "kol",
+        "top_followed",
+        "top_renamed"
+      ],
+      "transactions_7d": 1003,
+      "wallet": "0x2ce9d43d1cba6ae31d7f07bfe0098dfa2d833373",
+      "winrate_7d": "0.6724137931034483",
+      "x_handle": "rob02643673_rob"
+    },
+    {
+      "buys_7d": 2,
+      "name": "夏雪宜",
+      "realized_profit_7d": "5.94283631618265904427",
+      "sells_7d": 1,
+      "tags": [
+        "arbitrager",
+        "kol"
+      ],
+      "transactions_7d": 3,
+      "wallet": "0xef59cdd3c40ffc97da8c05c7e7ba66d0f9b31140",
+      "winrate_7d": "0.6666666666666666",
+      "x_handle": "XXY177"
+    },
+    {
+      "buys_7d": 17,
+      "name": "decu",
+      "realized_profit_7d": "429.79791970905520286868",
+      "sells_7d": 5,
+      "tags": [
+        "gmgn",
+        "kol",
+        "top_followed"
+      ],
+      "transactions_7d": 22,
+      "wallet": "0x15ad62a925d767310716b94ff4b9430dd7a5aa67",
+      "winrate_7d": "0.6666666666666666",
+      "x_handle": "notdecu"
+    },
+    {
+      "buys_7d": 768,
+      "name": "blockdao🇨🇳",
+      "realized_profit_7d": "13155.38482935774112659061",
+      "sells_7d": 842,
+      "tags": [
+        "fomo",
+        "gmgn",
+        "kol",
+        "top_followed",
+        "top_renamed"
+      ],
+      "transactions_7d": 1610,
+      "wallet": "0x1fa8bbd3f95f89958930450ee155355588888888",
+      "winrate_7d": "0.6021220159151194",
+      "x_handle": "blockdao_1"
+    },
+    {
+      "buys_7d": 14,
+      "name": "扑街仔🔶 BNB🎒",
+      "realized_profit_7d": "2274.18545648844090021477",
+      "sells_7d": 18,
+      "tags": [
+        "gmgn",
+        "kol",
+        "top_followed",
+        "top_renamed"
+      ],
+      "transactions_7d": 32,
+      "wallet": "0xda9f482ea717384af879597303e8b67968afcde2",
+      "winrate_7d": "0.6",
+      "x_handle": "_pogai_"
+    },
+    {
+      "buys_7d": 4,
+      "name": "Tekkerrss",
+      "realized_profit_7d": "-13.19099894927123544647",
+      "sells_7d": 4,
+      "tags": [
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 8,
+      "wallet": "0x061825a9195a2fb526735032fcac4ef58c6e52e4",
+      "winrate_7d": "0.6",
+      "x_handle": "Tekkerrss"
+    },
+    {
+      "buys_7d": 3,
+      "name": "金薯条🍟",
+      "realized_profit_7d": "62.62350418150095853925",
+      "sells_7d": 6,
+      "tags": [
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 9,
+      "wallet": "0xb034db23e89d14caceeb4b2c1aef0e0b99974a8a",
+      "winrate_7d": "0.6",
+      "x_handle": "0xFries7683"
+    },
+    {
+      "buys_7d": 67,
+      "name": "Tavern",
+      "realized_profit_7d": "1952.82222171611416986669",
+      "sells_7d": 83,
+      "tags": [
+        "app_smart_money",
+        "gmgn",
+        "kol",
+        "top_followed",
+        "top_renamed"
+      ],
+      "transactions_7d": 150,
+      "wallet": "0x664d6645a04be9e27a8b33088f85025f29d45dc1",
+      "winrate_7d": "0.5909090909090909",
+      "x_handle": "TurtleTavernTV"
+    },
+    {
+      "buys_7d": 118,
+      "name": "kurtz",
+      "realized_profit_7d": "21109.2223188430000561605",
+      "sells_7d": 73,
+      "tags": [
+        "fomo",
+        "gmgn",
+        "kol",
+        "launchpad_smart",
+        "smart_degen",
+        "top_followed",
+        "top_renamed"
+      ],
+      "transactions_7d": 191,
+      "wallet": "0xf78b066050e00fdb9b980e265aa9f317ef4b947c",
+      "winrate_7d": "0.5897435897435898",
+      "x_handle": "kurtzxx"
+    },
+    {
+      "buys_7d": 740,
+      "name": "yukaz",
+      "realized_profit_7d": "51622.27506031771205550924",
+      "sells_7d": 554,
+      "tags": [
+        "gmgn",
+        "kol",
+        "top_followed",
+        "top_renamed"
+      ],
+      "transactions_7d": 1294,
+      "wallet": "0xa05ec35f7d1eba823cff2ed26aeaed419683742f",
+      "winrate_7d": "0.5765124555160143",
+      "x_handle": "0xyukaz"
+    },
+    {
+      "buys_7d": 60,
+      "name": "New 100x Gems",
+      "realized_profit_7d": "113.40868081848988212731",
+      "sells_7d": 60,
+      "tags": [
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 120,
+      "wallet": "0x78f210557fcd6663f162c75ed0d96108e42e4f9c",
+      "winrate_7d": "0.5714285714285714",
+      "x_handle": "New100xGems"
+    },
+    {
+      "buys_7d": 14,
+      "name": "Britney.(ETH)",
+      "realized_profit_7d": "469.21133954236526958881",
+      "sells_7d": 12,
+      "tags": [
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 26,
+      "wallet": "0x0a2e3c168a20b2516c86943b089515f58c424552",
+      "winrate_7d": "0.5454545454545454",
+      "x_handle": "chloe_overton21"
+    },
+    {
+      "buys_7d": 266,
+      "name": "ozark",
+      "realized_profit_7d": "5255.68876817702223919661",
+      "sells_7d": 85,
+      "tags": [
+        "app_smart_money",
+        "axiom",
+        "gmgn",
+        "kol",
+        "top_followed",
+        "top_renamed"
+      ],
+      "transactions_7d": 351,
+      "wallet": "0x07cdaf0140c60a0c34681065abf49bb8d85b8cbe",
+      "winrate_7d": "0.5405405405405406",
+      "x_handle": "ohzarke"
+    },
+    {
+      "buys_7d": 37,
+      "name": "tech",
+      "realized_profit_7d": "6752.40823523824481339334",
+      "sells_7d": 35,
+      "tags": [
+        "axiom",
+        "gmgn",
+        "kol",
+        "smart_degen",
+        "top_followed",
+        "top_renamed"
+      ],
+      "transactions_7d": 72,
+      "wallet": "0x3d06315c94ac30b6061c91caf748fc2db04a89f4",
+      "winrate_7d": "0.5384615384615384",
+      "x_handle": "technoviking46"
+    },
+    {
+      "buys_7d": 437,
+      "name": "CC 小猪🐷 | Golden.S",
+      "realized_profit_7d": "1827.57259682722185858608",
+      "sells_7d": 644,
+      "tags": [
+        "gmgn",
+        "kol",
+        "smart_degen",
+        "top_followed"
+      ],
+      "transactions_7d": 1081,
+      "wallet": "0xf7a934528d38e2f2865a7cd30c335c6d115928b8",
+      "winrate_7d": "0.5362318840579711",
+      "x_handle": "CCPiggy_"
+    },
+    {
+      "buys_7d": 158,
+      "name": "Michel | BNB 🔸",
+      "realized_profit_7d": "1675.85758432671137348725",
+      "sells_7d": 122,
+      "tags": [
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 280,
+      "wallet": "0x7f7cfb554704357395ed3a9fd6a7fdee4cd89457",
+      "winrate_7d": "0.5348837209302325",
+      "x_handle": "michelMX65"
+    },
+    {
+      "buys_7d": 180,
+      "name": "Gheez",
+      "realized_profit_7d": "14133.48556517277555985592",
+      "sells_7d": 390,
+      "tags": [
+        "axiom",
+        "gmgn",
+        "kol",
+        "top_dev"
+      ],
+      "transactions_7d": 570,
+      "wallet": "0x5e8343066704cea8f254b637b3e4fc9be6ab318a",
+      "winrate_7d": "0.5345911949685535",
+      "x_handle": "gheezfn"
+    },
+    {
+      "buys_7d": 19,
+      "name": "b",
+      "realized_profit_7d": "18327.83543988255440037727",
+      "sells_7d": 34,
+      "tags": [
+        "gmgn",
+        "kol",
+        "top_followed"
+      ],
+      "transactions_7d": 53,
+      "wallet": "0xa3d3fed954a332992cfec8c606eeb2a25fbb3864",
+      "winrate_7d": "0.5333333333333333",
+      "x_handle": "bagufps"
+    },
+    {
+      "buys_7d": 137,
+      "name": "Han",
+      "realized_profit_7d": "5332.46737785547907218777",
+      "sells_7d": 278,
+      "tags": [
+        "gmgn",
+        "kol",
+        "top_followed",
+        "top_renamed"
+      ],
+      "transactions_7d": 415,
+      "wallet": "0x7852346c77b3a622fa73607ee35cc784e53f326b",
+      "winrate_7d": "0.5185185185185185",
+      "x_handle": "00xhwin"
+    },
+    {
+      "buys_7d": 560,
+      "name": "linhui",
+      "realized_profit_7d": "2017.63230785355718660586",
+      "sells_7d": 353,
+      "tags": [
+        "gmgn",
+        "kol",
+        "smart_degen",
+        "top_followed"
+      ],
+      "transactions_7d": 913,
+      "wallet": "0x2f47ca870e6febbd7cd9b7fdbe1d76467709a085",
+      "winrate_7d": "0.5024875621890548",
+      "x_handle": "milesjnixon"
+    },
+    {
+      "buys_7d": 2,
+      "name": "nyhrox",
+      "realized_profit_7d": "-168.54290251364969628113",
+      "sells_7d": 2,
+      "tags": [
+        "axiom",
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 4,
+      "wallet": "0xd03353d8a531a7b05509f35fadef3e042188bdb5",
+      "winrate_7d": "0.5",
+      "x_handle": "nyhrox"
+    },
+    {
+      "buys_7d": 5,
+      "name": "♡小c. (•̀ᴗ•́)و ̑̑ 见贤思齐",
+      "realized_profit_7d": "4.99360991436296948058",
+      "sells_7d": 2,
+      "tags": [
+        "arbitrager",
+        "bluechip_owner",
+        "kol"
+      ],
+      "transactions_7d": 7,
+      "wallet": "0xd01a73bef8d17aa02466754fe43e99342ae30043",
+      "winrate_7d": "0.5",
+      "x_handle": "c_ckoko"
+    },
+    {
+      "buys_7d": 0,
+      "name": "KhunChan",
+      "realized_profit_7d": "-0.02690841118269816348",
+      "sells_7d": 1,
+      "tags": [
+        "bluechip_owner",
+        "kol"
+      ],
+      "transactions_7d": 1,
+      "wallet": "0x4cb75146e98562c9d79b31649c6c739e4dcb7cd5",
+      "winrate_7d": "0.5",
+      "x_handle": "key_sero"
+    },
+    {
+      "buys_7d": 5,
+      "name": "Victory",
+      "realized_profit_7d": "-127.95849171842310002614",
+      "sells_7d": 4,
+      "tags": [
+        "arbitrager",
+        "kol"
+      ],
+      "transactions_7d": 9,
+      "wallet": "0x353c8319f709643bc9843413263be1e90a6ae1ee",
+      "winrate_7d": "0.5",
+      "x_handle": "VictoryCrypto1"
+    },
+    {
+      "buys_7d": 5,
+      "name": "COREY",
+      "realized_profit_7d": "256.00916471285201428874",
+      "sells_7d": 2,
+      "tags": [
+        "fomo",
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 7,
+      "wallet": "0xedc7c552077bbe04f61a52c9d17bce85154f1fc4",
+      "winrate_7d": "0.5",
+      "x_handle": "Corey_Ape"
+    },
+    {
+      "buys_7d": 2,
+      "name": "路飞会得到onepiece",
+      "realized_profit_7d": "0",
+      "sells_7d": 0,
+      "tags": [
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 2,
+      "wallet": "0x912e371e922f6745425b5215397fe97e4af8fb22",
+      "winrate_7d": "0.5",
+      "x_handle": "luffy_lfg"
+    },
+    {
+      "buys_7d": 16,
+      "name": "Lei_少📈📈",
+      "realized_profit_7d": "1081.72938291295154425182",
+      "sells_7d": 16,
+      "tags": [
+        "arbitrager",
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 32,
+      "wallet": "0x94318ed124785b5910d8e456bf0ca50aaf27835f",
+      "winrate_7d": "0.5",
+      "x_handle": "RSZB_leishao168"
+    },
+    {
+      "buys_7d": 3,
+      "name": "Degen Joe",
+      "realized_profit_7d": "18.27963938305084922006",
+      "sells_7d": 4,
+      "tags": [
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 7,
+      "wallet": "0x602db89f897304bfa965fd23276eb84a2381935b",
+      "winrate_7d": "0.5",
+      "x_handle": "DegenJoeX"
+    },
+    {
+      "buys_7d": 63,
+      "name": "pedrolucio (humble arc 😌🙏)",
+      "realized_profit_7d": "167.24688058196449494244",
+      "sells_7d": 50,
+      "tags": [
+        "arbitrager",
+        "gmgn",
+        "kol",
+        "top_followed",
+        "top_renamed"
+      ],
+      "transactions_7d": 113,
+      "wallet": "0x347ffc6db9acc54ac2019795173b9599e8b82bd9",
+      "winrate_7d": "0.5",
+      "x_handle": "pe___lu"
+    },
+    {
+      "buys_7d": 22,
+      "name": "Skid🐂🀄️",
+      "realized_profit_7d": "-4912.2617165109849245362",
+      "sells_7d": 10,
+      "tags": [
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 32,
+      "wallet": "0xc848a7530ed12eb545a01eaa906de55f9491fb59",
+      "winrate_7d": "0.5",
+      "x_handle": "skid_eth"
+    },
+    {
+      "buys_7d": 3,
+      "name": "冲出重围的屁",
+      "realized_profit_7d": "3.66969161164369009325",
+      "sells_7d": 3,
+      "tags": [
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 6,
+      "wallet": "0xc0f24234a31050186b88c622a1389deec81f133e",
+      "winrate_7d": "0.5",
+      "x_handle": "aBbeGGnEl2OxaAs"
+    },
+    {
+      "buys_7d": 5,
+      "name": "老戴的漫长季节",
+      "realized_profit_7d": "48.70429509934957142029",
+      "sells_7d": 6,
+      "tags": [
+        "arbitrager",
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 11,
+      "wallet": "0x5714080f985f1c129e4fd6bd6319a2c2565fa98b",
+      "winrate_7d": "0.5",
+      "x_handle": "daixiexie"
+    },
+    {
+      "buys_7d": 13,
+      "name": "mstzera",
+      "realized_profit_7d": "3468.46538035299814113428",
+      "sells_7d": 27,
+      "tags": [
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 40,
+      "wallet": "0x92662d5f5d0dbc25cce7ceba5a4160084c9e05ab",
+      "winrate_7d": "0.5",
+      "x_handle": "mstzera"
+    },
+    {
+      "buys_7d": 10,
+      "name": "histtory",
+      "realized_profit_7d": "-70.57771274823803014647",
+      "sells_7d": 10,
+      "tags": [
+        "app_smart_money",
+        "gmgn",
+        "kol",
+        "top_followed",
+        "top_renamed"
+      ],
+      "transactions_7d": 20,
+      "wallet": "0x5afe6b5b52ce166359db16001e4d801f9f34f125",
+      "winrate_7d": "0.5",
+      "x_handle": "histtoryx"
+    },
+    {
+      "buys_7d": 439,
+      "name": "CryptoCharming 🐟",
+      "realized_profit_7d": "15768.10923127241974027169",
+      "sells_7d": 721,
+      "tags": [
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 1160,
+      "wallet": "0xc70ad5249bc432c7c69d71b017436441e9d6e37a",
+      "winrate_7d": "0.4956521739130435",
+      "x_handle": "CryptoCharming"
+    },
+    {
+      "buys_7d": 142,
+      "name": "NΞO",
+      "realized_profit_7d": "927.01277920748129232115",
+      "sells_7d": 134,
+      "tags": [
+        "arbitrager",
+        "gmgn",
+        "kol",
+        "top_followed",
+        "top_renamed"
+      ],
+      "transactions_7d": 276,
+      "wallet": "0xe28601398a5448d1147e6e8b0e0c6d686f0d216d",
+      "winrate_7d": "0.4857142857142857",
+      "x_handle": "NeoCallss"
+    },
+    {
+      "buys_7d": 344,
+      "name": "Phero.hl",
+      "realized_profit_7d": "735.01452919156507474395",
+      "sells_7d": 175,
+      "tags": [
+        "fomo",
+        "gmgn",
+        "kol",
+        "smart_degen",
+        "top_followed"
+      ],
+      "transactions_7d": 519,
+      "wallet": "0x4a30496554ef401e4b687189f7df6efe4b3e0249",
+      "winrate_7d": "0.47586206896551725",
+      "x_handle": "pheromones_sol"
+    },
+    {
+      "buys_7d": 443,
+      "name": "Wick李🔶 BNB",
+      "realized_profit_7d": "2464.06832170989311219821",
+      "sells_7d": 488,
+      "tags": [
+        "app_smart_money",
+        "gmgn",
+        "kol",
+        "top_followed",
+        "top_renamed"
+      ],
+      "transactions_7d": 931,
+      "wallet": "0x7e8fb0392542812476d9f2d0d71c01d1fa0776c5",
+      "winrate_7d": "0.4751131221719457",
+      "x_handle": "SuperL9"
+    },
+    {
+      "buys_7d": 31,
+      "name": "🌱Nero",
+      "realized_profit_7d": "743.36958797984852584272",
+      "sells_7d": 30,
+      "tags": [
+        "arbitrager",
+        "gmgn",
+        "kol",
+        "top_followed"
+      ],
+      "transactions_7d": 61,
+      "wallet": "0xf6dc9b733594900bf3e4b2d5c874f7b4b0705569",
+      "winrate_7d": "0.45454545454545453",
+      "x_handle": "nero8888"
+    },
+    {
+      "buys_7d": 791,
+      "name": "葵殿",
+      "realized_profit_7d": "2967.61348080257196480965",
+      "sells_7d": 551,
+      "tags": [
+        "arbitrager",
+        "gmgn",
+        "kol",
+        "top_followed"
+      ],
+      "transactions_7d": 1342,
+      "wallet": "0x878a051559152383fbd35315eb03f3ef5fbf76a6",
+      "winrate_7d": "0.45353159851301117",
+      "x_handle": "0xkuidian"
+    },
+    {
+      "buys_7d": 134,
+      "name": "旭旭宝宝",
+      "realized_profit_7d": "9695.09075380525856955902",
+      "sells_7d": 235,
+      "tags": [
+        "arbitrager",
+        "fomo",
+        "gmgn",
+        "kol",
+        "top_followed"
+      ],
+      "transactions_7d": 369,
+      "wallet": "0xcfe30db196c9a99fc80c72ad44fb4a135a53491f",
+      "winrate_7d": "0.4523809523809524",
+      "x_handle": "xuxubaobao0819"
+    },
+    {
+      "buys_7d": 5,
+      "name": "冷静冷静再冷静",
+      "realized_profit_7d": "33240.35280424424974562845",
+      "sells_7d": 53,
+      "tags": [
+        "app_smart_money",
+        "arbitrager",
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 58,
+      "wallet": "0xeb89055e16ae1c1e42ad6770a7344ff5c7b4f31d",
+      "winrate_7d": "0.4444444444444444",
+      "x_handle": "hexiecs"
+    },
+    {
+      "buys_7d": 13,
+      "name": "清风。",
+      "realized_profit_7d": "207.20345048504629296887",
+      "sells_7d": 12,
+      "tags": [
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 25,
+      "wallet": "0x00a5fa3008a180dc25f0399a5678d38642bcaeb6",
+      "winrate_7d": "0.4444444444444444",
+      "x_handle": "Rueschen"
+    },
+    {
+      "buys_7d": 59,
+      "name": "天意",
+      "realized_profit_7d": "-31.24001194165348890132",
+      "sells_7d": 52,
+      "tags": [
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 111,
+      "wallet": "0x2948ebe47277da144a86f43f2b48981c8ff72a3e",
+      "winrate_7d": "0.4411764705882353",
+      "x_handle": "tianyi88888888"
+    },
+    {
+      "buys_7d": 419,
+      "name": "0X财神",
+      "realized_profit_7d": "8327.42289145401524167996",
+      "sells_7d": 377,
+      "tags": [
+        "gmgn",
+        "kol",
+        "top_followed"
+      ],
+      "transactions_7d": 796,
+      "wallet": "0x55fade80e573c4594b0dd73041297024f1f2ee95",
+      "winrate_7d": "0.4350282485875706",
+      "x_handle": "0xcaishen_1"
+    },
+    {
+      "buys_7d": 117,
+      "name": "山河",
+      "realized_profit_7d": "1905.32964254218444082185",
+      "sells_7d": 41,
+      "tags": [
+        "gmgn",
+        "kol",
+        "top_followed"
+      ],
+      "transactions_7d": 158,
+      "wallet": "0xb999da0ab2cb8fbf493d0ca73672924ad1d111e5",
+      "winrate_7d": "0.43243243243243246",
+      "x_handle": "shanheBTC888"
+    },
+    {
+      "buys_7d": 561,
+      "name": "Reljoo",
+      "realized_profit_7d": "55580.73803963961696877706",
+      "sells_7d": 325,
+      "tags": [
+        "gmgn",
+        "kol",
+        "top_followed",
+        "top_renamed"
+      ],
+      "transactions_7d": 886,
+      "wallet": "0x3391a39a1b508e54a361924a26056c01c1c2c07d",
+      "winrate_7d": "0.43157894736842106",
+      "x_handle": "Reljoooo"
+    },
+    {
+      "buys_7d": 9,
+      "name": "小叮当",
+      "realized_profit_7d": "40.66218479335791330208",
+      "sells_7d": 7,
+      "tags": [
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 16,
+      "wallet": "0x729b03f4592371a0eadd6e3800c9468b50c48b3f",
+      "winrate_7d": "0.42857142857142855",
+      "x_handle": "Cryptoxiaodd"
+    },
+    {
+      "buys_7d": 44,
+      "name": "William",
+      "realized_profit_7d": "350.97584745955622853147",
+      "sells_7d": 52,
+      "tags": [
+        "gmgn",
+        "kol",
+        "top_followed",
+        "top_renamed"
+      ],
+      "transactions_7d": 96,
+      "wallet": "0xa866c5adddc1c3570b6328491b510deefa374e0d",
+      "winrate_7d": "0.425531914893617",
+      "x_handle": "Vera548926"
+    },
+    {
+      "buys_7d": 717,
+      "name": "Dani",
+      "realized_profit_7d": "63222.02859293408216962131",
+      "sells_7d": 302,
+      "tags": [
+        "arbitrager",
+        "gmgn",
+        "kol",
+        "top_followed",
+        "top_renamed"
+      ],
+      "transactions_7d": 1019,
+      "wallet": "0xbac453b9b7f53b35ac906b641925b2f5f2567a89",
+      "winrate_7d": "0.425531914893617",
+      "x_handle": "DaniWorldwide"
+    },
+    {
+      "buys_7d": 132,
+      "name": "Cupsey",
+      "realized_profit_7d": "24.21593294574149818992",
+      "sells_7d": 93,
+      "tags": [
+        "gmgn",
+        "kol",
+        "smart_degen",
+        "top_followed"
+      ],
+      "transactions_7d": 225,
+      "wallet": "0x0f84d2da979180394fbf9c4499febd0f602a6767",
+      "winrate_7d": "0.4225352112676056",
+      "x_handle": "Sunnyikes"
+    },
+    {
+      "buys_7d": 162,
+      "name": "Shin",
+      "realized_profit_7d": "22.20682002464146464115",
+      "sells_7d": 98,
+      "tags": [
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 260,
+      "wallet": "0x3cdf6e157a41995929af82c60bf4d8903225ec37",
+      "winrate_7d": "0.4117647058823529",
+      "x_handle": "shinqtvn"
+    },
+    {
+      "buys_7d": 139,
+      "name": "Yoda",
+      "realized_profit_7d": "1358.19325411964741214656",
+      "sells_7d": 185,
+      "tags": [
+        "gmgn",
+        "kol",
+        "smart_degen",
+        "top_followed",
+        "top_renamed"
+      ],
+      "transactions_7d": 324,
+      "wallet": "0x371903abb32f5f69b536b77495e92adedfea25da",
+      "winrate_7d": "0.40540540540540543",
+      "x_handle": "yodacalls"
+    },
+    {
+      "buys_7d": 247,
+      "name": "AlexWong 🇭🇰 | 1000X GEM",
+      "realized_profit_7d": "-1131.69302108998519615743",
+      "sells_7d": 311,
+      "tags": [
+        "app_smart_money",
+        "arbitrager",
+        "gmgn",
+        "kol",
+        "top_followed",
+        "top_renamed"
+      ],
+      "transactions_7d": 558,
+      "wallet": "0xb226f97bc5b01978848dc440b40c70faea7c006e",
+      "winrate_7d": "0.40298507462686567",
+      "x_handle": "sadd_asd77675"
+    },
+    {
+      "buys_7d": 532,
+      "name": "CryptoLucky",
+      "realized_profit_7d": "6305.26470897547428575655",
+      "sells_7d": 747,
+      "tags": [
+        "gmgn",
+        "kol",
+        "smart_degen",
+        "top_followed"
+      ],
+      "transactions_7d": 1279,
+      "wallet": "0x92c371744e71dbe58c603661ba8784fd76472e1b",
+      "winrate_7d": "0.40294117647058825",
+      "x_handle": "sol_lucky_"
+    },
+    {
+      "buys_7d": 292,
+      "name": "CoCo❕",
+      "realized_profit_7d": "-2217.10483198785199005411",
+      "sells_7d": 298,
+      "tags": [
+        "arbitrager",
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 590,
+      "wallet": "0x5250dbcf6ac11c4c2cbd8dcaf5a6d019f3268ea8",
+      "winrate_7d": "0.4012345679012346",
+      "x_handle": "CoCoCookerr"
+    },
+    {
+      "buys_7d": 9,
+      "name": "Cobie",
+      "realized_profit_7d": "98.47304458649804960763",
+      "sells_7d": 6,
+      "tags": [
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 15,
+      "wallet": "0x13267f77e7241db36f9ee3418dd3069bbc91f2b2",
+      "winrate_7d": "0.4",
+      "x_handle": "Jack_eth_nft"
+    },
+    {
+      "buys_7d": 30,
+      "name": "rynm",
+      "realized_profit_7d": "1825.85027635955068531879",
+      "sells_7d": 32,
+      "tags": [
+        "gmgn",
+        "kol",
+        "top_followed"
+      ],
+      "transactions_7d": 62,
+      "wallet": "0x72bb99200a89e608658a9032aad5aef6a41dd46f",
+      "winrate_7d": "0.4",
+      "x_handle": "rynm1x"
+    },
+    {
+      "buys_7d": 32,
+      "name": "Cupsey",
+      "realized_profit_7d": "-2816.20061535933152881572",
+      "sells_7d": 7,
+      "tags": [
+        "axiom",
+        "fomo",
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 39,
+      "wallet": "0x3475831749ea6c9992e638d01427453b9cc83a12",
+      "winrate_7d": "0.4",
+      "x_handle": "Cupseyy"
+    },
+    {
+      "buys_7d": 2,
+      "name": "A",
+      "realized_profit_7d": "3.57605437921175961534",
+      "sells_7d": 1,
+      "tags": [
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 3,
+      "wallet": "0xca1a2fb7f3179d887504966b25d1606978adcd42",
+      "winrate_7d": "0.4",
+      "x_handle": "Aomake70"
+    },
+    {
+      "buys_7d": 273,
+      "name": "从零开始的打狗生活",
+      "realized_profit_7d": "1877.20836628134362087301",
+      "sells_7d": 309,
+      "tags": [
+        "arbitrager",
+        "gmgn",
+        "kol",
+        "top_followed"
+      ],
+      "transactions_7d": 582,
+      "wallet": "0xb90d9ea599c2634069ae4d5eecc5ab7234a81a05",
+      "winrate_7d": "0.3972602739726027",
+      "x_handle": "cryptomoon520"
+    },
+    {
+      "buys_7d": 89,
+      "name": "宝灵灯C🟥",
+      "realized_profit_7d": "1387.14971041650765070617",
+      "sells_7d": 148,
+      "tags": [
+        "arbitrager",
+        "gmgn",
+        "kol"
+      ],
+      "transactions_7d": 237,
+      "wallet": "0xfee4f6e8d6b5706876aceb3ad5185f9fbacf88ec",
+      "winrate_7d": "0.39655172413793105",
+      "x_handle": "baolingD"
+    }
+  ],
+  "schema": "debot4.gmgn_bsc_kol_rank.v1",
+  "warning": "Unqualified audit pool only. Provider win rate and profit are not selection criteria. High-frequency indiscriminate wallets must be excluded after complete activity-history reconstruction; each X/wallet binding and token outcome also needs independent verification."
+}

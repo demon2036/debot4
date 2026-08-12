@@ -1,6 +1,6 @@
 """Reviewed Chinese-language narrative, data, and propagation accounts."""
 
-from .actor_catalog_types import EXACT_POST_REVIEW, KOL, actor
+from .actor_catalog_types import EXACT_POST_REVIEW, KOL, PROFILE_REVIEW, actor
 from .actors import ActorTier as T
 
 
@@ -37,6 +37,25 @@ CHINA_ACTORS = (
         languages=("zh",), regions=("china",), aliases=("冷静",),
         priority=4, basis=EXACT_POST_REVIEW,
         evidence=("https://x.com/hexiecs/status/2077918738121396435",),
+    ),
+    actor(
+        "brc20niubi", "1332902969273065473", "王小二",
+        "Chinese BSC meme trader and propagation account",
+        T.PROPAGATION_KOL, ("bsc", "bnb"), KOL,
+        languages=("zh",), regions=("china",), aliases=("王小二",),
+        priority=3, basis=PROFILE_REVIEW,
+        evidence=("https://x.com/lookonchain/status/1975782365650952370",),
+        risks=("position and performance claims require independent chronology",),
+    ),
+    actor(
+        "GCsheng", "1344963706657017858", "深大高财生.milady",
+        "Chinese BSC meme trader and exact-contract propagation account",
+        T.PROPAGATION_KOL, ("bsc", "bnb"), KOL,
+        languages=("zh",), regions=("china",),
+        aliases=("深大高财生", "深大高材生", "深大"), priority=3,
+        basis=EXACT_POST_REVIEW,
+        evidence=("https://x.com/GCsheng/status/2064388171040010417",),
+        risks=("position-biased calls; separate provider buys from public posts",),
     ),
     actor(
         "btc2ai", "1659207187330379778", "Crypto北斗",

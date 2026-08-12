@@ -1,0 +1,18 @@
+{
+  "case_count": 16,
+  "causal_timing_verdicts": {
+    "PASS": 7,
+    "REJECT": 4,
+    "WAIT": 5
+  },
+  "complete_cases": 16,
+  "error_cases": 0,
+  "generated_at": "2026-08-12T09:36:14.357295Z",
+  "qualification_verdicts": {
+    "REJECT": 6,
+    "WAIT": 10
+  },
+  "schema": "debot4.known_kol_audit_summary.v1",
+  "wallet_count": 3,
+  "warning": "wallet outcomes are incomplete; no smart-wallet win rate is claimed"
+}

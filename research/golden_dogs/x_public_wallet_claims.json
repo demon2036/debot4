@@ -1,0 +1,29 @@
+[
+  {
+    "schema": "debot4.x_public_wallet_claim.v1",
+    "handle": "jeery314159",
+    "stable_user_id": "1480363730374311939",
+    "wallet": "0xf910a1dd205f83da8147197c76d6a13d8240f0c1",
+    "profile_url": "https://api.fxtwitter.com/jeery314159",
+    "profile_payload_sha256": "a49bd7bbdb55c56ed9acc92b25901598ece1759923360efa237d948d34544bab",
+    "profile_claim": "EVM地址：0xf910a1dd205f83da8147197c76d6a13d8240f0c1",
+    "provider_checked_at": "2026-08-12T13:32:44Z",
+    "provider_handles": [],
+    "provider_bound": false,
+    "provider_tags": [],
+    "provider_receipts": [
+      {
+        "url": "https://gmgn.ai/defi/quotation/v1/smartmoney/bsc/walletNew/0xf910a1dd205f83da8147197c76d6a13d8240f0c1",
+        "fetched_at": "2026-08-12T13:32:44Z",
+        "sha256": "1f243b767cc8f77164a3aee6bfa5f52a5a68ecfc8837cc836a428ce0d336e971"
+      },
+      {
+        "url": "https://gmgn.ai/api/v1/wallet_stat/bsc/0xf910a1dd205f83da8147197c76d6a13d8240f0c1/7d",
+        "fetched_at": "2026-08-12T13:32:44Z",
+        "sha256": "7489057f8917700c9867727ffe97692698550f137991f72e0291b5798bb703bf"
+      }
+    ],
+    "verdict": "SELF_DISCLOSED",
+    "warning": "The X profile publicly claims this address, but current GMGN public and stat profiles do not bind it to this X identity; no hidden-wallet or KOL-buy conclusion follows."
+  }
+]

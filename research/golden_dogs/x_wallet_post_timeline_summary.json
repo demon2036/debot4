@@ -1,0 +1,12 @@
+{
+  "exact_ca_wallet_buy_count": 17,
+  "generated_at": "2026-08-12T14:37:12.167648Z",
+  "identity_ca_post_intersections": 13,
+  "schema": "debot4.x_wallet_post_timeline_summary.v1",
+  "timing": {
+    "WalletPostTiming.BUY_AFTER_PEAK": 2,
+    "WalletPostTiming.BUY_AFTER_POST_BEFORE_PEAK": 4,
+    "WalletPostTiming.BUY_BEFORE_POST": 11
+  },
+  "warning": "A wallet/X provider binding is optional attribution evidence. No exact-CA buy means no wallet claim; it does not erase the independently verified X post."
+}

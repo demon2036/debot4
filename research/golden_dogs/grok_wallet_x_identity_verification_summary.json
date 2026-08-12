@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-08-12T14:32:42.946615Z",
+  "lead_count": 1844,
+  "schema": "debot4.grok_wallet_x_identity_verification_summary.v1",
+  "status_counts": {
+    "status_author_mismatch": 12,
+    "status_unavailable": 2,
+    "verified": 1830
+  },
+  "unique_profile_count": 385,
+  "warning": "verified means X identity and authored post only, not KOL quality or wallet"
+}

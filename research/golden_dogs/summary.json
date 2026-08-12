@@ -1,0 +1,83 @@
+{
+  "bsc": {
+    "first_trade_to_peak_median_hours": 38.05,
+    "gold_rows": 156,
+    "initial_fdv_median_usd": 4438.490344058258,
+    "launchpads": {
+      "cheesepad": 5,
+      "flap": 82,
+      "four_meme": 68,
+      "openfour_royalty": 1
+    },
+    "max_kols_at_most_4": 99,
+    "max_kols_at_most_4_pct": 63.5,
+    "visible_unique_gold_lower_bound": 156
+  },
+  "gold_definition": "first observable 1m open to 5m ATH >=10x and approx peak FDV >=$1M",
+  "kol": {
+    "additional_claim_without_exact_ca": 1,
+    "attributable_full_wallets": 1,
+    "distinct_handles_reviewed": 8,
+    "exact_ca_token_cases": 9,
+    "gold": 5,
+    "gold_timing": {
+      "post_peak": 1,
+      "pre_peak": 3,
+      "retrospective_peak_claim": 1
+    },
+    "not_gold": 3,
+    "unresolved_exact_case": 1,
+    "verified_post_receipts": 9
+  },
+  "rank_refresh": [
+    {
+      "chain": "bsc",
+      "missing_after_refresh": 2,
+      "new_after_refresh": 0,
+      "previous_count": 3071,
+      "rank_receipts": 109,
+      "refreshed_count": 3069,
+      "saturated_slices": 0
+    },
+    {
+      "chain": "robinhood",
+      "missing_after_refresh": 37,
+      "new_after_refresh": 0,
+      "previous_count": 4615,
+      "rank_receipts": 192,
+      "refreshed_count": 4578,
+      "saturated_slices": 0
+    }
+  ],
+  "robinhood": {
+    "blockscout_gap_gold": 21,
+    "first_trade_to_peak_median_hours": 34.6,
+    "gold_rows": 133,
+    "initial_fdv_median_usd": 3712.0,
+    "launchpads": {
+      "apestore": 1,
+      "arrow": 2,
+      "bags": 2,
+      "bankr": 13,
+      "bowfun": 2,
+      "circus": 1,
+      "flap": 13,
+      "letscash": 2,
+      "long": 2,
+      "noxafi": 1,
+      "noxafun": 47,
+      "pons_v2": 7,
+      "sushi": 1,
+      "trench": 3,
+      "uni_crowd": 1,
+      "uni_instant": 8,
+      "varo": 2,
+      "virtuals_unicorn": 25
+    },
+    "max_kols_at_most_4": 105,
+    "max_kols_at_most_4_pct": 78.9,
+    "rank_gold": 133,
+    "visible_unique_gold_lower_bound": 156
+  },
+  "schema": "debot4.golden_dog_summary.v1"
+}

@@ -1,0 +1,17 @@
+{
+  "exact_ca_mentions": 963,
+  "generated_at": "2026-08-12T14:34:35.295741Z",
+  "joined_by_chain": {
+    "bsc": 870
+  },
+  "joined_status_ca_pairs": 870,
+  "joined_unique_tokens": 197,
+  "schema": "debot4.bsc_market_x_join_summary.v1",
+  "timing": {
+    "post_peak": 758,
+    "pre_peak": 112
+  },
+  "unique_exact_cas": 278,
+  "verified_status_rows": 1225,
+  "warning": "An authored exact-CA post is not proof of KOL status, a buy, causality, or absence of manipulation"
+}

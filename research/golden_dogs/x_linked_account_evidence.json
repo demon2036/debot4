@@ -1,0 +1,69 @@
+[
+  {
+    "source_handle": "meliboi_sama",
+    "source_user_id": "1639851624431767553",
+    "linked_handle": "meligamble",
+    "linked_user_id": "333762244",
+    "relationship_claim": "profile says lowcap second -> @meligamble",
+    "evidence_url": "https://api.fxtwitter.com/meliboi_sama",
+    "payload_sha256": "84d91a100a5a86e067c047db47e8d38e8fd9cc67faebc65eed72d0a5fc0eae29",
+    "reciprocal": true,
+    "corroborating_url": "https://api.fxtwitter.com/meligamble",
+    "corroborating_payload_sha256": "0fad08b5b986ea520dac0f57d2da1b0798af23b09a988a08f61610af221c03a1",
+    "corroborating_claim": "profile says one of @meliboi_sama",
+    "wallet_attributed": false,
+    "warning": "Direct X-account link only; no hidden or secondary wallet is attributed."
+  },
+  {
+    "source_handle": "carlsmithdjta",
+    "source_user_id": "2057643558925144064",
+    "linked_handle": "calmsystem_call",
+    "linked_user_id": null,
+    "relationship_claim": "profile says this is a new account because the main account was suspended",
+    "evidence_url": "https://api.fxtwitter.com/carlsmithdjta",
+    "payload_sha256": "2213df8c26f677c6213c12b520c89bdaaa38c387253aa7307b8a8bbe887d9ef8",
+    "reciprocal": false,
+    "target_profile_status": "HTTP 404 at verification time",
+    "wallet_attributed": false,
+    "warning": "The named suspended account is not currently independently retrievable."
+  },
+  {
+    "source_handle": "jiaodu6688",
+    "source_user_id": "2034634079153606656",
+    "linked_handle": null,
+    "linked_user_id": null,
+    "relationship_claim": "profile says the main account was suspended and this account continues as the secondary account",
+    "evidence_url": "https://api.fxtwitter.com/jiaodu6688",
+    "payload_sha256": "51342af4997c4587b2fe05ea81d6247c17cd46b11485f4143ee8a89c6fc50953",
+    "reciprocal": false,
+    "target_profile_status": "old handle is not named in the current profile",
+    "wallet_attributed": false,
+    "warning": "Direct secondary-account self-disclosure, but no old handle or old stable ID can be attributed."
+  },
+  {
+    "source_handle": "lsxs_888",
+    "source_user_id": "779449063",
+    "linked_handle": null,
+    "linked_user_id": null,
+    "relationship_claim": "profile says an old account was suspended and asks old followers to regroup",
+    "evidence_url": "https://api.fxtwitter.com/lsxs_888",
+    "payload_sha256": "b9f5b436d4f25a6c9d79efc3673aa0165a87c7bb71c6db6b3a3ce1ae0defcec6",
+    "reciprocal": false,
+    "target_profile_status": "old handle is not named in the current profile",
+    "wallet_attributed": false,
+    "warning": "Old-account disclosure is retained, but the current scanner role remains excluded from causal calls."
+  },
+  {
+    "source_handle": "treyerl",
+    "source_user_id": "574166659",
+    "linked_handle": "meliboi_sama",
+    "linked_user_id": "1639851624431767553",
+    "relationship_claim": "profile says one in @meliboi_sama",
+    "evidence_url": "https://api.fxtwitter.com/treyerl",
+    "payload_sha256": "9946209be1d2f722746a2a7e8245092cb464894dda022e4b9014f5faa103bd8f",
+    "reciprocal": false,
+    "target_profile_status": "target stable ID independently retrievable; target profile does not name treyerl",
+    "wallet_attributed": false,
+    "warning": "One-way public affiliation only; it is not evidence of shared control, same person, or a secondary wallet."
+  }
+]

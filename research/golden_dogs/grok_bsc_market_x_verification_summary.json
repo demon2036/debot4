@@ -1,0 +1,12 @@
+{
+  "generated_at": "2026-08-12T14:32:39.942162Z",
+  "lead_count": 1225,
+  "schema": "debot4.grok_bsc_market_x_verification_summary.v1",
+  "status_counts": {
+    "status_author_mismatch": 14,
+    "status_unavailable": 5,
+    "verified": 1206
+  },
+  "unique_profile_count": 792,
+  "warning": "verified means X identity and authored post only, not KOL quality or wallet"
+}

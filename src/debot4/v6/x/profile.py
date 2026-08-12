@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+import re
 from typing import Mapping
 import urllib.parse
 
@@ -10,8 +11,26 @@ from .http import FxJsonHttp, FxTwitterError, JsonGetter
 from .models import XCheckpoint, XProfile
 
 
+_SHA256 = re.compile(r"[0-9a-f]{64}")
+
+
 class XProfileError(FxTwitterError):
     """FxTwitter profile identity or schema failure."""
+
+
+@dataclass(frozen=True, slots=True)
+class XProfileObservation:
+    profile: XProfile
+    source_url: str
+    response_bytes: int
+    sha256: str
+    response_identity: str | None
+
+    def __post_init__(self) -> None:
+        if not self.source_url.startswith("https://api.fxtwitter.com/"):
+            raise ValueError("X profile evidence URL is invalid")
+        if self.response_bytes <= 0 or not _SHA256.fullmatch(self.sha256):
+            raise ValueError("X profile evidence receipt is invalid")
 
 
 @dataclass(slots=True)
@@ -26,15 +45,25 @@ class XProfileClient:
         self.origin = self.origin.rstrip("/")
 
     def fetch(self, handle: str) -> XProfile:
+        return self.fetch_observation(handle).profile
+
+    def fetch_observation(self, handle: str) -> XProfileObservation:
         expected = XCheckpoint(handle).handle
         encoded = urllib.parse.quote(expected, safe="")
-        document = self.http.get_json(f"{self.origin}/{encoded}")
+        source_url = f"{self.origin}/{encoded}"
+        document = self.http.get_json(source_url)
         if document is None:
             raise XProfileError("FxTwitter returned an empty profile")
-        return parse_fxtwitter_profile(
+        profile = parse_fxtwitter_profile(
             document.payload,
             expected_handle=expected,
             fetched_at=document.fetched_at,
+        )
+        if not document.sha256:
+            raise XProfileError("FxTwitter profile response fingerprint is missing")
+        return XProfileObservation(
+            profile, source_url, document.response_bytes,
+            document.sha256, document.response_identity,
         )
 
 

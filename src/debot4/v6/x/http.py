@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
+import hashlib
 import json
 from typing import Callable, Protocol
 import urllib.error
@@ -22,6 +23,8 @@ class FxJsonDocument:
     payload: object
     fetched_at: datetime
     response_bytes: int
+    sha256: str | None = None
+    response_identity: str | None = None
 
 
 class JsonGetter(Protocol):
@@ -59,6 +62,7 @@ class FxJsonHttp:
                 if status == 204:
                     return None
                 raw = response.read(self.max_response_bytes + 1)
+                identity = _response_identity(response.headers)
         except FxTwitterError:
             raise
         except urllib.error.HTTPError as exc:
@@ -71,7 +75,9 @@ class FxJsonHttp:
             payload = json.loads(raw)
         except (UnicodeDecodeError, json.JSONDecodeError):
             raise FxTwitterError("FxTwitter returned invalid JSON") from None
-        return FxJsonDocument(payload, _utc(self.clock()), len(raw))
+        return FxJsonDocument(
+            payload, _utc(self.clock()), len(raw), hashlib.sha256(raw).hexdigest(), identity,
+        )
 
     def _validate_url(self, url: str) -> None:
         parsed = urllib.parse.urlsplit(url)
@@ -92,3 +98,14 @@ def _utc(value: datetime) -> datetime:
     if value.tzinfo is None or value.utcoffset() is None:
         raise ValueError("FxTwitter clock must be timezone-aware")
     return value.astimezone(timezone.utc)
+
+
+def _response_identity(headers: object) -> str | None:
+    getter = getattr(headers, "get", None)
+    if not callable(getter):
+        return None
+    for name in ("x-request-id", "cf-ray", "etag"):
+        value = str(getter(name) or "").strip()
+        if value:
+            return f"{name}:{value[:256]}"
+    return None

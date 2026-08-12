@@ -11,6 +11,8 @@ REQUIRED_HANDLES = {
     "blknoiz06",
     "cryptodevinl",
     "hexiecs",
+    "brc20niubi",
+    "gcsheng",
     "btc2ai",
     "ddakbbam1",
     "kenjiquest",
@@ -36,6 +38,21 @@ REQUIRED_HANDLES = {
     "cz_binance",
     "sunapooh67",
     "jtitordemon2036",
+    "99x_fjtl",
+    "52hz_eth",
+    "meligamble",
+    "meliboi_sama",
+    "zephyrtrading",
+    "superl9",
+    "0x__117",
+    "0xnra1",
+    "dalai77988",
+    "jiaodu6688",
+    "moneymancalls",
+    "predictedwaxx",
+    "treyerl",
+    "ts65855",
+    "yig168168",
 }
 
 
@@ -90,6 +107,7 @@ def test_priority_kols_have_exact_authored_status_evidence() -> None:
     required = {
         "yeonwoo1102", "sencrazy_1", "nina_rong", "2442lll",
         "cryptodevinl", "hexiecs", "btc2ai", "blknoiz06",
+        "gcsheng",
         "ageullo", "0xblackluke", "golocojp", "0xcryptowizard",
         "0xmmu", "btcold8", "agnesrium", "robinhoodalphas",
         "a1lon9", "jupiterexchange", "meteoraag", "bonkfun",
@@ -108,6 +126,8 @@ def test_rejected_noise_accounts_are_not_monitored() -> None:
     handles = {item.handle.casefold() for item in DEFAULT_ACTOR_CATALOG}
 
     assert {
+        "xdevelopers",
+        "base",
         "jianfengsh68965",
         "aye5098",
         "yummmycrypotato",
@@ -115,6 +135,24 @@ def test_rejected_noise_accounts_are_not_monitored() -> None:
         "spiderman_rich",
         "00q__",
     }.isdisjoint(handles)
+    assert {"elonmusk", "cz_binance"} <= handles
+
+
+def test_bsc_audit_kols_keep_exact_post_evidence_and_propagation_only_power() -> None:
+    handles = {
+        "99x_fjtl", "52hz_eth", "meligamble",
+        "meliboi_sama", "zephyrtrading", "superl9",
+        "0x__117", "0xnra1", "dalai77988", "jiaodu6688",
+        "moneymancalls", "predictedwaxx", "treyerl", "ts65855",
+        "yig168168",
+    }
+
+    for item in DEFAULT_ACTOR_CATALOG:
+        if item.handle.casefold() not in handles:
+            continue
+        assert "exact authored status" in item.basis
+        assert "/status/" in item.evidence_urls[1]
+        assert item.capabilities == (ActorCapability.PROPAGATE,)
 
 
 def test_only_reviewed_public_telegram_channels_enter_automatic_monitoring() -> None:

@@ -3,7 +3,12 @@
 from .egress import FxEgressError, FxEgressNode, FxEgressPool
 from .http import FxJsonDocument, FxJsonHttp, FxTwitterError
 from .models import XCheckpoint, XPost, XProfile, XTimelineBatch
-from .profile import XProfileClient, XProfileError, parse_fxtwitter_profile
+from .profile import (
+    XProfileClient,
+    XProfileError,
+    XProfileObservation,
+    parse_fxtwitter_profile,
+)
 from .reposts import (
     DEFAULT_REPOST_POLL_SECONDS,
     FxTwitterRepostMonitor,
@@ -31,6 +36,7 @@ __all__ = [
     "XProfile",
     "XProfileClient",
     "XProfileError",
+    "XProfileObservation",
     "XRepostError",
     "XRepostObservation",
     "XRepostTarget",

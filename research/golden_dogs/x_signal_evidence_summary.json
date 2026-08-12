@@ -1,0 +1,27 @@
+{
+  "accounts": 52,
+  "causal_research_candidates": 19,
+  "generated_at": "2026-08-12T14:39:23.861735Z",
+  "grades": {
+    "A": 4,
+    "B": 44,
+    "C": 3,
+    "EXCLUDE": 30
+  },
+  "manually_reviewed_posts": 43,
+  "pairs": 81,
+  "schema": "debot4.x_signal_evidence_summary.v2",
+  "semantics": {
+    "market_context": 5,
+    "market_thesis": 17,
+    "negative_warning": 5,
+    "own_position": 4,
+    "project_announcement": 1,
+    "recap": 5,
+    "relay": 1,
+    "reply_mention": 5,
+    "unreviewed": 38
+  },
+  "tokens": 34,
+  "warning": "Evidence grades do not qualify a golden dog or smart wallet."
+}
