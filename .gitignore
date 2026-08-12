@@ -19,6 +19,7 @@ var/
 *.sqlite3-*
 *.db
 *.db-*
+*.jsonl
 *.jsonl.*
 *.log
 *.lock

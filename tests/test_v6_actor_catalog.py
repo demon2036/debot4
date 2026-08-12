@@ -53,6 +53,9 @@ REQUIRED_HANDLES = {
     "treyerl",
     "ts65855",
     "yig168168",
+    "false2z",
+    "sizzlezzzzzzzzz",
+    "9999btcname",
 }
 
 
@@ -145,6 +148,7 @@ def test_bsc_audit_kols_keep_exact_post_evidence_and_propagation_only_power() ->
         "0x__117", "0xnra1", "dalai77988", "jiaodu6688",
         "moneymancalls", "predictedwaxx", "treyerl", "ts65855",
         "yig168168",
+        "false2z", "sizzlezzzzzzzzz", "9999btcname",
     }
 
     for item in DEFAULT_ACTOR_CATALOG:

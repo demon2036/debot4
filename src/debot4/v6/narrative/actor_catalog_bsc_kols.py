@@ -6,6 +6,42 @@ from .actors import ActorTier as T
 
 BSC_AUDIT_KOL_ACTORS = (
     actor(
+        "false2z", "1871782938754330624", "false3z",
+        "BSC exact-CA selector who distinguished the main BOT contract from a fee-bearing competitor before the first-wave peak",
+        T.PROPAGATION_KOL, ("bsc", "bnb"), KOL,
+        languages=("en",), regions=("global",), priority=4,
+        basis=EXACT_POST_REVIEW,
+        evidence=("https://x.com/false2z/status/2086541464171860432",),
+        risks=(
+            "BOT post was 165 seconds after launch and does not prove narrative origin",
+            "one reviewed token cannot establish a profitable longitudinal hit rate",
+        ),
+    ),
+    actor(
+        "sizzlezzzzzzzzz", "1451953767134515209", "sizzlez",
+        "BSC narrative watcher who published the main BOT CA before its second catalyst wave",
+        T.PROPAGATION_KOL, ("bsc", "bnb"), KOL,
+        languages=("en",), regions=("global",), priority=4,
+        basis=EXACT_POST_REVIEW,
+        evidence=("https://x.com/sizzlezzzzzzzzz/status/2086945202246160555",),
+        risks=(
+            "the BOT post followed the initial 517x wave and cannot claim first discovery",
+            "anticipated catalyst language remains a thesis until authority evidence arrives",
+        ),
+    ),
+    actor(
+        "9999btcname", "1825447165868826624", "不二和尚",
+        "Chinese BSC position amplifier observed before the recorded BOT first-wave peak",
+        T.PROPAGATION_KOL, ("bsc", "bnb"), KOL,
+        languages=("zh",), regions=("china",), priority=8,
+        basis=EXACT_POST_REVIEW,
+        evidence=("https://x.com/9999btcname/status/2086543875393593486",),
+        risks=(
+            "BOT post was 740 seconds after launch and may reflect an existing move",
+            "position language is not proof of source status, wallet ownership, or causation",
+        ),
+    ),
+    actor(
         "99X_FJTL", "1515321304777629697", "他们都叫我水哥",
         "Chinese BSC community operator and meme propagation account",
         T.PROPAGATION_KOL, ("bsc", "bnb"), KOL,

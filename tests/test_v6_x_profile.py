@@ -26,6 +26,23 @@ def _payload(handle: str = "yeonwoo1102", user_id: str = "1444971805618302988"):
             "screen_name": handle,
             "name": "Yeon",
             "description": "Korean degen",
+            "avatar_url": "https://pbs.twimg.com/profile_images/1/avatar.jpg",
+            "banner_url": "https://pbs.twimg.com/profile_banners/1/2",
+            "url": "https://x.com/yeonwoo1102",
+            "website": {"url": "https://example.com", "display_url": "example.com"},
+            "verification": {"verified": True, "type": "blue"},
+            "followers": 123,
+            "following": 45,
+            "statuses": 67,
+            "media_count": 8,
+            "likes": 9,
+            "about_account": {
+                "based_in": "South Korea",
+                "username_changes": {
+                    "count": 2,
+                    "last_changed_at": "2026-08-01T00:00:00Z",
+                },
+            },
         },
     }
 
@@ -39,7 +56,14 @@ def test_profile_client_preserves_stable_identity_and_bio() -> None:
     assert profile.user_id == "1444971805618302988"
     assert profile.display_name == "Yeon"
     assert profile.description == "Korean degen"
-    assert http.urls == ["https://api.fxtwitter.com/yeonwoo1102"]
+    assert profile.avatar_url.endswith("/avatar.jpg")
+    assert profile.verified is True
+    assert profile.followers == 123
+    assert profile.based_in == "South Korea"
+    assert profile.username_change_count == 2
+    assert http.urls == [
+        "https://api.fxtwitter.com/2/profile/yeonwoo1102?about_account=1"
+    ]
 
 
 def test_profile_observation_keeps_provider_receipt() -> None:
@@ -48,7 +72,9 @@ def test_profile_observation_keeps_provider_receipt() -> None:
     )
 
     assert evidence.profile.user_id == "1444971805618302988"
-    assert evidence.source_url == "https://api.fxtwitter.com/yeonwoo1102"
+    assert evidence.source_url == (
+        "https://api.fxtwitter.com/2/profile/yeonwoo1102?about_account=1"
+    )
     assert evidence.sha256 == "0" * 64
     assert evidence.response_identity == "cf-ray:test"
 

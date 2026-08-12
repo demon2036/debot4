@@ -50,7 +50,7 @@ class XProfileClient:
     def fetch_observation(self, handle: str) -> XProfileObservation:
         expected = XCheckpoint(handle).handle
         encoded = urllib.parse.quote(expected, safe="")
-        source_url = f"{self.origin}/{encoded}"
+        source_url = f"{self.origin}/2/profile/{encoded}?about_account=1"
         document = self.http.get_json(source_url)
         if document is None:
             raise XProfileError("FxTwitter returned an empty profile")
@@ -75,6 +75,10 @@ def parse_fxtwitter_profile(
     user = payload.get("user")
     if not isinstance(user, Mapping):
         raise XProfileError("FxTwitter profile schema is invalid")
+    website = user.get("website")
+    verification = user.get("verification")
+    about = user.get("about_account")
+    changes = about.get("username_changes") if isinstance(about, Mapping) else None
     try:
         profile = XProfile(
             handle=str(user.get("screen_name") or ""),
@@ -82,9 +86,53 @@ def parse_fxtwitter_profile(
             display_name=str(user.get("name") or ""),
             description=str(user.get("description") or ""),
             fetched_at=fetched_at,
+            avatar_url=str(user.get("avatar_url") or ""),
+            banner_url=str(user.get("banner_url") or ""),
+            location=str(user.get("location") or ""),
+            profile_url=str(user.get("url") or ""),
+            website_url=_nested_text(website, "url"),
+            website_display=_nested_text(website, "display_url"),
+            verified=_nested_bool(verification, "verified"),
+            verification_type=_nested_text(verification, "type"),
+            protected=_bool(user.get("protected")),
+            followers=_count(user.get("followers")),
+            following=_count(user.get("following")),
+            statuses=_count(user.get("statuses")),
+            media_count=_count(user.get("media_count")),
+            likes=_count(user.get("likes")),
+            joined=str(user.get("joined") or ""),
+            based_in=_nested_text(about, "based_in"),
+            username_change_count=_nested_count(changes, "count"),
+            username_changed_at=_nested_text(changes, "last_changed_at"),
         )
     except (TypeError, ValueError) as exc:
         raise XProfileError("FxTwitter profile identity is invalid") from exc
     if profile.handle != XCheckpoint(expected_handle).handle:
         raise XProfileError("FxTwitter returned an unexpected profile handle")
     return profile
+
+
+def _nested_text(value: object, key: str) -> str:
+    return str(value.get(key) or "") if isinstance(value, Mapping) else ""
+
+
+def _nested_count(value: object, key: str) -> int:
+    return _count(value.get(key)) if isinstance(value, Mapping) else 0
+
+
+def _nested_bool(value: object, key: str) -> bool:
+    return _bool(value.get(key)) if isinstance(value, Mapping) else False
+
+
+def _count(value: object) -> int:
+    if isinstance(value, bool) or value is None:
+        return 0
+    try:
+        parsed = int(value)
+    except (TypeError, ValueError):
+        return 0
+    return max(parsed, 0)
+
+
+def _bool(value: object) -> bool:
+    return value is True or str(value).strip().casefold() == "true"

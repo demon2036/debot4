@@ -1,0 +1,140 @@
+{
+  "schema": "debot4.explosion_replay.v1",
+  "case_id": "bsc-bot-2026-08",
+  "token_name": "Bot",
+  "chain": "bsc",
+  "token_address": "0xbcad9b1b85af1cd81437252bf50b87235c0b7777",
+  "waves": [
+    {
+      "wave_id": "bot-initial-launch-2026-08-09",
+      "kind": "initial_launch",
+      "move_started_at": "2026-08-09T19:51:00Z",
+      "entry_fdv_usd": 4438.997926636516,
+      "peak_fdv_usd": 2297998.92665256,
+      "peak_at": "2026-08-09T20:10:00Z",
+      "precision": "DeBot first 1m open to 5m high; historical approximation, not executable quote",
+      "moments": [
+        {
+          "label": "first_market_trade",
+          "occurred_at": "2026-08-09T19:51:00Z",
+          "role": "market",
+          "source_url": "https://app.debot.ai/api/market/v4?token=0xbcad9b1b85af1cd81437252bf50b87235c0b7777&chain=bsc&interval=60&limit=1000&end=1786305600",
+          "evidence": "first trade timestamp and initial FDV from retained DeBot market receipt",
+          "offset_from_move_seconds": 0
+        },
+        {
+          "label": "earliest_clean_provider_tagged_buy",
+          "occurred_at": "2026-08-09T19:52:00Z",
+          "role": "candidate",
+          "source_url": "https://gmgn.ai/bsc/token/0xbcad9b1b85af1cd81437252bf50b87235c0b7777",
+          "evidence": "mstzera-tagged wallet bought about $1,185; wallet-X binding and longitudinal win rate remain unqualified",
+          "offset_from_move_seconds": 60
+        },
+        {
+          "label": "false2z_selects_main_ca",
+          "occurred_at": "2026-08-09T19:53:45Z",
+          "role": "candidate",
+          "source_url": "https://x.com/false2z/status/2086541464171860432",
+          "evidence": "published the exact main BOT CA 165 seconds after launch and warned that the competing contract charged developer fees; useful canonical-CA selection evidence, not an origin signal",
+          "offset_from_move_seconds": 165
+        },
+        {
+          "label": "9999btcname_position_post",
+          "occurred_at": "2026-08-09T20:03:20Z",
+          "role": "candidate",
+          "source_url": "https://x.com/9999btcname/status/2086543875393593486",
+          "evidence": "published the exact main BOT CA and said the correct contract had been bought; this was before the recorded peak but 740 seconds after launch",
+          "offset_from_move_seconds": 740
+        }
+      ]
+    },
+    {
+      "wave_id": "bot-profile-catalyst-2026-08-11",
+      "kind": "secondary_catalyst",
+      "move_started_at": "2026-08-11T16:47:00Z",
+      "entry_fdv_usd": 341300,
+      "peak_fdv_usd": 1235999,
+      "peak_at": "2026-08-11T16:50:00Z",
+      "precision": "1m OHLC market-cap approximation; not a decision-time executable quote",
+      "moments": [
+        {
+          "label": "bot_avatar_resource_created",
+          "occurred_at": "2026-08-11T16:46:59.958Z",
+          "role": "catalyst",
+          "source_url": "https://pbs.twimg.com/profile_images/2087219239275069440/KW6C403V_normal.jpg",
+          "evidence": "Twitter image snowflake encodes the provider resource timestamp",
+          "offset_from_move_seconds": -0.042
+        },
+        {
+          "label": "market_move_started",
+          "occurred_at": "2026-08-11T16:47:00Z",
+          "role": "market",
+          "source_url": "https://app.debot.ai/api/market/v4?token=0xbcad9b1b85af1cd81437252bf50b87235c0b7777&chain=bsc&interval=60&limit=1000",
+          "evidence": "first explosive one-minute candle",
+          "offset_from_move_seconds": 0
+        },
+        {
+          "label": "bot_banner_resource_created",
+          "occurred_at": "2026-08-11T16:47:51Z",
+          "role": "catalyst",
+          "source_url": "https://pbs.twimg.com/profile_banners/2085838061347217408/1786466871",
+          "evidence": "banner URL embeds a provider Unix timestamp",
+          "offset_from_move_seconds": 51
+        },
+        {
+          "label": "official_grok_bot_announcement",
+          "occurred_at": "2026-08-11T17:09:05Z",
+          "role": "confirmation",
+          "source_url": "https://x.com/bot/status/2087224798078517251",
+          "evidence": "official @bot post: Introducing Grok Bot, now in early beta",
+          "offset_from_move_seconds": 1325
+        }
+      ]
+    }
+  ],
+  "candidates": [
+    {
+      "subject": "@false2z",
+      "kind": "canonical_ca_amplifier",
+      "status": "research_candidate",
+      "evidence_urls": ["https://x.com/false2z/status/2086541464171860432"],
+      "reason": "published the exact main CA before the first-wave peak and explicitly distinguished a developer-fee competitor; first-wave source status and cross-token hit-rate remain unproved"
+    },
+    {
+      "subject": "@9999btcname",
+      "kind": "position_amplifier",
+      "status": "research_candidate",
+      "evidence_urls": ["https://x.com/9999btcname/status/2086543875393593486"],
+      "reason": "posted the exact main CA before the recorded peak but already 12 minutes 20 seconds after launch; no evidence yet that this account found or caused the move"
+    },
+    {
+      "subject": "@sizzlezzzzzzzzz",
+      "kind": "x_narrative_lead",
+      "status": "research_candidate",
+      "evidence_urls": ["https://x.com/sizzlezzzzzzzzz/status/2086945202246160555"],
+      "reason": "published exact BOT CA and anticipated an Elon reveal before wave two, but no verified longitudinal hit-rate yet"
+    },
+    {
+      "subject": "@mstzera / 0x92662d5f5d0dbc25cce7ceba5a4160084c9e05ab",
+      "kind": "provider_tagged_wallet",
+      "status": "research_candidate",
+      "evidence_urls": ["https://gmgn.ai/bsc/token/0xbcad9b1b85af1cd81437252bf50b87235c0b7777"],
+      "reason": "earliest clean BOT buy in retained provider audit, but complete performance denominator and author-wallet proof are missing"
+    },
+    {
+      "subject": "0xac750ab07179c569035c6d0eee5c26556dfc7777",
+      "kind": "competing_ca",
+      "status": "disabled_no_evidence",
+      "evidence_urls": ["https://app.debot.ai/token/0xac750ab07179c569035c6d0eee5c26556dfc7777-bsc"],
+      "reason": "same-name copy created at the second-wave timestamp; no KOL or authority evidence, so it must not inherit the main BOT narrative"
+    }
+  ],
+  "limitations": [
+    "The avatar and banner URL timestamps are provider resource times; a live detector still depends on its first successful poll.",
+    "The first-wave and second-wave FDVs are historical candle approximations, not executable buy prices.",
+    "No retained snapshot proves the exact time Elon followed @bot.",
+    "No candidate wallet or X account in this replay is promoted to a verified profitable KOL.",
+    "Later exact-CA posts from @CryptoBitxin and @munburanketto occurred after the first-wave peak and are posthoc propagation, not discovery evidence.",
+    "A profile catalyst identifies a narrative; it does not by itself bind the winning contract address."
+  ]
+}

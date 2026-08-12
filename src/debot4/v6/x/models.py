@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime, timezone
 import re
+from urllib.parse import urlsplit
 
 
 _HANDLE = re.compile(r"[A-Za-z0-9_]{1,15}")
@@ -89,6 +90,24 @@ class XProfile:
     display_name: str
     description: str
     fetched_at: datetime
+    avatar_url: str = ""
+    banner_url: str = ""
+    location: str = ""
+    profile_url: str = ""
+    website_url: str = ""
+    website_display: str = ""
+    verified: bool = False
+    verification_type: str = ""
+    protected: bool = False
+    followers: int = 0
+    following: int = 0
+    statuses: int = 0
+    media_count: int = 0
+    likes: int = 0
+    joined: str = ""
+    based_in: str = ""
+    username_change_count: int = 0
+    username_changed_at: str = ""
 
     def __post_init__(self) -> None:
         handle = self.handle.strip().lstrip("@").lower()
@@ -98,7 +117,31 @@ class XProfile:
         object.__setattr__(self, "display_name", self.display_name.strip())
         object.__setattr__(self, "description", self.description.strip())
         object.__setattr__(self, "fetched_at", _utc(self.fetched_at, "fetched_at"))
+        for field_name in (
+            "avatar_url", "banner_url", "profile_url", "website_url",
+        ):
+            value = getattr(self, field_name).strip()
+            if value and not _http_url(value):
+                raise ValueError(f"invalid X profile {field_name}")
+            object.__setattr__(self, field_name, value)
+        for field_name in (
+            "location", "website_display", "verification_type", "joined",
+            "based_in", "username_changed_at",
+        ):
+            object.__setattr__(self, field_name, getattr(self, field_name).strip())
+        for field_name in (
+            "followers", "following", "statuses", "media_count", "likes",
+            "username_change_count",
+        ):
+            value = getattr(self, field_name)
+            if isinstance(value, bool) or value < 0:
+                raise ValueError(f"invalid X profile {field_name}")
 
     @property
     def canonical_url(self) -> str:
         return f"https://x.com/{self.handle}"
+
+
+def _http_url(value: str) -> bool:
+    parsed = urlsplit(value)
+    return parsed.scheme in {"http", "https"} and bool(parsed.hostname)
