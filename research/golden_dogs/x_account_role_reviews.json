@@ -481,5 +481,19 @@
     "role": "kol_candidate",
     "evidence_url": "https://x.com/yig168168/status/2064955544411275680",
     "reason": "Human trading/community account authored a direct exact-CA entry prompt; team-building and promotion conflicts remain explicit."
+  },
+  {
+    "stable_user_id": "1396848750241353734",
+    "handle": "abbeggnel2oxaas",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/aBbeGGnEl2OxaAs/status/2060670945447252267",
+    "reason": "Stable human X identity authored a pre-peak exact-CA thesis; a separately provider-bound wallet bought that CA before the post, while promotion and origin remain unproven."
+  },
+  {
+    "stable_user_id": "1785592993317318656",
+    "handle": "zhuilong888",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/zhuilong888/status/2086359629999776017",
+    "reason": "Directory-listed human meme account authored a pre-peak exact-CA selection thesis; referral and commercial-promotion conflicts remain explicit."
   }
 ]

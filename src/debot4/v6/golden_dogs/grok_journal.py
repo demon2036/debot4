@@ -6,6 +6,24 @@ import json
 from typing import Iterable
 
 
+_REFUSAL_MARKERS = (
+    "cannot comply",
+    "can't comply",
+    "will not generate",
+    "will not perform",
+    "will not search",
+)
+
+
+def row_is_research_success(row: dict[str, object]) -> bool:
+    """Reject transport-level successes whose answer explicitly refused the task."""
+
+    if row.get("status") != "success":
+        return False
+    answer = str(row.get("answer") or "").casefold()
+    return not any(marker in answer for marker in _REFUSAL_MARKERS)
+
+
 def successful_prompt_digests(lines: Iterable[str]) -> dict[str, str]:
     """Return the newest successful prompt digest for every task key."""
 
@@ -14,7 +32,7 @@ def successful_prompt_digests(lines: Iterable[str]) -> dict[str, str]:
         if not line.strip():
             continue
         row = json.loads(line)
-        if row.get("status") != "success":
+        if not row_is_research_success(row):
             continue
         key = str(row.get("key") or "").strip()
         digest = str(row.get("prompt_sha256") or "").strip().casefold()
@@ -37,7 +55,7 @@ def successful_candidate_urls(lines: Iterable[str]) -> tuple[str, ...]:
         if not line.strip():
             continue
         row = json.loads(line)
-        if row.get("status") != "success":
+        if not row_is_research_success(row):
             continue
         urls.update(
             str(value).strip()
