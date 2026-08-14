@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from decimal import Decimal
+
 import httpx
 
 from debot4.v6.golden_dogs.gmgn_wallet_activity import (
@@ -16,7 +18,8 @@ def row(
 ) -> dict[str, object]:
     return {
         "wallet": WALLET, "chain": "bsc", "tx_hash": "0x" + digit * 64,
-        "timestamp": timestamp, "event_type": event, "token": {"address": token},
+        "timestamp": timestamp, "event_type": event, "price_usd": "0.0025",
+        "token": {"address": token, "total_supply": "1000000000"},
     }
 
 
@@ -36,6 +39,8 @@ def test_wallet_activity_pages_until_period_start_is_crossed() -> None:
     assert history.coverage_complete is True
     assert history.stop_reason == "crossed_period_start"
     assert [item.timestamp for item in history.activities] == [150, 250]
+    assert history.activities[0].price_usd == Decimal("0.0025")
+    assert history.activities[0].token_total_supply == Decimal("1000000000")
     assert len(history.receipts) == 2
 
 

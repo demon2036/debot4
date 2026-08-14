@@ -1,0 +1,6 @@
+{"query_id":"bsc_missing","status":"ok","source_count":22,"disposition":"rejected_as_case_evidence","finding":"Query confused 金狗 with literal Golden Dogs accounts; no candidate was accepted without exact-CA market verification."}
+{"query_id":"robinhood_names","status":"ok","source_count":39,"disposition":"used_as_untrusted_leads","finding":"Led to PONS, CASHCAT and STONK name checks; final inclusion came from exact CA and independent market data."}
+{"query_id":"kol_wallets_a","status":"ok","source_count":15,"disposition":"wallet_claim_rejected","finding":"Returned a btc2ai token contract as a supposed wallet; exact address-role validation rejected it."}
+{"query_id":"kol_wallets_b","status":"ok","source_count":19,"disposition":"one_lead_verified_independently","finding":"Located Kenji's wallet-suffix post; Blockscout transfer amount independently resolved the exact wallet."}
+{"query_id":"pattern_evidence","status":"error","source_count":0,"disposition":"no_evidence","finding":"Search failed; no pattern conclusion was taken from it."}
+{"query_id":"bsc_named_cases_retry","status":"error","source_count":0,"disposition":"credential_rejected","finding":"Retry was rejected by the provider as an invalid API key; no response content was used."}

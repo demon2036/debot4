@@ -1,0 +1,10 @@
+{
+  "generated_at": "2026-08-12T16:55:41.565763Z",
+  "lead_count": 460,
+  "schema": "debot4.grok_tintin_x_verification_summary.v1",
+  "status_counts": {
+    "verified": 460
+  },
+  "unique_profile_count": 40,
+  "warning": "verified means X identity and authored post only, not KOL quality or wallet"
+}

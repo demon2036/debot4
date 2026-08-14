@@ -1,0 +1,34 @@
+{
+  "counts_by_label": {
+    "Asian games": 5,
+    "BOT": 5,
+    "CETS": 12,
+    "CSI": 2,
+    "Racoonzilla": 4,
+    "SpaceXcoin": 9,
+    "TKM": 2,
+    "XchangetheWorld": 7,
+    "bNS": 10,
+    "bStocks": 15,
+    "fourclub": 13,
+    "币安城": 4,
+    "月薪喵": 10
+  },
+  "schema": "debot4.bsc_week_x_exact_evidence_summary.v1",
+  "source_sha256": {
+    "bsc_week_x_manual_candidates.json": "6300c06842d842098b8fb396a9a069dd6f4718c8556b4c1c9005cb91b06d904f",
+    "grok_bsc_market_x_verified.jsonl": "eb8ffa199dbddd9130beeca8517873aecf2170dd399b1f090de271c80c0c627e",
+    "grok_chinese_profile_deep_x_verified.jsonl": "0c38ab9a385a0e5c9ddb0ea1c788613574b733ac18a7024271716a3f5713b99e",
+    "grok_chinese_profile_frontier2_x_verified.jsonl": "fc3cba95816a5fe94855d5bebcd47bc14dcbf24010a41a47d80689d99a36a19f",
+    "grok_chinese_x_verified.jsonl": "b33881064cdd3ea65306ac5df00054c7af71f70cc5ab774214399b489f0d88b0",
+    "grok_tintin_x_verified.jsonl": "f4f61bed4d8f1f1c6c3abd9b8d20fe4ffd1e061f2b1823188f184e8ab1fa40f8"
+  },
+  "target_count": 13,
+  "unique_verified_post_count": 90,
+  "verified_exact_ca_association_count": 98,
+  "warning": "Each row proves an authored X post containing the literal Exact CA. It does not by itself prove that the post caused a price move; Grok was used only for discovery and is not treated as evidence.",
+  "window": {
+    "end_exclusive": "2026-08-13T00:00:00Z",
+    "start": "2026-08-06T00:00:00Z"
+  }
+}

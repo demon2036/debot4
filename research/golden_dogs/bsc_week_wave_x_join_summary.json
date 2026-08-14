@@ -1,0 +1,13 @@
+{
+  "schema": "debot4.bsc_week_wave_x_join_summary.v1",
+  "source_sha256": {
+    "bsc_week_wave_replays.jsonl": "4de9b31f826a284ec5be768caa1533ce5fa701281443534e2f249b39b7d8bc3a",
+    "bsc_week_x_exact_evidence.jsonl": "0144705c6b8e28abc372f74add110b55c1356f904856058ae1b92e6a725ca796"
+  },
+  "target_count": 13,
+  "warning": "Timing proximity is descriptive, not causal proof. A historical-baseline post may explain the standing narrative but cannot be a direct wave trigger.",
+  "wave_count": 32,
+  "waves_with_ascent_exact_posts": 14,
+  "waves_with_decay_exact_posts": 7,
+  "waves_with_pre_trough_exact_posts": 3
+}

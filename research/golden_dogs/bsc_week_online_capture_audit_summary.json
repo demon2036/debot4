@@ -1,0 +1,33 @@
+{
+  "early_1_02_detection_upper_bound": {
+    "0": 27,
+    "120": 15,
+    "15": 22,
+    "30": 21,
+    "5": 23,
+    "60": 18
+  },
+  "provider_tagged_timing_upper_bound": {
+    "0": 12,
+    "120": 7,
+    "15": 11,
+    "30": 11,
+    "5": 11,
+    "60": 9
+  },
+  "qualified_provider_signal_count": 0,
+  "schema": "debot4.bsc_week_online_capture_audit_summary.v1",
+  "source_sha256": {
+    "bsc_week_block_signal_evidence.jsonl": "23f8a1bd973f53b79da8c0ddadec59f3db355aa82470a04315ae0caf75c99018",
+    "bsc_week_online_capture_audit.jsonl": "f0b21f5a21255e9d8e99c2ab4453a8d602ab9fa3fb1aa3e52630e3dcbb22e72d",
+    "bsc_week_trade_price_evidence.jsonl": "7436363bb04d70ab26982a0227ff824ebe80b6299f6fb1853df577ac85fb2e67"
+  },
+  "target_count": 13,
+  "transaction_motion_observed_count": 32,
+  "warnings": [
+    "Provider-tagged coverage is a timing-only ceiling: every candidate fails the as-of wallet/KOL qualification gate in this audit.",
+    "The 1.02x lane is early motion detection, not advance prediction.",
+    "Observed winning waves cannot estimate precision; a full launch/control universe is required before deployment claims."
+  ],
+  "wave_count": 32
+}

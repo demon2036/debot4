@@ -1,0 +1,145 @@
+{
+  "buy_price_present_count": 216,
+  "fresh_receipt_sha256": {
+    "0x108ad3125bae57daa6d72bd9f2060e07841889c2": [
+      "d02ae89a5e3f34d98af258c661de29d76a2ccfeebec83b6d294aa4d296dc0992",
+      "66a0bf25a70cd64429df460390f731e3ce1b945067c794565bb586c1f3b66462",
+      "6c3dce3a7691877fa435e2376ffe3c2df9bbb41efc020712f33be6435142fd15",
+      "c296b3485a6e5bdeca17f4dbdbacd3e1397925fb86211c130552839b539583aa"
+    ],
+    "0x1e115fb1f7135397d32e901d893bdf0441356c10": [
+      "3070a641ba095a6066df2b95567b8c524caf25e39bc55873fd49a289ea5b91f2",
+      "048b848567d18eaeb8873bc3884b8781d2d4775d3673cb7b8a961369feebff70",
+      "38e1ce771bcd760158277a65039abdaa0b23b3b03c35d1646d2cd69257399758",
+      "159731f6763abd1ad92c50eaca40c5b1efc4328cdb5954f638b3c1afe39bc479",
+      "62993759d7fbac77f9dc6901aaba85f6e08138326be63f4e8679e9f503be8195"
+    ],
+    "0x379dd75fd82daa5ae5f795e8c550eef57190c9fa": [
+      "37d98e8321ac3b49dd8dd844c797d8689b2ec233b741617636cd9dc31c4636e6",
+      "36de62fac81df5b756bc4594bc16b2c0ab101199fa3daf1992057930b86bb833",
+      "1eb0663225210a0c210593b4c14d46c390f3cc50da9fc9b7c373d12c7510681a",
+      "5b6db8c637ca896a7125c0298095737cced6f6ce7e84357dc8d3b6beb80de883",
+      "e4de8293bdddc1b355808e7f3c210211f2cd51069435320be719e6bba6402f3a",
+      "12fa749fc1296d14efe6dd5d2edc271bd5a231536dc6c81621b1c12fdbf8f47e",
+      "2c1b0f482edcb579b2f7f42f2fc4110cc9ffd9513201ab1c111a1d397290a9af",
+      "8b4cf478736f0f6a30c6d9ac604221165edf1196b21d3276fd63a01e35871954",
+      "b62422e6814cf7f3132bedc2fbfc81d77bdcc90284f424f5fe320f72736dc0e7",
+      "c1be4d209237709cb3307b33acaea90cf766ce3f6ffa55e66aa281a477a473f8",
+      "f0ce505135c1e2fac7a012ab10ff9a86a79fc61deea5b9ea059e6175d848d946"
+    ],
+    "0x6c5e56c80e8a11a38f709c43c8aea2219bf98236": [
+      "a673362bdb125fbac366bd31b6e93ad3c4246236f087022345d6b5fa5b8a2ed6",
+      "739289bf55982085955408fea2273c338ac485fca7040584334c724a563dfb85"
+    ],
+    "0x7730b1bf8a21ce829b83e1a0f360fad61d6643e4": [
+      "1114c760e3fde963a06127b3dd13cd4f7da34ad18ff706b9df8d0c5989377fe0",
+      "b6a05303ff8364710c6793ca11420a8145ddc8f0b4d1b34db0ed63064b3245aa",
+      "33bc2fe279d40b7621578872d767c0305def0a25c2e65915f28abf7d54bebc69",
+      "2a8b4c5f5889cf24fa9baadb74622b78580755567f9c0de3f6fad16dfeeb8d1f",
+      "3938e60f7c3462e88c1f4f41583acbb98d7e47c7b4606893dea77e1adc9f9a07",
+      "619ad30fb293a01b03550b2e9be3c8c459e2a944c69491acff43a153ef25ea9d",
+      "764cd157d6f0dc492e192711233e50265ddc0fc3ed7286e446bf6ee838bb3fd8",
+      "ae425668e46ce9feb55797222afb7ff9779bbfcf71d1a8c5c85989e409721d5d"
+    ],
+    "0x87257e9ee9c6d95877db536c37bb606d0d96faa4": [
+      "c990fc8077e9a51cf69984b11f01d53d0689ecdc3c8a832d818c74afa892418c",
+      "32ec7f0acce6fc4300fd63eb17e2b0daa2c95dab01e82e7b353c1a958640e0ed",
+      "4f21f34dbd66f5fb839a0ee183e6a457e4954fb651f4d15fa9b8b66ec5da83ff",
+      "4624ba0deafca6b7a666024a8fdc19ac9224d1a3241ae9c95aec05399c2bcb2e"
+    ],
+    "0xbb93a804432917f3bfbc5a63c331d8e89c43731b": [
+      "ee806eb18fcf8314cee034f926ae8a26c04a265ccbab50e49c6f7c0066d477fa",
+      "4d4fc79d245a7a55ebcbe0323678000f70898b319278a644c74b091bf99804e0"
+    ],
+    "0xf5c2b8a1553052a9f5d47023e4cddfa51a11405c": [
+      "98a7b25d3a738ff9c8db4bf727f00db237b93859f4ce2a6f239a57a2a8b1e3dc",
+      "26aa66cc36df3afaa62d2c72ceceeaae448e7780351843bdac2a5f01680d3aaa",
+      "fad8c0e5d8e0c3d4b44b3f7e58b8389ce75c1b1d428c9b4237b299ce8d43a6de",
+      "8e5e6ff48cbd4afc40bcd7ea21b4a0991f0c3a3f894a7d7d2327fb7e050be6fa",
+      "0165a59c6f8230043c9ff7c3e0078cc52142386c52f8016cc2b8ee11c30e98a9",
+      "2729aee94dd34ac08f6e8ce49265e979fc7b0b3d7ac990a876a2137d4b0d329e",
+      "6e01fe093869aac2845cc3687723f5c543329c7e93b58a9be5c480a5b0147bdf",
+      "62dcf2ea37b4148b461c018093db4ab8865cb3b16954aeec2fd8e02e061e2c28",
+      "b5591941e5726d3f517891b80a0959a4da512a1a6245dbb48e15862c18403c73",
+      "00e794eb5b27b3e44f6899d33c3660f8b3ec98805ea92c77f4ec7c9c0b1d8e2f",
+      "c7d57203a7547501014cc3c62f80e84042f9161fa7c6db6d14e712386848cb4e",
+      "4c88fed782e32b5b8d8ca35c031b1089263753c67239f7145274a3abb0114765",
+      "c8592cbf22961378680064227b88c0d31e2353acd188eac53a6fb756416bd6df",
+      "79c6901673368ba11d12ff28ce55239776c05181d27475e3e6f0fa10c4072e27",
+      "9447cc330553b4eb7c6e6cba98bb64f06d0076490f48288ef4a6aee876d259e9",
+      "4c1fe68d75b938cab549e88b434754c25f1953092d1c3fb7128e2bc27cf88ad8",
+      "2931551443678000ff55c65394cc6a9618db8201a8d57b41ca25bc11ebedcfcf",
+      "e60c9d547ea10aa03efaa6ffa00ca211474124a6b35114bc3d8f8ac792f97339",
+      "28e484ceaf89d16d8e6c4d13a3ea980d43151724afb1821c1087662a798ceba6",
+      "81456f15333f0edbff1202ba69b489702c9ee59b8e09fae60e0ad06f8d3da90a",
+      "9a33f8cd35d8fa43d0e1746e01a0db90edf9dad6db9e9b5b2efe0974a5d020d2",
+      "fdb3c248af128ba58fd81231ddf92ab03fed13f9c1f03efa7d3ba522ed835f20",
+      "9aa7ebd070923dafcd7d8330b2a3d87d94d94d8000029ba36e65a561c3d56677",
+      "b766ef1a687bb9fd7a6ca02a7034abb2b5b8293df04a844f244646aa98ec20d3",
+      "54138733441788dcf5dd8610ef1e7649ac760f924011812a7d33cc0f74f1f173",
+      "2a742739c7dbbd386db53ca02f4b5f4dbfe7aa63c8ce80dd5a7780db0c7fa029",
+      "42759b84f083b477866178ca280041c7f1e985afa609d23df9cab779ed72b240",
+      "9f56c12b2389ba7ffbda6f43a6b8353c0455a646f7487b1194928b2421313de6",
+      "0c712e3dafd1310164965e1a219bda2ba36b89441ff1cc3f27e717a366a0b4a6",
+      "1c5f3c0dba1dab0d4bbab5c0533fcbaa01c09cfc1e4db8cc159dee96b0aea97f",
+      "8397f0cd5724c8a433a63a7968eecb6fc5e814563634217062f65b46d1889de1",
+      "9894bd7040193a5acd4a6d531bb1fe7d1077ccd80f18ea7b7db9029a2e99968d",
+      "23090037f849b2eefef85cddff0475b91b90f68c65ca78ad306585dd99977ac3",
+      "7a33911ee623a2a4a0b560fefb16db91d0ae4b38289fa069656ed6f2a6cee693",
+      "7d993b61b56cd51df21a0779cefe63514cfdbb0d78151f3aaba2f70d1a7c9420",
+      "91d2c3351e9a6763e31fcccd4a4c5efa677c5dd8d44577a7b3c0abcc837bec42"
+    ]
+  },
+  "mature_as_of_signal_count": 164,
+  "output_sha256": "94e8cd09cb904dd123c82df0d3ab51364fe0591a6ec5a9d0b271aec19faddf79",
+  "schema": "debot4.bsc_week_selective_wallet_buys_summary.v1",
+  "source_sha256": {
+    "bsc_week_all_x_wallet_activity.jsonl": "7e3374f9f6cab42881a8e0eb20ed6a07a6a9bf44f37ddfc62190b420c500b3f2"
+  },
+  "supply_present_count": 216,
+  "unique_wallet_token_count": 216,
+  "wallet_count": 8,
+  "wallet_counts": [
+    {
+      "unique_tokens": 46,
+      "wallet": "0x108ad3125bae57daa6d72bd9f2060e07841889c2",
+      "x_handle": "lyleeewmc"
+    },
+    {
+      "unique_tokens": 24,
+      "wallet": "0x1e115fb1f7135397d32e901d893bdf0441356c10",
+      "x_handle": "wanger2gou"
+    },
+    {
+      "unique_tokens": 34,
+      "wallet": "0x379dd75fd82daa5ae5f795e8c550eef57190c9fa",
+      "x_handle": "Tothejpg"
+    },
+    {
+      "unique_tokens": 15,
+      "wallet": "0x6c5e56c80e8a11a38f709c43c8aea2219bf98236",
+      "x_handle": "AceCzarG"
+    },
+    {
+      "unique_tokens": 27,
+      "wallet": "0x7730b1bf8a21ce829b83e1a0f360fad61d6643e4",
+      "x_handle": "c_cloudplayer"
+    },
+    {
+      "unique_tokens": 15,
+      "wallet": "0x87257e9ee9c6d95877db536c37bb606d0d96faa4",
+      "x_handle": "AkiGoa978977"
+    },
+    {
+      "unique_tokens": 4,
+      "wallet": "0xbb93a804432917f3bfbc5a63c331d8e89c43731b",
+      "x_handle": "lxkk__"
+    },
+    {
+      "unique_tokens": 51,
+      "wallet": "0xf5c2b8a1553052a9f5d47023e4cddfa51a11405c",
+      "x_handle": "xxxxliuqilin"
+    }
+  ],
+  "warning": "Maturity is censored at each wallet's first observed winning-token buy; later outcomes cannot qualify the wallet retroactively."
+}

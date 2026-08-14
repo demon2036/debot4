@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from decimal import Decimal, InvalidOperation
 from typing import Any, Mapping
 from urllib.parse import urlencode
 
@@ -19,6 +20,8 @@ class GmgnWalletActivity:
     event: str
     timestamp: int
     transaction_hash: str
+    price_usd: Decimal | None = None
+    token_total_supply: Decimal | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -110,15 +113,32 @@ def _parse(row: Mapping[str, Any], wallet: str) -> GmgnWalletActivity:
     event = str(row.get("event_type") or "").strip().casefold()
     timestamp = row.get("timestamp")
     transaction = str(row.get("tx_hash") or "").strip().casefold()
+    price_usd = _number(row.get("price_usd"))
+    total_supply = _number(token.get("total_supply"))
     supported = {"buy", "sell", "add", "remove", "transferin", "transferout", "burn"}
     if observed != wallet or event not in supported:
         raise ValueError("GMGN wallet activity identity is invalid")
     if not isinstance(timestamp, int) or timestamp <= 0 or not _transaction(transaction):
         raise ValueError("GMGN wallet activity locator is invalid")
-    return GmgnWalletActivity(wallet, address, event, timestamp, transaction)
+    return GmgnWalletActivity(
+        wallet, address, event, timestamp, transaction,
+        price_usd, total_supply,
+    )
 
 
 def _transaction(value: str) -> bool:
     return len(value) == 66 and value.startswith("0x") and all(
         item in "0123456789abcdef" for item in value[2:]
     )
+
+
+def _number(value: object) -> Decimal | None:
+    if value is None or isinstance(value, bool) or str(value).strip() == "":
+        return None
+    try:
+        number = Decimal(str(value))
+    except InvalidOperation as exc:
+        raise ValueError("GMGN wallet activity contains an invalid number") from exc
+    if not number.is_finite() or number < 0:
+        raise ValueError("GMGN wallet activity contains an invalid number")
+    return number

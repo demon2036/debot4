@@ -5,6 +5,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 import re
+from typing import Mapping
 
 from .models import normalize_evm_address
 
@@ -56,3 +57,27 @@ class XProfileWalletClaim:
     @property
     def usable_as_provider_wallet_x_binding(self) -> bool:
         return self.verdict is XWalletClaimVerdict.PROVIDER_CORROBORATED
+
+
+def corroborated_claim_from_mapping(
+    row: Mapping[str, object],
+) -> XProfileWalletClaim | None:
+    """Validate a persisted public claim before using it as a wallet/X binding."""
+
+    handles = row.get("provider_handles")
+    if not isinstance(handles, list):
+        raise ValueError("persisted wallet claim provider handles must be a list")
+    claim = XProfileWalletClaim(
+        handle=str(row.get("handle") or ""),
+        stable_user_id=str(row.get("stable_user_id") or ""),
+        wallet=str(row.get("wallet") or ""),
+        profile_url=str(row.get("profile_url") or ""),
+        profile_payload_sha256=str(row.get("profile_payload_sha256") or ""),
+        provider_handles=tuple(str(item) for item in handles),
+        provider_bound=row.get("provider_bound")
+        if isinstance(row.get("provider_bound"), bool) else None,
+    )
+    persisted = str(row.get("verdict") or "")
+    if persisted != claim.verdict.value:
+        raise ValueError("persisted wallet claim verdict disagrees with evidence")
+    return claim if claim.usable_as_provider_wallet_x_binding else None

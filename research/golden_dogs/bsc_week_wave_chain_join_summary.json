@@ -1,0 +1,12 @@
+{
+  "rpc_verified_tagged_buys": 1162,
+  "schema": "debot4.bsc_week_wave_chain_join_summary.v1",
+  "source_sha256": {
+    "bsc_gmgn_kol_audit_v2.jsonl": "c2a9f43aaa0c25367e6eac13b8db9e6e7825c4a40b322827dac6fc61d22234eb",
+    "bsc_gmgn_qualification.jsonl": "53a55184dd21c30b1a0ca4aa5c677a16282a01e4304be381a3f1e44a5c0d2155",
+    "bsc_week_wave_replays.jsonl": "4de9b31f826a284ec5be768caa1533ce5fa701281443534e2f249b39b7d8bc3a"
+  },
+  "target_count": 13,
+  "warning": "GMGN KOL tags are provider labels, not independently proven identities. Clean is the existing risk-filter subset; every target remains WAIT while shared-funding and wash/circular manipulation checks are incomplete.",
+  "wave_count": 32
+}

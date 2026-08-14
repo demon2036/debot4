@@ -1,26 +1,26 @@
 {
-  "accounts": 52,
-  "causal_research_candidates": 21,
-  "generated_at": "2026-08-12T15:49:19.744397Z",
+  "accounts": 61,
+  "causal_research_candidates": 29,
+  "generated_at": "2026-08-12T19:20:56.886540Z",
   "grades": {
     "A": 4,
-    "B": 42,
+    "B": 55,
     "C": 3,
-    "EXCLUDE": 32
+    "EXCLUDE": 37
   },
-  "manually_reviewed_posts": 81,
-  "pairs": 81,
+  "manually_reviewed_posts": 99,
+  "pairs": 99,
   "schema": "debot4.x_signal_evidence_summary.v2",
   "semantics": {
-    "market_context": 19,
-    "market_thesis": 19,
-    "negative_warning": 5,
+    "market_context": 23,
+    "market_thesis": 27,
+    "negative_warning": 7,
     "own_position": 4,
     "project_announcement": 3,
-    "recap": 14,
-    "relay": 11,
-    "reply_mention": 6
+    "recap": 15,
+    "relay": 13,
+    "reply_mention": 7
   },
-  "tokens": 34,
+  "tokens": 38,
   "warning": "Evidence grades do not qualify a golden dog or smart wallet."
 }

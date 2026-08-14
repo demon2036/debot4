@@ -2,6 +2,14 @@
 
 from .egress import FxEgressError, FxEgressNode, FxEgressPool
 from .http import FxJsonDocument, FxJsonHttp, FxTwitterError
+from .forensic import (
+    XForensicAction,
+    XForensicError,
+    XForensicProfile,
+    XForensicTimelinePage,
+    parse_forensic_profile,
+    parse_forensic_timeline_page,
+)
 from .models import XCheckpoint, XPost, XProfile, XTimelineBatch
 from .profile import (
     XProfileClient,
@@ -29,6 +37,10 @@ __all__ = [
     "FxJsonDocument",
     "FxJsonHttp",
     "FxTwitterError",
+    "XForensicAction",
+    "XForensicError",
+    "XForensicProfile",
+    "XForensicTimelinePage",
     "FxTwitterRepostMonitor",
     "DEFAULT_REPOST_POLL_SECONDS",
     "XCheckpoint",
@@ -45,4 +57,6 @@ __all__ = [
     "XTimelineError",
     "parse_fxtwitter_profile",
     "parse_fxtwitter_timeline",
+    "parse_forensic_profile",
+    "parse_forensic_timeline_page",
 ]

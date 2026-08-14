@@ -25,6 +25,7 @@ from .debot_feed import NarrativeDeBotFeed
 from .actor_registry import DEFAULT_ACTOR_REGISTRY
 from .fxtwitter import FxTwitterClient
 from .job_queue import NarrativeJobQueue
+from .live_signal_filter import BscRealtimeSignalFilter
 from .market_monitor import MarketAnomalyMonitor
 from .research_runtime import NarrativeResearchRuntime
 from .research_store import NarrativeResearchStore
@@ -150,12 +151,14 @@ def build_narrative_app(
         )
         queue = NarrativeJobQueue(config.queue_database)
         resources.callback(queue.close)
+        signal_filter = BscRealtimeSignalFilter(DEFAULT_ACTOR_REGISTRY)
         collector = NarrativeCollector(
             monitor,
             telegram_monitor,
             debot_feed,
             queue,
             market_monitor=market_monitor,
+            signal_filter=signal_filter,
         )
         app = NarrativeApp(
             settings=config,
@@ -205,7 +208,9 @@ def build_narrative_app(
                 worker_idle_seconds=config.worker_idle_seconds,
                 lease_seconds=config.lease_seconds,
                 retry_delay_seconds=config.retry_delay_seconds,
+                research_workers=config.research_workers,
             ),
+            signal_filter=signal_filter,
         )
         app.collector = service.collector
         app.telegram_realtime = realtime

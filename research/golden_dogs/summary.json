@@ -1,83 +1,204 @@
 {
   "bsc": {
-    "first_trade_to_peak_median_hours": 38.05,
-    "gold_rows": 156,
-    "initial_fdv_median_usd": 4438.490344058258,
-    "launchpads": {
-      "cheesepad": 5,
-      "flap": 82,
-      "four_meme": 68,
-      "openfour_royalty": 1
+    "kol_buy_audit": {
+      "candidate_rows": 136,
+      "generated_at": "2026-08-12T10:56:11.490682Z",
+      "history_complete": 132,
+      "outcomes": {
+        "REJECT": 46,
+        "WAIT": 90
+      },
+      "schema": "debot4.bsc_gmgn_audit_summary.v1",
+      "tokens_with_pre_peak_rpc_verified_clean_buy": 112,
+      "tokens_with_provider_tagged_buy": 125,
+      "tokens_with_rpc_verified_clean_buy": 122,
+      "warning": "PASS requires market>=500K, a clean GMGN KOL buy verified by BSC RPC, and complete manipulation checks. Missing wash/circular evidence remains WAIT."
     },
-    "max_kols_at_most_4": 99,
-    "max_kols_at_most_4_pct": 63.5,
-    "visible_unique_gold_lower_bound": 156
+    "market_candidates": 243,
+    "market_observations": 3071,
+    "market_statuses": {
+      "complete": 3059,
+      "no_market_history": 12
+    },
+    "source_scope_complete": false,
+    "sources_queried": [
+      "cheesepad",
+      "cheesepad_melt",
+      "flap",
+      "flap_stocks_vault",
+      "four_meme",
+      "four_meme_agent",
+      "memecoinfun_v4",
+      "openfour_creator_incentives",
+      "openfour_cubepeg",
+      "openfour_likwid",
+      "openfour_royalty",
+      "stoxes",
+      "stoxes_v3"
+    ],
+    "universe_tokens": 3071,
+    "window_end_exclusive": "2026-08-12T00:00:00Z",
+    "window_start": "2025-08-12T00:00:00Z"
   },
-  "gold_definition": "first observable 1m open to 5m ATH >=10x and approx peak FDV >=$1M",
-  "kol": {
-    "additional_claim_without_exact_ca": 1,
-    "attributable_full_wallets": 1,
-    "distinct_handles_reviewed": 8,
-    "exact_ca_token_cases": 9,
-    "gold": 5,
-    "gold_timing": {
-      "post_peak": 1,
-      "pre_peak": 3,
-      "retrospective_peak_claim": 1
-    },
-    "not_gold": 3,
-    "unresolved_exact_case": 1,
-    "verified_post_receipts": 9
+  "definition": {
+    "causal_timing": "separate label; post-peak buy does not erase buy eligibility",
+    "kol_buy": "DeBot or GMGN real buy; BSC swap independently RPC-verified",
+    "manipulation": "shared funding, concentration and wash/circular checks",
+    "market": "fixed UTC <=7d window peak MC/FDV >= $500K"
   },
-  "rank_refresh": [
-    {
-      "chain": "bsc",
-      "missing_after_refresh": 2,
-      "new_after_refresh": 0,
-      "previous_count": 3071,
-      "rank_receipts": 109,
-      "refreshed_count": 3069,
-      "saturated_slices": 0
-    },
-    {
-      "chain": "robinhood",
-      "missing_after_refresh": 37,
-      "new_after_refresh": 0,
-      "previous_count": 4615,
-      "rank_receipts": 192,
-      "refreshed_count": 4578,
-      "saturated_slices": 0
-    }
-  ],
+  "generated_at": "2026-08-12T17:40:59.841590Z",
   "robinhood": {
-    "blockscout_gap_gold": 21,
-    "first_trade_to_peak_median_hours": 34.6,
-    "gold_rows": 133,
-    "initial_fdv_median_usd": 3712.0,
-    "launchpads": {
-      "apestore": 1,
-      "arrow": 2,
-      "bags": 2,
-      "bankr": 13,
-      "bowfun": 2,
-      "circus": 1,
-      "flap": 13,
-      "letscash": 2,
-      "long": 2,
-      "noxafi": 1,
-      "noxafun": 47,
-      "pons_v2": 7,
-      "sushi": 1,
-      "trench": 3,
-      "uni_crowd": 1,
-      "uni_instant": 8,
-      "varo": 2,
-      "virtuals_unicorn": 25
+    "market_candidates": 349,
+    "market_observations": 4615,
+    "market_statuses": {
+      "complete": 4561,
+      "no_market_history": 54
     },
-    "max_kols_at_most_4": 105,
-    "max_kols_at_most_4_pct": 78.9,
-    "rank_gold": 133,
-    "visible_unique_gold_lower_bound": 156
+    "provider_and_chain_buy_closure_complete": false,
+    "source_scope_complete": false,
+    "sources_queried": [
+      "apestore",
+      "arrow",
+      "bags",
+      "bankr",
+      "bowfun",
+      "circus",
+      "clanker",
+      "dyorfun",
+      "dyorfun_v3",
+      "flap",
+      "flap_stocks_vault",
+      "klik",
+      "letscash",
+      "livo",
+      "long",
+      "memecoinfun_v4",
+      "noxafi",
+      "noxafun",
+      "pons",
+      "pons_v2",
+      "realfun",
+      "robinfun",
+      "sushi",
+      "sushiswap",
+      "trench",
+      "uni_crowd",
+      "uni_instant",
+      "uniswap",
+      "varo",
+      "virtuals_unicorn"
+    ],
+    "universe_tokens": 4615,
+    "window_end_exclusive": "2026-08-12T00:00:00Z",
+    "window_start": "2026-05-12T00:00:00Z"
   },
-  "schema": "debot4.golden_dog_summary.v1"
+  "schema": "debot4.golden_dog_summary.v2",
+  "scope": "DeBot launch-source snapshot; not an all-pool chain census",
+  "smart_wallet": {
+    "leaderboard_complete": false,
+    "rule": "full denominator + selectivity; reject indiscriminate high-frequency"
+  },
+  "x_evidence": {
+    "account_queue": {
+      "accounts": 1603,
+      "generated_at": "2026-08-12T17:33:38.119517Z",
+      "manual_role_reviews": 87,
+      "pre_peak_exact_ca_accounts": 87,
+      "role_counts": {
+        "catalyst": 34,
+        "coordinated_promotion": 7,
+        "kol_candidate": 88,
+        "project": 8,
+        "research": 43,
+        "scanner": 18,
+        "unreviewed": 1405
+      },
+      "schema": "debot4.x_account_candidate_summary.v1",
+      "wallet_bound_accounts": 202,
+      "warning": "Queue membership is not KOL qualification or an instruction to trade."
+    },
+    "kol_buy_intersections": {
+      "exact_x_author_wallet_buy_pairs": 17,
+      "generated_at": "2026-08-12T17:33:38.811347Z",
+      "pairs_on_tokens_with_rpc_clean_buy": 722,
+      "post_timing": {
+        "post_peak": 692,
+        "pre_peak": 82
+      },
+      "pre_peak_post_pairs_on_rpc_clean_buy_tokens": 72,
+      "qualification_outcomes": {
+        "REJECT": 214,
+        "WAIT": 560
+      },
+      "schema": "debot4.x_kol_buy_intersection_summary.v1",
+      "tokens_with_rpc_clean_buy": 112,
+      "unique_audited_tokens": 121,
+      "unique_x_accounts": 446,
+      "verified_status_ca_pairs": 774,
+      "warning": "Token-level intersection is not proof that the posting account bought, called first, caused the move, or passed manipulation checks."
+    },
+    "reviewed_signal_patterns": {
+      "account_roles": {
+        "kol_candidate": 19,
+        "research": 2
+      },
+      "first_reviewed_post_per_token": {
+        "at_least_2x": 12,
+        "at_least_5x": 5,
+        "median_hours_to_peak": "9.20125000000000000000000000",
+        "median_multiple": "2.802869367837455215558490656",
+        "rows": 16,
+        "within_1h": 3,
+        "within_24h": 12,
+        "within_6h": 7
+      },
+      "pair_post_to_peak": {
+        "at_least_2x": 14,
+        "at_least_5x": 5,
+        "median_hours_to_peak": "7.089444444444444444444444444",
+        "median_multiple": "2.786355475763016157989228007",
+        "rows": 21,
+        "within_1h": 3,
+        "within_24h": 17,
+        "within_6h": 10
+      },
+      "pairs_with_author_wallet_buy_before_post": 3,
+      "reviewed_accounts": 18,
+      "reviewed_signal_pairs": 21,
+      "reviewed_tokens": 16,
+      "schema": "debot4.x_signal_pattern_summary.v1",
+      "semantics": {
+        "market_thesis": 17,
+        "own_position": 4
+      },
+      "warning": "This is a retrospective, selected set of market-qualified tokens; multiples are descriptive and are not a win rate, causation estimate, or deployable strategy result."
+    },
+    "tintin_directory": {
+      "generated_at": "2026-08-12T16:40:05.402873Z",
+      "profile_unavailable": 2,
+      "schema": "debot4.tintin_directory_profile_summary.v1",
+      "transcribed_handles": 57,
+      "transcription_response_id": "resp_e53b68eb141a934824ab7b91a014a1b2",
+      "unique_stable_user_ids": 55,
+      "verified_by_directory_section": {
+        "1. Chinese Memecoin Trunk/ Alpha": 21,
+        "2. Chinese Elite Traders & Strategic Minds ($10M+)": 19,
+        "3. Chinese Researchers, Airdrop Farmers & Community Builders": 15
+      },
+      "verified_profiles": 55,
+      "warning": "Directory membership and profile verification do not prove KOL quality"
+    },
+    "tintin_directory_market_join": {
+      "exact_ca_mentions": 12,
+      "generated_at": "2026-08-12T16:56:47.662352Z",
+      "joined_by_chain": {},
+      "joined_status_ca_pairs": 0,
+      "joined_unique_tokens": 0,
+      "schema": "debot4.tintin_x_market_join_summary.v1",
+      "timing": {},
+      "unique_exact_cas": 11,
+      "verified_status_rows": 460,
+      "warning": "An authored exact-CA post is not proof of KOL status, a buy, causality, or absence of manipulation"
+    }
+  }
 }

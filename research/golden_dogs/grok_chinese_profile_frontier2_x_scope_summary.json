@@ -1,0 +1,14 @@
+{
+  "accepted_unique_stable_ids": 7,
+  "candidate_status_ids_with_task_provenance": 115,
+  "generated_at": "2026-08-12T19:29:57.130465Z",
+  "schema": "debot4.grok_chinese_profile_frontier2_x_scope_summary.v1",
+  "source_verified_rows": 115,
+  "task_scope_status_counts": {
+    "accepted": 111,
+    "outside_scan_window": 4
+  },
+  "warning": "accepted proves task-account authorship and time scope, not KOL quality",
+  "window_end_exclusive": "2026-08-13T00:00:00Z",
+  "window_start": "2025-08-12T00:00:00Z"
+}

@@ -1,0 +1,20 @@
+{
+  "actor_count": 21,
+  "covered_wave_count": 21,
+  "cross_target_advance_actor_count": 0,
+  "event_wave_association_count": 110,
+  "independent_actor_count": 15,
+  "project_actor_count": 6,
+  "qualification_warning": "Every row is a discovery lead. Winner-only timing cannot establish KOL skill, selectivity, false-positive rate, wallet control, or profitability.",
+  "qualified_kol_count": 0,
+  "repeat_advance_actor_count": 7,
+  "repeat_fresh_advance_actor_count": 3,
+  "schema": "debot4.bsc_week_advance_actor_leads_summary.v1",
+  "source_sha256": {
+    "bsc_week_advance_actor_leads.jsonl": "f95eb368d369013b460f05af1c9bfd57cbf31659d57ace75e8a12d5c88d90be2",
+    "bsc_week_project_advance_reviews.jsonl": "a83a534532c8f4d1047ca8449b47f08277ec9f7a497e0e7e9504216b32341981",
+    "bsc_week_public_advance_audit.jsonl": "e96c0b6b95baea3d93df7ed15785927abfe9fa4b8b06fd77566ffc19a19ab030",
+    "bsc_week_telegram_evidence.jsonl": "95af5c1f884fa130fb87245012967371fec24124c4123a6ae97a72b9302bd44e",
+    "bsc_week_x_exact_semantic_evidence.jsonl": "e7f62abace25ecd406649114a3378301d9f3ef25421bd7558f84a8355a0f4197"
+  }
+}

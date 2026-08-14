@@ -1,0 +1,63 @@
+{
+  "creator_buy_count": 3,
+  "ideal_mempool_or_builder_order_ceiling_at_zero_latency": 32,
+  "incremental_normal_confirmation_wave_coverage": {
+    "0": 6,
+    "120": 0,
+    "15": 2,
+    "30": 2,
+    "5": 3,
+    "60": 0
+  },
+  "latency_seconds": [
+    0,
+    5,
+    15,
+    30,
+    60,
+    120
+  ],
+  "previous_block_actionable_wave_count": 6,
+  "previous_block_actionable_waves": [
+    "Racoonzilla#1",
+    "CSI#2",
+    "币安城#1",
+    "月薪喵#1",
+    "月薪喵#2",
+    "月薪喵#3"
+  ],
+  "public_event_time_wave_coverage": {
+    "0": 21,
+    "120": 21,
+    "15": 21,
+    "30": 21,
+    "5": 21,
+    "60": 21
+  },
+  "public_or_normal_confirmation_timing_ceiling": {
+    "0": 27,
+    "120": 21,
+    "15": 23,
+    "30": 23,
+    "5": 24,
+    "60": 21
+  },
+  "same_block_only_wave_count": 5,
+  "same_block_only_waves": [
+    "bStocks#1",
+    "CSI#1",
+    "Asian games#1",
+    "TKM#1",
+    "BOT#1"
+  ],
+  "schema": "debot4.bsc_week_uncovered_pre_breakout_blocks_summary.v1",
+  "source_sha256": {
+    "bsc_week_pre_breakout_buys.jsonl": "0d2c1eeec725559b19e3d5f27055ad2c932b2a72bee5b7892bd17594b0a5526a",
+    "bsc_week_price_crossing_positions.jsonl": "c2dcaf37061d050ce04e4157eb8c13e13360a3e9d86de31ddeae60bad59906e3",
+    "bsc_week_public_advance_audit.jsonl": "e96c0b6b95baea3d93df7ed15785927abfe9fa4b8b06fd77566ffc19a19ab030",
+    "bsc_week_uncovered_pre_breakout_blocks.jsonl": "c4294795d0f8a49de1e673183f38ba97756c92500afe8564806fc687d5b62103"
+  },
+  "verified_buy_count": 30,
+  "warning": "Earlier-block visibility is a timing condition only; it does not prove wallet skill, predictive precision, or safe execution. Same-block order is an ideal builder/mempool ceiling, not normal post-confirmation coverage.",
+  "wave_count": 11
+}

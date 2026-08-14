@@ -1,0 +1,48 @@
+{
+  "as_of_identity_qualified_count": 0,
+  "as_of_skill_qualified_count": 0,
+  "candidate_count": 5,
+  "complete_pre_signal_activity_count": 5,
+  "current_x_binding_pass_count": 4,
+  "current_x_profile_error_count": 1,
+  "generated_at": "2026-08-13T17:00:24.241799Z",
+  "pre_signal_frequencies": [
+    {
+      "buy_transactions_7d": 742,
+      "unique_tokens_bought_7d": 117,
+      "wallet": "0x1fa912ac559c476665a10f04087b126c279e099e",
+      "x_handle": "real_DefendWest"
+    },
+    {
+      "buy_transactions_7d": 2142,
+      "unique_tokens_bought_7d": 702,
+      "wallet": "0x6ff848ddc24e38f96f20c4f8a3cd4fc15a27e5fa",
+      "x_handle": "Degen1998_"
+    },
+    {
+      "buy_transactions_7d": 40,
+      "unique_tokens_bought_7d": 27,
+      "wallet": "0x7730b1bf8a21ce829b83e1a0f360fad61d6643e4",
+      "x_handle": "c_cloudplayer"
+    },
+    {
+      "buy_transactions_7d": 214,
+      "unique_tokens_bought_7d": 112,
+      "wallet": "0x8579b5e47dfa5d7eacc4ea8f2ed8184d08658a64",
+      "x_handle": "BandmanEth"
+    },
+    {
+      "buy_transactions_7d": 411,
+      "unique_tokens_bought_7d": 51,
+      "wallet": "0xf5c2b8a1553052a9f5d47023e4cddfa51a11405c",
+      "x_handle": "xxxxliuqilin"
+    }
+  ],
+  "schema": "debot4.bsc_week_wallet_x_leads_summary.v1",
+  "source_sha256": {
+    "bsc_week_pre_breakout_buys.jsonl": "0d2c1eeec725559b19e3d5f27055ad2c932b2a72bee5b7892bd17594b0a5526a",
+    "bsc_week_pre_breakout_wallet_profiles.jsonl": "dbff0f5772578e45b72af4a24038601af9744ea9fc197fee3a0893b42974f476",
+    "bsc_week_wallet_x_leads.jsonl": "2935c203149da44a1fba3edd7e00f211eb8ea78a2728ee7ad4af936572ab39c0"
+  },
+  "warning": "Winner-selected appearances and current X bindings do not establish historical identity, precision, or KOL status."
+}

@@ -7,6 +7,7 @@ from datetime import date
 import hashlib
 
 from .kol_identity import CHINESE_MEME_KOL_CANDIDATES, LOOKONCHAIN_BSC_TRADERS
+from .kol_search_sweeps import omission_sweeps, period_sweeps
 
 
 @dataclass(frozen=True, slots=True)
@@ -44,6 +45,8 @@ def chinese_kol_search_tasks(start: date, end_exclusive: date) -> tuple[KolSearc
         ("wallet-attribution", "discovery", _wallet_prompt(bounds)),
         ("shadow-account-attribution", "discovery", _shadow_prompt(bounds)),
         ("manipulation-disconfirmation", "discovery", _risk_prompt(bounds)),
+        *omission_sweeps(bounds, _common(bounds)),
+        *period_sweeps(start, end_exclusive, _common),
     )
     tasks = [KolSearchTask(key, lane, prompt) for key, lane, prompt in broad]
     identities = LOOKONCHAIN_BSC_TRADERS + CHINESE_MEME_KOL_CANDIDATES

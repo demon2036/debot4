@@ -600,5 +600,68 @@
     "role": "research",
     "evidence_url": "https://x.com/yangtuo940815/status/2073775576285159543",
     "reason": "The audited status is an airdrop-claim reply to another account; it is not independently established as an authored buy call."
+  },
+  {
+    "stable_user_id": "1881194949519282176",
+    "handle": "yuren1021",
+    "role": "research",
+    "evidence_url": "https://x.com/yuren1021/status/2084467138639831283",
+    "reason": "The authored exact-CA post criticizes competing Golden Age tokens and KOL-driven FOMO; it supplies third-party context that 深大 was viewed as a leader, not an affirmative call by this author or by @GCsheng."
+  },
+  {
+    "stable_user_id": "882187993",
+    "handle": "0xshunli",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/0xshunli/status/2072239844789817351",
+    "reason": "Stable human chain-trading account authored two distinct pre-peak exact-CA market theses; wallet ownership, origin, promotion risk and denominator remain unproven."
+  },
+  {
+    "stable_user_id": "781079725775007744",
+    "handle": "mark1991123",
+    "role": "research",
+    "evidence_url": "https://x.com/mark1991123/status/2083415774836715962",
+    "reason": "The audited exact-CA status is a retrospective developer-monitoring success recap after roughly 10M, so it does not establish a fresh forward call in this sample."
+  },
+  {
+    "stable_user_id": "1842423683488587776",
+    "handle": "shanksbnb",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/ShanksBNB/status/2084828046742495472",
+    "reason": "Stable human account authored two affirmative pre-peak exact-CA Yi He narrative theses; wallet, first-source status, promotion risk and repeat denominator remain open."
+  },
+  {
+    "stable_user_id": "1742556087964889090",
+    "handle": "ojkared8139",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/ojkared8139/status/2085656949635645872",
+    "reason": "Stable human account explicitly favored two exact-CA slogan narratives before peak; no wallet or complete historical denominator has been established."
+  },
+  {
+    "stable_user_id": "1893309639238008832",
+    "handle": "memeradar_sol",
+    "role": "project",
+    "evidence_url": "https://x.com/MemeRadar_sol/status/2085721718144839773",
+    "reason": "Profile promotes the MemeRadar research product and official group, while the audited post advertises its address-label analysis; not an independent caller."
+  },
+  {
+    "stable_user_id": "1632296925826543618",
+    "handle": "crypto_cat888",
+    "role": "research",
+    "evidence_url": "https://x.com/Crypto_Cat888/status/2085941524836286478",
+    "reason": "The only eligible pre-peak evidence is a reply containing a bare exact CA, insufficient to establish an independent call or position."
+  },
+  {
+    "stable_user_id": "1916387350399356928",
+    "handle": "oxxiaoqi",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/Oxxiaoqi/status/2086365449709896107",
+    "reason": "Stable human account authored a developed pre-peak exact-CA Binance City thesis; a separate comparison post is negative and is not counted as a call."
+  },
+  {
+    "stable_user_id": "1901101952622358528",
+    "handle": "guduchaobi1015",
+    "role": "kol_candidate",
+    "evidence_url": "https://x.com/guduchaobi1015/status/2086354878222463331",
+    "reason": "Stable human meme-trading account authored affirmative pre-peak exact-CA Binance City promotion; evidence is weak and wallet, origin and denominator remain open."
   }
 ]

@@ -83,6 +83,7 @@ def _cmd_collect_once(_args: argparse.Namespace) -> dict[str, object]:
             "telegram_posts": cycle.telegram_posts,
             "debot_signals": cycle.debot_signals,
             "market_anomalies": cycle.market_anomalies,
+            "filter": app.collector.filter_snapshot(),
             "jobs": _queue_counts(app),
         }
 
@@ -152,10 +153,13 @@ def _cmd_run(args: argparse.Namespace) -> dict[str, object]:
             "collector_error_type": app.service.last_collector_error_type,
             "source_error_types": app.service.last_source_error_types,
             "worker_error_type": app.service.last_worker_error_type,
+            "worker_error_types": app.service.last_worker_error_types,
+            "research_workers": len(app.service.workers),
             "telegram_realtime_error_type": (
                 app.service.last_realtime_error_type
             ),
             "telegram_realtime": _telegram_realtime_status(app),
+            "filter": app.collector.filter_snapshot(),
             "jobs": _queue_counts(app),
             "research_packages": _research_count(app),
         }

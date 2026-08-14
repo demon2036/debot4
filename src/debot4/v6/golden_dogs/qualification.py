@@ -8,6 +8,7 @@ from enum import Enum
 import re
 
 from .models import Observation, normalize_evm_address
+from .wallet_risk import has_manipulative_wallet_tag
 
 
 _TX_HASH = re.compile(r"0x[0-9a-f]{64}")
@@ -160,7 +161,7 @@ def _kol_gate(
             providers = ",".join(sorted({item.provider for item in matches}))
             return GateAssessment(Verdict.PASS, (f"verified_provider_kol_buy:{providers}",))
         if any(_manipulative_trade(trade) for trade in trades):
-            return GateAssessment(Verdict.REJECT, ("kol_buy_is_wash_trader_tagged",))
+            return GateAssessment(Verdict.REJECT, ("kol_buy_has_manipulation_tag",))
         if any(trade.swap_verified is False for trade in trades):
             return GateAssessment(Verdict.REJECT, ("provider_event_is_not_verified_swap",))
         if any(trade.swap_verified is None for trade in trades):
@@ -201,7 +202,7 @@ def _causal_timing_gate(
 
 
 def _manipulative_trade(trade: KolWalletTrade) -> bool:
-    return bool({"wash_trader", "sandwich_bot", "sybil"} & set(trade.risk_tags))
+    return has_manipulative_wallet_tag(trade.risk_tags)
 
 
 def _manipulation_gate(evidence: ManipulationEvidence | None) -> GateAssessment:

@@ -1,0 +1,20 @@
+{
+  "breakout_crossing_count": 31,
+  "causality_warning": "The 5m completed wave locates a retrospective research window. The 1m boundary describes price timing and does not itself prove an online signal, actor identity, wallet quality, or causal relationship.",
+  "coverage_complete_count": 13,
+  "interval_seconds": 60,
+  "main_breakout_multiple": "2",
+  "motion_crossing_count": 32,
+  "price_motion_multiple": "1.20",
+  "schema": "debot4.bsc_week_minute_wave_replay_summary.v1",
+  "source_sha256": {
+    "bsc_universe.jsonl": "6edb1c688afbb1b7b42d56d901e7eafe63bb051f8a37b6b31d8167716ccfa73a",
+    "bsc_week_minute_market_receipts.jsonl": "7de7cc5aff8df3df9cdb6fd823dbf43a49f56b247a7ad82455c3fe6fdb82ddd9",
+    "bsc_week_minute_wave_replays.jsonl": "f4e72e9aea358d7acc919b2db664aeb58bcdf14daa6438c9d731ca41b8aaa4be",
+    "bsc_week_wave_replays.jsonl": "4de9b31f826a284ec5be768caa1533ce5fa701281443534e2f249b39b7d8bc3a"
+  },
+  "source_wave_seconds": 300,
+  "target_count": 13,
+  "timing_warning": "A high proves crossing somewhere inside its minute, not the exact second. Only evidence before crossing_before is strictly pre-crossing; evidence inside that candle is ambiguous and must not count as advance.",
+  "wave_count": 32
+}

@@ -93,11 +93,13 @@ def test_full_app_wires_real_interfaces_and_closes_in_reverse_order(
     assert service["research_runtime"] is app.research_runtime
     assert service["telegram_realtime"] is None
     assert service["x_repost_monitor"] is app.x_repost_monitor
+    assert service["signal_filter"] is app.collector.signal_filter
     config = service["config"]
     assert config.collector_seconds == 0.5
     assert config.worker_idle_seconds == 0.75
     assert config.lease_seconds == 90
     assert config.retry_delay_seconds == 4
+    assert config.research_workers == 10
 
     app.close()
     app.close()

@@ -1,0 +1,32 @@
+{
+  "association_count": 98,
+  "origin_counts": {
+    "automation": 21,
+    "independent": 56,
+    "malicious": 12,
+    "project": 7,
+    "relay": 2
+  },
+  "schema": "debot4.bsc_week_x_exact_semantic_summary.v1",
+  "semantic_counts": {
+    "bare_call": 5,
+    "market_context": 16,
+    "market_thesis": 27,
+    "negative_warning": 4,
+    "own_position": 4,
+    "phishing_lure": 12,
+    "project_announcement": 4,
+    "recap": 6,
+    "relay": 5,
+    "reply_mention": 4,
+    "scanner": 11
+  },
+  "source_sha256": {
+    "bsc_week_x_exact_evidence.jsonl": "0144705c6b8e28abc372f74add110b55c1356f904856058ae1b92e6a725ca796",
+    "bsc_week_x_exact_semantic_evidence.jsonl": "e7f62abace25ecd406649114a3378301d9f3ef25421bd7558f84a8355a0f4197",
+    "bsc_week_x_exact_semantic_reviews.jsonl": "2f2a857a625391f816ad5dc61e17753d974789b1e90103786fa75f8ae0767aca"
+  },
+  "target_count": 13,
+  "unique_post_count": 90,
+  "warning": "Semantic review establishes post meaning only. It does not prove publisher quality, causal impact, or live first-seen latency."
+}

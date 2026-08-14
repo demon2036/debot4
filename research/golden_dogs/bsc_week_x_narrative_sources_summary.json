@@ -1,0 +1,10 @@
+{
+  "candidate_count": 4,
+  "schema": "debot4.bsc_week_x_narrative_sources_summary.v1",
+  "source_sha256": {
+    "bsc_week_x_source_candidates.json": "6a509640ead66ae8315ad118dee16a049b2b50a59742ed6d133cf5df3b93307f"
+  },
+  "unavailable_count": 1,
+  "verified_count": 3,
+  "warning": "A token page citing a status proves metadata association only. It does not prove the source author knew, endorsed, or referred to the Exact CA."
+}

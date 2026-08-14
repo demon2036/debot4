@@ -29,10 +29,20 @@ class VerifiedTokenSwap:
     wallet: str
     token_address: str
     block_number: int
+    transaction_index: int
     block_timestamp: int
     token_received_raw: int
     transaction_to: str
     native_value_wei: int
+    receipt: EvidenceReceipt
+
+
+@dataclass(frozen=True, slots=True)
+class BscTransactionPosition:
+    transaction_hash: str
+    block_number: int
+    transaction_index: int
+    block_timestamp: int
     receipt: EvidenceReceipt
 
 
@@ -62,9 +72,7 @@ class PublicBscRpcClient:
 
     def verify_token_buy(self, tx_hash: str, wallet: str,
                          token: str) -> VerifiedTokenSwap:
-        tx_hash = tx_hash.strip().casefold()
-        if not _TX_HASH.fullmatch(tx_hash):
-            raise ValueError("invalid BSC transaction hash")
+        tx_hash = _transaction_hash(tx_hash)
         wallet = normalize_evm_address(wallet)
         token = normalize_evm_address(token)
         tx, tx_raw = self._call("eth_getTransactionByHash", [tx_hash])
@@ -90,12 +98,40 @@ class PublicBscRpcClient:
             wallet=wallet,
             token_address=token,
             block_number=block_number,
+            transaction_index=_hex_int(tx.get("transactionIndex")),
             block_timestamp=_hex_int(block.get("timestamp")),
             token_received_raw=received,
             transaction_to=normalize_evm_address(str(tx.get("to") or "")),
             native_value_wei=_hex_int(tx.get("value")),
             receipt=EvidenceReceipt(
                 kind="bsc_public_rpc_bundle",
+                url=RPC_URL,
+                fetched_at=int(time.time()),
+                sha256=hashlib.sha256(raw).hexdigest(),
+            ),
+        )
+
+    def fetch_transaction_position(self, tx_hash: str) -> BscTransactionPosition:
+        """Fetch immutable block position without asserting swap semantics."""
+
+        tx_hash = _transaction_hash(tx_hash)
+        tx, tx_raw = self._call("eth_getTransactionByHash", [tx_hash])
+        if not isinstance(tx, Mapping):
+            raise BscRpcError("BSC transaction is unavailable")
+        if str(tx.get("hash") or "").casefold() != tx_hash:
+            raise BscRpcError("BSC transaction hash mismatch")
+        block_number = _hex_int(tx.get("blockNumber"))
+        block, block_raw = self._call("eth_getBlockByNumber", [hex(block_number), False])
+        if not isinstance(block, Mapping):
+            raise BscRpcError("BSC transaction block is unavailable")
+        raw = tx_raw + block_raw
+        return BscTransactionPosition(
+            transaction_hash=tx_hash,
+            block_number=block_number,
+            transaction_index=_hex_int(tx.get("transactionIndex")),
+            block_timestamp=_hex_int(block.get("timestamp")),
+            receipt=EvidenceReceipt(
+                kind="bsc_public_rpc_position",
                 url=RPC_URL,
                 fetched_at=int(time.time()),
                 sha256=hashlib.sha256(raw).hexdigest(),
@@ -149,4 +185,11 @@ def _hex_int(value: object) -> int:
         raise BscRpcError("BSC RPC contains an invalid hex integer") from exc
     if result < 0:
         raise BscRpcError("BSC RPC contains a negative integer")
+    return result
+
+
+def _transaction_hash(value: str) -> str:
+    result = value.strip().casefold()
+    if not _TX_HASH.fullmatch(result):
+        raise ValueError("invalid BSC transaction hash")
     return result

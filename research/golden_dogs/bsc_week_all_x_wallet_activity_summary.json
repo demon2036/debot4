@@ -1,0 +1,58 @@
+{
+  "activity_error_or_incomplete_count": 0,
+  "as_of_skill_qualified_count": 0,
+  "candidate_count": 26,
+  "complete_activity_count": 26,
+  "eligible_for_outcome_denominator_audit": [
+    {
+      "unique_tokens_bought_7d": 46,
+      "wallet": "0x108ad3125bae57daa6d72bd9f2060e07841889c2",
+      "x_handle": "lyleeewmc"
+    },
+    {
+      "unique_tokens_bought_7d": 24,
+      "wallet": "0x1e115fb1f7135397d32e901d893bdf0441356c10",
+      "x_handle": "wanger2gou"
+    },
+    {
+      "unique_tokens_bought_7d": 34,
+      "wallet": "0x379dd75fd82daa5ae5f795e8c550eef57190c9fa",
+      "x_handle": "Tothejpg"
+    },
+    {
+      "unique_tokens_bought_7d": 15,
+      "wallet": "0x6c5e56c80e8a11a38f709c43c8aea2219bf98236",
+      "x_handle": "AceCzarG"
+    },
+    {
+      "unique_tokens_bought_7d": 27,
+      "wallet": "0x7730b1bf8a21ce829b83e1a0f360fad61d6643e4",
+      "x_handle": "c_cloudplayer"
+    },
+    {
+      "unique_tokens_bought_7d": 15,
+      "wallet": "0x87257e9ee9c6d95877db536c37bb606d0d96faa4",
+      "x_handle": "AkiGoa978977"
+    },
+    {
+      "unique_tokens_bought_7d": 4,
+      "wallet": "0xbb93a804432917f3bfbc5a63c331d8e89c43731b",
+      "x_handle": "lxkk__"
+    },
+    {
+      "unique_tokens_bought_7d": 51,
+      "wallet": "0xf5c2b8a1553052a9f5d47023e4cddfa51a11405c",
+      "x_handle": "xxxxliuqilin"
+    }
+  ],
+  "eligible_for_outcome_denominator_audit_count": 8,
+  "frequency_screen_pass_count": 8,
+  "manipulative_wallet_count": 4,
+  "schema": "debot4.bsc_week_all_x_wallet_activity_summary.v1",
+  "source_sha256": {
+    "bsc_week_all_x_wallet_activity.jsonl": "7e3374f9f6cab42881a8e0eb20ed6a07a6a9bf44f37ddfc62190b420c500b3f2",
+    "bsc_week_all_x_wallet_profiles.jsonl": "76ccf391526407450e9e1e7ec281dc6ab45e686fae8a7dc61ea4dc2d9f20215f",
+    "bsc_week_wallet_x_leads.jsonl": "2935c203149da44a1fba3edd7e00f211eb8ea78a2728ee7ad4af936572ab39c0"
+  },
+  "warning": "This is an as-of activity denominator only; the outcome denominator and historical identity proof remain incomplete."
+}

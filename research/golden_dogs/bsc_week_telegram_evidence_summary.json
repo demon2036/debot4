@@ -1,0 +1,15 @@
+{
+  "candidate_count": 11,
+  "direct_verified_count": 10,
+  "independent_forward_signal_count": 6,
+  "schema": "debot4.bsc_week_telegram_evidence_summary.v1",
+  "source_sha256": {
+    "bsc_week_telegram_candidates.json": "e63e5edf6759b8d45ca23d19c903506806a478ebb361150599532ce03dbb0e67"
+  },
+  "unavailable_count": 1,
+  "warning": "Semantic labels are manual content review. Direct availability proves the message and timestamp, not authorship independence or price causation.",
+  "window": {
+    "end_exclusive": "2026-08-13T00:00:00Z",
+    "start": "2026-08-06T00:00:00Z"
+  }
+}

@@ -20,10 +20,18 @@ def test_reviewed_position_or_thesis_can_be_causal_research_candidate() -> None:
     assert assess_x_post_semantic(interpretation(
         semantic=XPostSemantic.OWN_POSITION,
     )).causal_research_candidate
+    assert assess_x_post_semantic(interpretation(
+        semantic=XPostSemantic.BARE_CALL,
+    )).causal_research_candidate
 
 
 def test_recap_and_negative_mention_are_not_forward_signals() -> None:
-    for semantic in (XPostSemantic.RECAP, XPostSemantic.NEGATIVE_WARNING):
+    for semantic in (
+        XPostSemantic.RECAP,
+        XPostSemantic.NEGATIVE_WARNING,
+        XPostSemantic.SCANNER,
+        XPostSemantic.PHISHING_LURE,
+    ):
         result = assess_x_post_semantic(interpretation(semantic=semantic))
         assert result.causal_research_candidate is False
 

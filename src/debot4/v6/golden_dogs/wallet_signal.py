@@ -5,6 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from enum import Enum
 
+from .wallet_risk import manipulative_wallet_tags
+
 
 class WalletSignalVerdict(str, Enum):
     CANDIDATE = "CANDIDATE"
@@ -23,6 +25,7 @@ class WalletSignalHistory:
     pre_peak_gold_hits: int
     outcomes_complete: bool
     activity_coverage_complete: bool
+    provider_risk_tags: tuple[str, ...] = ()
 
     def __post_init__(self) -> None:
         if not 0 < self.period_start < self.period_end_exclusive:
@@ -32,6 +35,13 @@ class WalletSignalHistory:
         )
         if min(values) < 0 or self.pre_peak_gold_hits > self.unique_tokens_bought:
             raise ValueError("wallet signal counts are invalid")
+        object.__setattr__(
+            self, "provider_risk_tags",
+            tuple(sorted({
+                str(tag).strip().casefold()
+                for tag in self.provider_risk_tags if str(tag).strip()
+            })),
+        )
 
 
 @dataclass(frozen=True, slots=True)
@@ -50,6 +60,12 @@ def assess_wallet_signal(
 ) -> WalletSignalAssessment:
     """Reward selective early hits and reject indiscriminate high-frequency buyers."""
 
+    risky_tags = manipulative_wallet_tags(history.provider_risk_tags)
+    if risky_tags:
+        return WalletSignalAssessment(
+            WalletSignalVerdict.REJECT, None,
+            (f"provider_manipulation_tag:{','.join(risky_tags)}",),
+        )
     if not history.activity_coverage_complete or not history.outcomes_complete:
         return WalletSignalAssessment(WalletSignalVerdict.WAIT, None, ("history_incomplete",))
     days = max(1.0, (history.period_end_exclusive - history.period_start) / 86_400)

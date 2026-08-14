@@ -1,0 +1,22 @@
+{
+  "complete_local_window_count": 32,
+  "price_ladder_complete_count": 32,
+  "provider_candidate_strict_wave_upper_bound": 14,
+  "qualified_online_signal_wave_count": 0,
+  "scan_rule": "baseline_established_at_to_breakout_candle_plus_60s",
+  "schema": "debot4.bsc_week_trade_price_evidence_summary.v1",
+  "source_sha256": {
+    "bsc_week_minute_wave_replays.jsonl": "f4e72e9aea358d7acc919b2db664aeb58bcdf14daa6438c9d731ca41b8aaa4be",
+    "bsc_week_trade_price_evidence.jsonl": "7436363bb04d70ab26982a0227ff824ebe80b6299f6fb1853df577ac85fb2e67",
+    "bsc_week_wave_replays.jsonl": "4de9b31f826a284ec5be768caa1533ce5fa701281443534e2f249b39b7d8bc3a"
+  },
+  "target_count": 13,
+  "transaction_crossing_count": 32,
+  "warnings": [
+    "Only complete baseline-to-motion windows support negative conclusions.",
+    "Provider smart/KOL labels are discovery leads, not qualified signals.",
+    "The baseline and winning wave are retrospective; candidates require an as-of-time history gate before they can count as online capture.",
+    "A transaction earlier in the same block as motion is not post-confirmation actionable; block-order verification is a separate gate."
+  ],
+  "wave_count": 32
+}

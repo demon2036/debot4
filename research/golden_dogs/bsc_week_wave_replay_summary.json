@@ -1,0 +1,32 @@
+{
+  "ath_field": "5m_high",
+  "coverage_complete_count": 13,
+  "effective_wave_counts": {
+    "Asian games": 1,
+    "BOT": 2,
+    "CETS": 5,
+    "CSI": 3,
+    "Racoonzilla": 1,
+    "SpaceXcoin": 3,
+    "TKM": 1,
+    "XchangetheWorld": 2,
+    "bNS": 3,
+    "bStocks": 2,
+    "fourclub": 4,
+    "币安城": 2,
+    "月薪喵": 3
+  },
+  "effective_wave_total": 32,
+  "first_traded_candle_trough_field": "open",
+  "interval_seconds": 300,
+  "later_trough_and_peak_field": "close",
+  "minimum_effective_peak_fdv_usd": "500000",
+  "minimum_multiple": "2",
+  "reset_close_fraction": "0.60",
+  "schema": "debot4.bsc_week_wave_replay_summary.v1",
+  "supply_semantics": "current total-supply proxy returned by DeBot market API",
+  "target_count": 13,
+  "warning": "A completed price wave is descriptive market evidence; it does not prove a narrative, account, wallet, manipulation, or profit cause.",
+  "window_end_exclusive": 1786579200,
+  "window_start": 1785974400
+}

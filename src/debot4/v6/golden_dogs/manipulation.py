@@ -7,10 +7,10 @@ from decimal import Decimal
 from .gmgn_public import GmgnRiskSnapshot
 from .gmgn_wallet_public import GmgnWalletProfile
 from .qualification import ManipulationEvidence
+from .wallet_risk import has_manipulative_wallet_tag
 
 
 MAX_TOP_TEN_HOLDER_RATE = Decimal("0.50")
-WASH_TAGS = {"wash_trader", "sandwich_bot", "sybil"}
 
 
 def assess_manipulation(
@@ -43,7 +43,7 @@ def assess_manipulation(
         if risk.top_ten_holder_rate is not None else None
     )
     risky_profiles = tuple(
-        profile.wallet for profile in profiles if WASH_TAGS & set(profile.tags)
+        profile.wallet for profile in profiles if has_manipulative_wallet_tag(profile.tags)
     )
     urls = [risk.receipt.url]
     urls.extend(receipt.url for profile in profiles for receipt in profile.receipts)

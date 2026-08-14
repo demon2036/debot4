@@ -1,18 +1,18 @@
 {
-  "exact_ca_mentions": 123,
-  "generated_at": "2026-08-12T15:09:55.214016Z",
+  "exact_ca_mentions": 213,
+  "generated_at": "2026-08-12T17:30:40.031096Z",
   "joined_by_chain": {
-    "bsc": 26,
+    "bsc": 33,
     "robinhood": 5
   },
-  "joined_status_ca_pairs": 31,
-  "joined_unique_tokens": 20,
+  "joined_status_ca_pairs": 38,
+  "joined_unique_tokens": 22,
   "schema": "debot4.chinese_x_market_join_summary.v1",
   "timing": {
-    "post_peak": 27,
-    "pre_peak": 4
+    "post_peak": 33,
+    "pre_peak": 5
   },
-  "unique_exact_cas": 107,
-  "verified_status_rows": 661,
+  "unique_exact_cas": 175,
+  "verified_status_rows": 902,
   "warning": "An authored exact-CA post is not proof of KOL status, a buy, causality, or absence of manipulation"
 }

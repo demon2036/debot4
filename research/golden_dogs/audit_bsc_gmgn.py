@@ -18,6 +18,7 @@ from debot4.v6.golden_dogs.gmgn_trade_history import fetch_kol_trades_in_window
 from debot4.v6.golden_dogs.gmgn_wallet_public import PublicGmgnWalletClient
 from debot4.v6.golden_dogs.manipulation import assess_manipulation
 from debot4.v6.golden_dogs.serialization import json_value
+from debot4.v6.golden_dogs.wallet_risk import has_manipulative_wallet_tag
 
 
 UTC = timezone.utc
@@ -68,7 +69,8 @@ def _audit(candidate: dict[str, object]) -> dict[str, object]:
         item["wallet_profile"] = asdict(profile) if profile else None
         item["clean_in_window"] = bool(
             item.get("chain_verified")
-            and profile is not None and "wash_trader" not in profile.tags
+            and profile is not None
+            and not has_manipulative_wallet_tag(profile.tags)
         )
         item["causal_pre_peak"] = bool(
             item["clean_in_window"] and item.get("before_market_peak")

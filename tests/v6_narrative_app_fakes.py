@@ -49,10 +49,12 @@ def patch_app_graph(
             queue: object,
             *,
             market_monitor: object | None = None,
+            signal_filter: object | None = None,
         ) -> None:
             calls.setdefault("collectors", []).append(
-                (monitor, telegram, feed, queue, market_monitor)
+                (monitor, telegram, feed, queue, market_monitor, signal_filter)
             )
+            self.signal_filter = signal_filter
 
         def collect_once(self) -> CollectionCycle:
             return CollectionCycle(2, 1, 3, 4)
@@ -70,8 +72,10 @@ def patch_app_graph(
                 kwargs["debot_feed"],
                 kwargs["queue"],
                 market_monitor=kwargs["market_monitor"],
+                signal_filter=kwargs["signal_filter"],
             )
             self.worker = Worker()
+            self.workers = (self.worker,) * kwargs["config"].research_workers
 
         def run(self, stop: object) -> None:
             calls["run_stop"] = stop

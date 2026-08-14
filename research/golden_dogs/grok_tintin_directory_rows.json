@@ -1,0 +1,19 @@
+{
+  "answer": "{\n  \"rows\": [],\n  \"uncertain\": []\n}",
+  "generated_at": "2026-08-12T16:28:24.700533Z",
+  "grok_is_evidence": false,
+  "image_bytes": 130604,
+  "image_sha256": "036e1221c9a5b507d5cb05caa5b9d743beb4952338462d63ddd77007403a5d1f",
+  "mode": "rows",
+  "model": "grok-chat-fast",
+  "response_id": "chatcmpl_9a1407988a38a82ee177407c00c20466",
+  "schema": "debot4.grok_kol_directory_transcription.v1",
+  "source_image_url": "https://pbs.twimg.com/media/G3UMuGhbAAMG4vb.jpg?name=orig",
+  "source_status_url": "https://x.com/Tintinx2021/status/1978501606682558735",
+  "sources": [],
+  "usage": {
+    "completion_tokens": 9,
+    "prompt_tokens": 131,
+    "total_tokens": 140
+  }
+}

@@ -1,10 +1,10 @@
 {
   "configured_identities": 27,
-  "generated_at": "2026-08-12T09:58:55.984840Z",
+  "generated_at": "2026-08-12T16:59:28.086522Z",
   "profile_errors": 0,
   "schema": "debot4.chinese_kol_catalog_summary.v1",
-  "source_posts": 4,
+  "source_posts": 5,
   "stable_id_mismatches": 0,
   "verified_profiles": 27,
-  "verified_source_posts": 4
+  "verified_source_posts": 5
 }

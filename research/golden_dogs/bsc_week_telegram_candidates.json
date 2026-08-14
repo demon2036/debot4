@@ -1,0 +1,101 @@
+[
+  {
+    "label": "CETS",
+    "address": "0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777",
+    "channel": "beastmodeapecalls",
+    "message_id": 31935,
+    "semantic": "thread_relay_call",
+    "independent_forward_signal": true,
+    "lead_basis": "Exact-X post linked this public Telegram message"
+  },
+  {
+    "label": "CETS",
+    "address": "0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777",
+    "channel": "WizzyTrades",
+    "message_id": 40122,
+    "semantic": "watchlist_listing",
+    "independent_forward_signal": false,
+    "lead_basis": "Exact-X scanner post linked this public Telegram message"
+  },
+  {
+    "label": "CETS",
+    "address": "0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777",
+    "channel": "DefiApeGems",
+    "message_id": 5087,
+    "semantic": "position_disclosure_call",
+    "independent_forward_signal": true,
+    "lead_basis": "Exact-X post linked this public Telegram message"
+  },
+  {
+    "label": "CETS",
+    "address": "0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777",
+    "channel": "CH1RO0",
+    "message_id": 7501,
+    "semantic": "directional_promotion",
+    "independent_forward_signal": true,
+    "lead_basis": "Exact-X post linked this public Telegram message"
+  },
+  {
+    "label": "CETS",
+    "address": "0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777",
+    "channel": "CH1RO0",
+    "message_id": 7503,
+    "semantic": "automated_call_confirmation",
+    "independent_forward_signal": false,
+    "lead_basis": "Adjacent message verifies CH1RO0 call time but is not a second call"
+  },
+  {
+    "label": "CETS",
+    "address": "0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777",
+    "channel": "zygfridjournal",
+    "message_id": 1997,
+    "semantic": "directional_thesis_call",
+    "independent_forward_signal": true,
+    "lead_basis": "Exact-X post linked this public Telegram message"
+  },
+  {
+    "label": "CETS",
+    "address": "0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777",
+    "channel": "zygfridjournal",
+    "message_id": 2003,
+    "semantic": "directional_thesis_call",
+    "independent_forward_signal": true,
+    "lead_basis": "Exact-X post linked this public Telegram message"
+  },
+  {
+    "label": "CETS",
+    "address": "0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777",
+    "channel": "PowsGemCalls",
+    "message_id": 47108,
+    "semantic": "directional_thesis_call",
+    "independent_forward_signal": true,
+    "lead_basis": "Exact-X post linked this public Telegram message"
+  },
+  {
+    "label": "CETS",
+    "address": "0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777",
+    "channel": "asianmarketcall",
+    "message_id": 7806,
+    "semantic": "copied_or_forwarded_call",
+    "independent_forward_signal": false,
+    "lead_basis": "Same call copy as PowsGemCalls; retained to prove propagation"
+  },
+  {
+    "label": "CETS",
+    "address": "0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777",
+    "channel": "DefiApeGems",
+    "message_id": 5098,
+    "semantic": "performance_recap",
+    "independent_forward_signal": false,
+    "lead_basis": "Exact-X recap linked this public Telegram message"
+  },
+  {
+    "label": "SpaceXcoin",
+    "address": "0xf225e70162837a811c77dc2bb413a5c06e97ffff",
+    "channel": "Bullish_Calls_BSC",
+    "message_id": 23248,
+    "semantic": "unavailable_secondary_call_lead",
+    "independent_forward_signal": false,
+    "lead_basis": "DexEventcat X post cited this message; direct message must verify or fail closed"
+  }
+]

@@ -131,7 +131,7 @@ def test_gmgn_buy_only_maps_after_matching_rpc_verification() -> None:
     with httpx.Client(transport=httpx.MockTransport(handler), base_url="https://gmgn.ai") as raw:
         trade = PublicGmgnClient(client=raw).fetch_kol_trades("bsc", CA).trades[0]
     receipt = EvidenceReceipt("rpc", "https://bsc.example", 1, "0" * 64)
-    verified = VerifiedTokenSwap(TX, WALLET, CA, 1, 100, 500, WALLET, 1, receipt)
+    verified = VerifiedTokenSwap(TX, WALLET, CA, 1, 0, 100, 500, WALLET, 1, receipt)
     evidence = provider_buy_from_gmgn(
         trade, verified, provider_url=f"https://gmgn.ai/bsc/token/{CA}",
     )

@@ -25,5 +25,39 @@
     ],
     "verdict": "SELF_DISCLOSED",
     "warning": "The X profile publicly claims this address, but current GMGN public and stat profiles do not bind it to this X identity; no hidden-wallet or KOL-buy conclusion follows."
+  },
+  {
+    "schema": "debot4.x_public_wallet_claim.v1",
+    "handle": "i0ybz0",
+    "stable_user_id": "1879044668874473472",
+    "wallet": "0xbf530f1bfb23bf332d1f1e41be026a5895fcced4",
+    "profile_url": "https://api.fxtwitter.com/i0ybz0",
+    "profile_payload_sha256": "6e7621d3ff63ee15b43e67f555ff6fc81fcb25ca13305b5afa4f752df6029892",
+    "profile_claim": "实名大号：0xbf530f1bfb23bf332d1f1e41be026a5895fcced4",
+    "provider_checked_at": "2026-08-12T18:26:46Z",
+    "provider_handles": [
+      "i0ybz0"
+    ],
+    "provider_bound": true,
+    "provider_tags": [
+      "fomo",
+      "gmgn",
+      "sandwich_bot"
+    ],
+    "provider_receipts": [
+      {
+        "url": "https://gmgn.ai/defi/quotation/v1/smartmoney/bsc/walletNew/0xbf530f1bfb23bf332d1f1e41be026a5895fcced4",
+        "fetched_at": "2026-08-12T18:26:45Z",
+        "sha256": "a568f863b39f931ef15c13380fb1619cafea1038584fd3a64f993d03a4dac267"
+      },
+      {
+        "url": "https://gmgn.ai/api/v1/wallet_stat/bsc/0xbf530f1bfb23bf332d1f1e41be026a5895fcced4/7d",
+        "fetched_at": "2026-08-12T18:26:46Z",
+        "sha256": "2159f0b897f50a321396c3f88caaec03f84670ed156027ea568ef04e7c07e1bd"
+      }
+    ],
+    "verdict": "PROVIDER_CORROBORATED",
+    "smart_wallet_excluded": true,
+    "warning": "The public X profile and both GMGN profile endpoints bind this wallet to the same handle. GMGN also tags it sandwich_bot, so it is excluded from KOL-buy cleanliness and smart-wallet ranking."
   }
 ]

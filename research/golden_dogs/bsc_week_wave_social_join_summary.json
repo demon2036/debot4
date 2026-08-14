@@ -1,0 +1,14 @@
+{
+  "schema": "debot4.bsc_week_wave_social_join_summary.v1",
+  "source_sha256": {
+    "bsc_week_telegram_evidence.jsonl": "95af5c1f884fa130fb87245012967371fec24124c4123a6ae97a72b9302bd44e",
+    "bsc_week_wave_replays.jsonl": "4de9b31f826a284ec5be768caa1533ce5fa701281443534e2f249b39b7d8bc3a",
+    "bsc_week_x_account_actions.jsonl": "112cfcd0d914b405025b1700d7e472b28c53d24c3c9071f4ddb2204429c58ba6",
+    "bsc_week_x_account_profiles.jsonl": "c7e46b398103ea4f1ae2fda45ae3d08949ea5169032b74ebcc13152cadbae992"
+  },
+  "target_count": 13,
+  "unique_labeled_event_count": 230,
+  "warning": "Profile asset resource times are indicators, not proven UI action times. Linked-account proximity and Telegram proximity do not prove causation.",
+  "wave_count": 32,
+  "waves_with_causal_timing_eligible_pre_or_ascent": 15
+}

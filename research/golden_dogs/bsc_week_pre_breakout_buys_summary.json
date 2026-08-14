@@ -1,0 +1,22 @@
+{
+  "as_of_skill_qualified_wallet_count": 0,
+  "creator_match_buy_count": 3,
+  "repeat_target_wallet_count": 7,
+  "repeat_wave_wallet_count": 7,
+  "schema": "debot4.bsc_week_pre_breakout_buys_summary.v1",
+  "source_sha256": {
+    "bsc_universe.jsonl": "6edb1c688afbb1b7b42d56d901e7eafe63bb051f8a37b6b31d8167716ccfa73a",
+    "bsc_week_pre_breakout_buys.jsonl": "0d2c1eeec725559b19e3d5f27055ad2c932b2a72bee5b7892bd17594b0a5526a",
+    "bsc_week_pre_breakout_wallets.jsonl": "332023327ad393f85bbfa8bd5e888e9dc4d564eb73b716ecd558712a717e28ff",
+    "bsc_week_trade_price_evidence.jsonl": "7436363bb04d70ab26982a0227ff824ebe80b6299f6fb1853df577ac85fb2e67"
+  },
+  "strict_pre_1_02_buy_count": 284,
+  "target_count": 13,
+  "unique_wallet_count": 204,
+  "warnings": [
+    "Provider order is evidence discovery, not observed production latency.",
+    "Same-block buys require RPC position checks before actionability claims.",
+    "This winner-only set cannot prove precision, profit, or wallet skill."
+  ],
+  "wave_count": 32
+}

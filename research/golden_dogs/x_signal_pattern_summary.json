@@ -1,0 +1,36 @@
+{
+  "account_roles": {
+    "kol_candidate": 19,
+    "research": 2
+  },
+  "first_reviewed_post_per_token": {
+    "at_least_2x": 12,
+    "at_least_5x": 5,
+    "median_hours_to_peak": "9.20125000000000000000000000",
+    "median_multiple": "2.802869367837455215558490656",
+    "rows": 16,
+    "within_1h": 3,
+    "within_24h": 12,
+    "within_6h": 7
+  },
+  "pair_post_to_peak": {
+    "at_least_2x": 14,
+    "at_least_5x": 5,
+    "median_hours_to_peak": "7.089444444444444444444444444",
+    "median_multiple": "2.786355475763016157989228007",
+    "rows": 21,
+    "within_1h": 3,
+    "within_24h": 17,
+    "within_6h": 10
+  },
+  "pairs_with_author_wallet_buy_before_post": 3,
+  "reviewed_accounts": 18,
+  "reviewed_signal_pairs": 21,
+  "reviewed_tokens": 16,
+  "schema": "debot4.x_signal_pattern_summary.v1",
+  "semantics": {
+    "market_thesis": 17,
+    "own_position": 4
+  },
+  "warning": "This is a retrospective, selected set of market-qualified tokens; multiples are descriptive and are not a win rate, causation estimate, or deployable strategy result."
+}

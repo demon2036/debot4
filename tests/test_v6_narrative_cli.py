@@ -31,10 +31,19 @@ class FakeApp:
         self.wait_for_stop = wait_for_stop
         self.queue = FakeQueue()
         self.research_store = FakeStore() if research else None
+        self.collector = SimpleNamespace(
+            filter_snapshot=lambda: {
+                "accepted": 3,
+                "rejected": 2,
+                "reasons": {"test": 5},
+            }
+        )
         self.service = SimpleNamespace(
             last_collector_error_type=None,
             last_source_error_types={"x": None, "debot": None},
             last_worker_error_type="GrokApiError",
+            last_worker_error_types={"grok-1": "GrokApiError"},
+            workers=(object(), object()),
             last_realtime_error_type=None,
         )
         self.telegram_realtime = None
@@ -85,7 +94,8 @@ def test_collect_once_is_json_and_does_not_request_grok(
         "x_posts": 3,
         "telegram_posts": 2,
             "debot_signals": 5,
-            "market_anomalies": 0,
+        "market_anomalies": 0,
+        "filter": {"accepted": 3, "rejected": 2, "reasons": {"test": 5}},
         "jobs": {"pending": 2, "leased": 0, "done": 4, "failed": 1},
     }
 
@@ -135,6 +145,9 @@ def test_run_max_seconds_stops_and_closes_cleanly(
     assert output["collector_error_type"] is None
     assert output["source_error_types"] == {"x": None, "debot": None}
     assert output["worker_error_type"] == "GrokApiError"
+    assert output["worker_error_types"] == {"grok-1": "GrokApiError"}
+    assert output["research_workers"] == 2
+    assert output["filter"]["rejected"] == 2
     assert output["telegram_realtime"]["status"] == "disabled"
 
 

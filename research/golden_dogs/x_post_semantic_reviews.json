@@ -565,5 +565,131 @@
     "semantic": "market_context",
     "reason": "Automated token metrics snapshot with a quick-swap link; no authored position or thesis.",
     "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/yuren1021/status/2084467138639831283",
+    "address": "0x19665b784133e6f8e432c087c1ec4d3355607777",
+    "semantic": "negative_warning",
+    "reason": "Explicitly warns that KOLs are manufacturing FOMO and says buyers risk being dumped on; the exact CA is a negative comparison, not an endorsement.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/0xshunli/status/2072239844789817351",
+    "address": "0x9c920baf6bffcae77896a6aab49a4dec5a374444",
+    "semantic": "market_thesis",
+    "reason": "Asks whether this exact CA will be BSC's next leading token while noting the absence of recent 1M memes; this is a forward market thesis, not a position disclosure.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/0xshunli/status/2073733409822949504",
+    "address": "0xa4390b901a63641c92327e5793b45fcb46954444",
+    "semantic": "market_thesis",
+    "reason": "Calls the exact-CA token the engine that starts the BSC market; concise but forward-looking thesis, with no stated buy.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/mark1991123/status/2083415774836715962",
+    "address": "0x330990dae53bca4c5811c5362b44c33a47db7777",
+    "semantic": "recap",
+    "reason": "Says monitoring the developer would already have caught the move and that the token reached roughly 10M in half a day; retrospective success commentary rather than a fresh forward call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/ShanksBNB/status/2084828046742495472",
+    "address": "0x5460b5e88799d27bbdf8a210926c17dec18d7777",
+    "semantic": "market_thesis",
+    "reason": "Frames the exact CA as Yi He's counterpart to CZ's MarsCoin, an affirmative narrative thesis without a stated wallet position.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/ShanksBNB/status/2084855974054252809",
+    "address": "0x5460b5e88799d27bbdf8a210926c17dec18d7777",
+    "semantic": "market_thesis",
+    "reason": "Despite noting a prior 600K ATH, explicitly says the story is only beginning and develops the Yi He catalyst thesis; forward continuation view, not proof of a buy.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/LSXS_888/status/2085561590175486355",
+    "address": "0xc73e1b136c576d1429cb84522a8c35c81d9d7777",
+    "semantic": "relay",
+    "reason": "A block of chart, referral, scanner, bot and channel links with no authored token thesis; distribution/tool promotion only.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/monkeyd_long/status/2085651990500249969",
+    "address": "0x244b112cf746e62a5df723cbde9906a6defd7777",
+    "semantic": "market_thesis",
+    "reason": "Identifies the exact CA as the current leader for Binance's new bStocks slogan; affirmative narrative ranking without a stated position.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/ojkared8139/status/2085656949635645872",
+    "address": "0xdc5e4d5f157482059126eb15d84f2ff9368b7777",
+    "semantic": "market_thesis",
+    "reason": "Explicitly says the author favors two slogan narratives and supplies their exact CAs; a forward comparative thesis, not a disclosed purchase.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/LSXS_888/status/2085658530548478426",
+    "address": "0x244b112cf746e62a5df723cbde9906a6defd7777",
+    "semantic": "relay",
+    "reason": "Only relays chart, scanner, trading-bot and referral links; no independent token view or position is authored.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/sol_jingou/status/2085716094506201511",
+    "address": "0x244b112cf746e62a5df723cbde9906a6defd7777",
+    "semantic": "market_context",
+    "reason": "Multi-chain daily hotspot roundup records current narrative and market cap for several tokens; it is a contemporaneous list, not a specific authored conviction call.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/sol_jingou/status/2085716094506201511",
+    "address": "0xdc5e4d5f157482059126eb15d84f2ff9368b7777",
+    "semantic": "market_context",
+    "reason": "The exact CA appears in a multi-token hotspot summary with current valuation; no position or specific forward thesis is stated for this token.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/MemeRadar_sol/status/2085721718144839773",
+    "address": "0x244b112cf746e62a5df723cbde9906a6defd7777",
+    "semantic": "market_context",
+    "reason": "Promotes a front-address label review for the token; research-product context rather than an independent buy or forward price thesis.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/Crypto_Cat888/status/2085941524836286478",
+    "address": "0x12d5a0c58ef299bedd309ec4964ffa3145827777",
+    "semantic": "reply_mention",
+    "reason": "A reply containing only the exact CA, with no authored position, thesis, warning or source explanation.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/Oxxiaoqi/status/2086098277372764555",
+    "address": "0xe9d476ce8ba9431a6c1ae39c00e84dab5c717777",
+    "semantic": "negative_warning",
+    "reason": "Explicitly says buying Exchange the World is inferior to a competing T-shirt narrative; this exact CA is the rejected comparison, not the recommendation.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/monkeyd_long/status/2086139789095641395",
+    "address": "0xdc5e4d5f157482059126eb15d84f2ff9368b7777",
+    "semantic": "market_context",
+    "reason": "Broad stock-meme market roundup lists this token and current valuation, then says the author only likes a different token in that tier; not an endorsement of this CA.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/guduchaobi1015/status/2086354878222463331",
+    "address": "0x9ecfbb6c0ce91d5ac00e1f7378880523cb8d7777",
+    "semantic": "market_thesis",
+    "reason": "Uses affirmative meme copy to associate the exact CA with the Binance City narrative; a weak but forward promotion, without a position disclosure.",
+    "reviewed_source": "independently fetched immutable X status"
+  },
+  {
+    "status_url": "https://x.com/Oxxiaoqi/status/2086365449709896107",
+    "address": "0x9ecfbb6c0ce91d5ac00e1f7378880523cb8d7777",
+    "semantic": "market_thesis",
+    "reason": "Develops a forward Binance listing, Dubai and headquarters narrative for the exact CA; explicit thesis, with no stated wallet position.",
+    "reviewed_source": "independently fetched immutable X status"
   }
 ]

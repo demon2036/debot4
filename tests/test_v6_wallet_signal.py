@@ -41,3 +41,13 @@ def test_wallet_can_rank_without_x_but_incomplete_denominator_cannot() -> None:
     assert assess_wallet_signal(
         history(activity_coverage_complete=False),
     ).verdict is WalletSignalVerdict.WAIT
+
+
+def test_provider_manipulation_tag_rejects_before_incomplete_history_wait() -> None:
+    result = assess_wallet_signal(history(
+        provider_risk_tags=("gmgn", "sandwich_bot"),
+        activity_coverage_complete=False,
+        outcomes_complete=False,
+    ))
+    assert result.verdict is WalletSignalVerdict.REJECT
+    assert result.reasons == ("provider_manipulation_tag:sandwich_bot",)

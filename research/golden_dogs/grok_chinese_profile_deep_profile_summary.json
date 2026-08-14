@@ -1,0 +1,9 @@
+{
+  "generated_at": "2026-08-12T19:11:40.168045Z",
+  "lead_handles": 208,
+  "profile_unavailable": 1,
+  "schema": "debot4.grok_profile_verification_summary.v1",
+  "unique_stable_user_ids": 207,
+  "verified_profiles": 207,
+  "warning": "A verified profile is an account candidate, not proof of KOL quality."
+}

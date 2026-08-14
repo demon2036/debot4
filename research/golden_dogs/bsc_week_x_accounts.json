@@ -1,0 +1,62 @@
+[
+  {
+    "handle": "cetsongold",
+    "expected_user_id": "2084997052233330689",
+    "labels": ["CETS"],
+    "association": "token metadata account URL"
+  },
+  {
+    "handle": "yuexinmiao",
+    "expected_user_id": "2085708060350177281",
+    "labels": ["月薪喵"],
+    "association": "token metadata account URL"
+  },
+  {
+    "handle": "bstocksfinance",
+    "expected_user_id": "2084204022043643904",
+    "labels": ["bStocks", "bNS"],
+    "association": "bNS metadata account URL; bStocks narrative account"
+  },
+  {
+    "handle": "Xchange_bsc",
+    "expected_user_id": "496715035",
+    "labels": ["XchangetheWorld"],
+    "association": "token metadata account URL"
+  },
+  {
+    "handle": "RacoonzillaBNB",
+    "expected_user_id": "980655742607753216",
+    "labels": ["Racoonzilla"],
+    "association": "token metadata account URL"
+  },
+  {
+    "handle": "Binancecityss",
+    "expected_user_id": null,
+    "labels": ["币安城"],
+    "association": "token metadata account URL; currently unavailable"
+  },
+  {
+    "handle": "BotOnBnb",
+    "expected_user_id": "108174884",
+    "labels": ["BOT"],
+    "association": "token metadata account URL"
+  },
+  {
+    "handle": "CSI888BSC",
+    "expected_user_id": "2086579658238074880",
+    "labels": ["CSI"],
+    "association": "token metadata account URL"
+  },
+  {
+    "handle": "csi888bnb",
+    "expected_user_id": null,
+    "labels": ["CSI"],
+    "association": "token metadata account URL; currently suspended"
+  },
+  {
+    "handle": "4clubBNB",
+    "expected_user_id": "1897035308249600000",
+    "labels": ["fourclub"],
+    "association": "token metadata account URL"
+  }
+]

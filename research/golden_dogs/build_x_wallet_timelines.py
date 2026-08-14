@@ -10,6 +10,7 @@ from pathlib import Path
 
 from debot4.v6.golden_dogs.serialization import write_json, write_jsonl
 from debot4.v6.golden_dogs.x_wallet_timeline import classify_wallet_post_timing
+from debot4.v6.golden_dogs.x_wallet_claim import corroborated_claim_from_mapping
 
 
 ROOT = Path(__file__).resolve().parent
@@ -50,6 +51,17 @@ def _wallets() -> dict[str, tuple[dict[str, object], ...]]:
             }
             if evidence not in output.setdefault(stable_id, []):
                 output[stable_id].append(evidence)
+    for row in _json("x_public_wallet_claims.json"):
+        claim = corroborated_claim_from_mapping(row)
+        if claim is None:
+            continue
+        evidence = {
+            "wallet": claim.wallet,
+            "source": "x_public_wallet_claims.json",
+            "provider_high_frequency": False,
+        }
+        if evidence not in output.setdefault(claim.stable_user_id, []):
+            output[claim.stable_user_id].append(evidence)
     return {key: tuple(value) for key, value in output.items()}
 
 
@@ -126,6 +138,8 @@ def _joined_x_markets() -> tuple[dict, ...]:
         *_optional_jsonl("x_account_identity_market_joins.jsonl"),
         *_optional_jsonl("x_wallet_identity_market_joins.jsonl"),
         *_optional_jsonl("chinese_x_market_joins.jsonl"),
+        *_optional_jsonl("chinese_profile_deep_x_market_joins.jsonl"),
+        *_optional_jsonl("tintin_x_market_joins.jsonl"),
     )
 
 
@@ -137,6 +151,10 @@ def _jsonl(name: str) -> tuple[dict, ...]:
 
 def _optional_jsonl(name: str) -> tuple[dict, ...]:
     return _jsonl(name) if (ROOT / name).exists() else ()
+
+
+def _json(name: str):
+    return json.loads((ROOT / name).read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

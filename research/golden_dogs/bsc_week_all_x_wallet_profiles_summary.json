@@ -1,0 +1,55 @@
+{
+  "as_of_identity_qualified_count": 0,
+  "as_of_skill_qualified_count": 0,
+  "candidate_count": 26,
+  "complete_profile_count": 26,
+  "current_provider_binding_count": 26,
+  "exact_ca_evidence_author_intersection_count": 0,
+  "exact_ca_evidence_author_intersections": [],
+  "historical_current_handle_match_count": 25,
+  "historical_x_attributed_buy_count": 49,
+  "historical_x_attributed_target_count": 8,
+  "historical_x_attributed_wave_count": 13,
+  "manipulative_profile_count": 4,
+  "manipulative_profiles": [
+    {
+      "tags": [
+        "wash_trader"
+      ],
+      "wallet": "0x64b23c2987aca16b3d3c55ad6f694058783c72ea",
+      "x_handle": "CyptoVVV"
+    },
+    {
+      "tags": [
+        "wash_trader"
+      ],
+      "wallet": "0x8ade93ba431a2ce19fc62a9ce97626e69a4a333f",
+      "x_handle": "0xLuckHK"
+    },
+    {
+      "tags": [
+        "wash_trader"
+      ],
+      "wallet": "0xacf1e98524761c0fc9909cdf580f685e8ddc8a88",
+      "x_handle": "JM_Dabiaoke"
+    },
+    {
+      "tags": [
+        "wash_trader"
+      ],
+      "wallet": "0xd171ebe9d3c1e55d918563107b0b7782948dd52c",
+      "x_handle": "YYzzy_diamond"
+    }
+  ],
+  "profile_error_count": 0,
+  "schema": "debot4.bsc_week_all_x_wallet_profiles_summary.v1",
+  "source_sha256": {
+    "bsc_week_all_x_wallet_profiles.jsonl": "76ccf391526407450e9e1e7ec281dc6ab45e686fae8a7dc61ea4dc2d9f20215f",
+    "bsc_week_pre_breakout_buys.jsonl": "0d2c1eeec725559b19e3d5f27055ad2c932b2a72bee5b7892bd17594b0a5526a",
+    "bsc_week_x_exact_evidence.jsonl": "0144705c6b8e28abc372f74add110b55c1356f904856058ae1b92e6a725ca796"
+  },
+  "warnings": [
+    "Provider X fields are discovery leads; point-in-time identity and a control-universe outcome denominator are still required for KOL status.",
+    "The exact-CA author intersection is bounded by the reviewed 98-association X evidence set; zero does not prove that no deleted/private post existed."
+  ]
+}

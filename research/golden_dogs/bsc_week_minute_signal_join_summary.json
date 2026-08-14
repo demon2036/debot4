@@ -1,0 +1,36 @@
+{
+  "lane_wave_coverage": {
+    "chain_clean": {
+      "early": 16,
+      "strict": 14
+    },
+    "chain_tagged": {
+      "early": 17,
+      "strict": 16
+    },
+    "social_eligible": {
+      "early": 13,
+      "strict": 10
+    },
+    "x_exact": {
+      "early": 6,
+      "strict": 5
+    }
+  },
+  "schema": "debot4.bsc_week_minute_signal_join_summary.v1",
+  "scope_warning": "Chain events are GMGN KOL-filtered provider rows verified on BSC RPC, not the full smart-wallet universe. Exact-X is restricted to the 98-association manual semantic ledger's forward classes. Social eligible includes direct forward Telegram and linked-account exact-time actions.",
+  "source_sha256": {
+    "bsc_gmgn_kol_audit_v2.jsonl": "c2a9f43aaa0c25367e6eac13b8db9e6e7825c4a40b322827dac6fc61d22234eb",
+    "bsc_gmgn_qualification.jsonl": "53a55184dd21c30b1a0ca4aa5c677a16282a01e4304be381a3f1e44a5c0d2155",
+    "bsc_week_minute_signal_joins.jsonl": "4ff7ecc1b02db5b28afd8e6505440d6e6b7335845ac115c90b88e92aa71e9052",
+    "bsc_week_minute_wave_replays.jsonl": "f4e72e9aea358d7acc919b2db664aeb58bcdf14daa6438c9d731ca41b8aaa4be",
+    "bsc_week_wave_replays.jsonl": "4de9b31f826a284ec5be768caa1533ce5fa701281443534e2f249b39b7d8bc3a",
+    "bsc_week_wave_social_joins.jsonl": "c9125e80fab98b46e56753a42ac1568c6c175204f690ab30faf7f1e0fb73e63d",
+    "bsc_week_x_exact_semantic_evidence.jsonl": "e7f62abace25ecd406649114a3378301d9f3ef25421bd7558f84a8355a0f4197"
+  },
+  "target_count": 13,
+  "timing_warning": "Only events before a crossing candle start count. Events inside its minute are ambiguous and excluded from strict/early advance coverage.",
+  "wave_count": 32,
+  "waves_with_any_early_advance": 22,
+  "waves_with_any_strict_advance": 20
+}

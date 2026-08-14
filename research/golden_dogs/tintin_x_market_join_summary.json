@@ -1,0 +1,12 @@
+{
+  "exact_ca_mentions": 12,
+  "generated_at": "2026-08-12T16:56:47.662352Z",
+  "joined_by_chain": {},
+  "joined_status_ca_pairs": 0,
+  "joined_unique_tokens": 0,
+  "schema": "debot4.tintin_x_market_join_summary.v1",
+  "timing": {},
+  "unique_exact_cas": 11,
+  "verified_status_rows": 460,
+  "warning": "An authored exact-CA post is not proof of KOL status, a buy, causality, or absence of manipulation"
+}

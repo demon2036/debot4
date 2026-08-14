@@ -65,5 +65,59 @@
     "target_profile_status": "target stable ID independently retrievable; target profile does not name treyerl",
     "wallet_attributed": false,
     "warning": "One-way public affiliation only; it is not evidence of shared control, same person, or a secondary wallet."
+  },
+  {
+    "source_handle": "Crypto7BD",
+    "source_user_id": "1460957190114709504",
+    "linked_handle": "btc2ai",
+    "linked_user_id": "1659207187330379778",
+    "relationship_claim": "profile identifies @BTC2AI as the related Crypto北斗 account",
+    "evidence_url": "https://api.fxtwitter.com/Crypto7BD",
+    "payload_sha256": "989150067e2f0e1b93d4a4e0c0b0a06d7ac5c3900a1af3bfc5c4d0af2b90d0ba",
+    "reciprocal": true,
+    "corroborating_url": "https://api.fxtwitter.com/btc2ai",
+    "corroborating_payload_sha256": "d056a2607c59a44d2f325112e1f6f35e9d12caf7ee838329ee1bf313fb8153f4",
+    "corroborating_claim": "profile calls @Crypto7BD its backup second-level X account",
+    "wallet_attributed": false,
+    "warning": "Direct reciprocal X-account relationship only; no hidden wallet is attributed."
+  },
+  {
+    "source_handle": "0xZhangCrypto1",
+    "source_user_id": "1954918628392144896",
+    "linked_handle": "0xzhang_crypto",
+    "linked_user_id": null,
+    "relationship_claim": "profile says main account @0xzhang_crypto was suspended",
+    "evidence_url": "https://api.fxtwitter.com/0xzhangcrypto1",
+    "payload_sha256": "22ee566cbc03d1f455752853b8841ee6f580171b07aa18898c7c76d4a6a02024",
+    "reciprocal": false,
+    "target_profile_status": "HTTP 404 at verification time",
+    "wallet_attributed": false,
+    "warning": "The suspended main account is named but not currently independently retrievable."
+  },
+  {
+    "source_handle": "liangxizjdq",
+    "source_user_id": "2013874039195070464",
+    "linked_handle": "liangxihuigui",
+    "linked_user_id": null,
+    "relationship_claim": "profile says old account @liangxihuigui was suspended",
+    "evidence_url": "https://api.fxtwitter.com/liangxizjdq",
+    "payload_sha256": "f65297273a11b2b2602397b64a6b01cad5f07056e046938ae9c7a204d43ce010",
+    "reciprocal": false,
+    "target_profile_status": "HTTP 404 at verification time",
+    "wallet_attributed": false,
+    "warning": "Account relationship is preserved; meme/KOL relevance still requires exact-post evidence."
+  },
+  {
+    "source_handle": "liangxizjdq",
+    "source_user_id": "2013874039195070464",
+    "linked_handle": "liangxied",
+    "linked_user_id": null,
+    "relationship_claim": "profile says earliest main account @liangxied was suspended",
+    "evidence_url": "https://api.fxtwitter.com/liangxizjdq",
+    "payload_sha256": "f65297273a11b2b2602397b64a6b01cad5f07056e046938ae9c7a204d43ce010",
+    "reciprocal": false,
+    "target_profile_status": "HTTP 404 at verification time",
+    "wallet_attributed": false,
+    "warning": "Account relationship is preserved; meme/KOL relevance still requires exact-post evidence."
   }
 ]

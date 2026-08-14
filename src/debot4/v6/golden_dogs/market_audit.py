@@ -132,17 +132,21 @@ def fetch_window_bars(
     start: int,
     end_exclusive: int,
     interval_seconds: int,
+    *,
+    max_pages: int = 8,
 ) -> WindowBars:
     """Page backwards until the complete bounded interval is covered."""
 
     if not start <= seed.created_at < end_exclusive:
         raise ValueError("token is outside requested market range")
+    if not 1 <= max_pages <= 64:
+        raise ValueError("market page limit must be between one and 64")
     cursor = end_exclusive
     candles: dict[int, Candle] = {}
     receipts: list[EvidenceReceipt] = []
     supplies: list[Decimal] = []
     complete = False
-    for _ in range(8):
+    for _ in range(max_pages):
         page = client.fetch_market(
             seed.chain, seed.address,
             interval_seconds=interval_seconds, limit=1_000, end=cursor,

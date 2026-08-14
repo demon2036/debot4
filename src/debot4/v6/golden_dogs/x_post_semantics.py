@@ -9,18 +9,22 @@ from enum import Enum
 class XPostSemantic(str, Enum):
     OWN_POSITION = "own_position"
     MARKET_THESIS = "market_thesis"
+    BARE_CALL = "bare_call"
     MARKET_CONTEXT = "market_context"
     RECAP = "recap"
     RELAY = "relay"
     REPLY_MENTION = "reply_mention"
     NEGATIVE_WARNING = "negative_warning"
     PROJECT_ANNOUNCEMENT = "project_announcement"
+    SCANNER = "scanner"
+    PHISHING_LURE = "phishing_lure"
     UNREVIEWED = "unreviewed"
 
 
 FORWARD_SIGNAL_SEMANTICS = frozenset({
     XPostSemantic.OWN_POSITION,
     XPostSemantic.MARKET_THESIS,
+    XPostSemantic.BARE_CALL,
 })
 
 

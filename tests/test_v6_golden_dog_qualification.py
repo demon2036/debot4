@@ -149,7 +149,7 @@ def test_wash_trader_tag_rejects_kol_buy() -> None:
     )
     result = qualify_golden_dog(observation(), (wash,), clean_screen())
     assert result.verdict is Verdict.REJECT
-    assert result.kol_buy.reasons == ("kol_buy_is_wash_trader_tagged",)
+    assert result.kol_buy.reasons == ("kol_buy_has_manipulation_tag",)
 
 
 def test_other_provider_manipulation_tags_also_reject_kol_buy() -> None:
@@ -160,7 +160,7 @@ def test_other_provider_manipulation_tags_also_reject_kol_buy() -> None:
     result = qualify_golden_dog(observation(), (sybil,), clean_screen())
 
     assert result.verdict is Verdict.REJECT
-    assert result.kol_buy.reasons == ("kol_buy_is_wash_trader_tagged",)
+    assert result.kol_buy.reasons == ("kol_buy_has_manipulation_tag",)
 
 
 def test_manipulation_indicator_rejects_otherwise_valid_candidate() -> None:

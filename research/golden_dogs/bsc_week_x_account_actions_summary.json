@@ -1,0 +1,29 @@
+{
+  "configured_account_count": 10,
+  "direct_timed_action_count": 192,
+  "fixed_week_action_count": 196,
+  "labels_with_direct_actions": [
+    "BOT",
+    "CETS",
+    "CSI",
+    "Racoonzilla",
+    "XchangetheWorld",
+    "bNS",
+    "bStocks",
+    "fourclub",
+    "月薪喵"
+  ],
+  "repost_snapshot_count": 4,
+  "schema": "debot4.bsc_week_x_account_actions_summary.v1",
+  "source_sha256": {
+    "bsc_week_x_accounts.json": "41d26ac70c317ae187144b07911b24ebb6f722f7189cd7b7e3bf0d4342e235a4"
+  },
+  "timeline_page_count": 24,
+  "unavailable_profile_count": 2,
+  "verified_profile_count": 8,
+  "warning": "Current profiles cannot prove prior bios. Asset resource times do not preserve old images. Repost snapshots expose original-post time, not repost time.",
+  "window": {
+    "end_exclusive": "2026-08-13T00:00:00Z",
+    "start": "2026-08-06T00:00:00Z"
+  }
+}

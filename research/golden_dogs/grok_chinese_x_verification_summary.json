@@ -1,11 +1,11 @@
 {
-  "generated_at": "2026-08-12T15:09:39.326732Z",
-  "lead_count": 661,
+  "generated_at": "2026-08-12T17:29:16.676787Z",
+  "lead_count": 902,
   "schema": "debot4.grok_chinese_x_verification_summary.v1",
   "status_counts": {
-    "status_author_mismatch": 1,
-    "verified": 660
+    "status_author_mismatch": 4,
+    "verified": 898
   },
-  "unique_profile_count": 171,
+  "unique_profile_count": 280,
   "warning": "verified means X identity and authored post only, not KOL quality or wallet"
 }

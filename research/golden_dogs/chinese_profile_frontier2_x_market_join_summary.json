@@ -1,0 +1,12 @@
+{
+  "exact_ca_mentions": 2,
+  "generated_at": "2026-08-12T19:29:57.840743Z",
+  "joined_by_chain": {},
+  "joined_status_ca_pairs": 0,
+  "joined_unique_tokens": 0,
+  "schema": "debot4.chinese_profile_frontier2_x_market_join_summary.v1",
+  "timing": {},
+  "unique_exact_cas": 2,
+  "verified_status_rows": 115,
+  "warning": "An authored exact-CA post is not proof of KOL status, a buy, causality, or absence of manipulation"
+}

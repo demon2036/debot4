@@ -40,8 +40,10 @@ def test_chinese_kol_scan_has_omission_sweeps_and_every_reviewed_handle() -> Non
     tasks = chinese_kol_search_tasks(date(2025, 8, 12), date(2026, 8, 13))
     handle_tasks = tuple(item for item in tasks if item.key.startswith("handle:"))
 
-    assert len(tasks) == 38
+    assert len(tasks) == 50
     assert len(handle_tasks) == 27
     assert len({item.key for item in tasks}) == len(tasks)
     assert all("token contract" in item.prompt for item in tasks)
     assert all("wallet" in item.prompt for item in tasks)
+    assert len(tuple(item for item in tasks if item.key.startswith("period:"))) == 5
+    assert any(item.key == "omission:reply-quote-network" for item in tasks)

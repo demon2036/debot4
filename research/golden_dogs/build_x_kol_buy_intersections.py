@@ -9,6 +9,7 @@ import json
 from pathlib import Path
 
 from debot4.v6.golden_dogs.serialization import write_json, write_jsonl
+from debot4.v6.golden_dogs.x_wallet_claim import corroborated_claim_from_mapping
 
 
 ROOT = Path(__file__).resolve().parent
@@ -120,6 +121,10 @@ def _wallet_owners() -> dict[str, str]:
         binding = row.get("x_binding") or {}
         if binding.get("verdict") == "PASS":
             owners[str(row["wallet"]).casefold()] = str(binding["stable_user_id"])
+    for row in _json("x_public_wallet_claims.json"):
+        claim = corroborated_claim_from_mapping(row)
+        if claim is not None:
+            owners[claim.wallet] = claim.stable_user_id
     return owners
 
 
@@ -157,6 +162,7 @@ def _joins() -> tuple[dict, ...]:
         *_optional_jsonl("x_account_identity_market_joins.jsonl"),
         *_optional_jsonl("x_wallet_identity_market_joins.jsonl"),
         *_optional_jsonl("chinese_x_market_joins.jsonl"),
+        *_optional_jsonl("chinese_profile_deep_x_market_joins.jsonl"),
         *_optional_jsonl("tintin_x_market_joins.jsonl"),
     )
 
@@ -169,6 +175,10 @@ def _jsonl(name: str) -> tuple[dict, ...]:
 
 def _optional_jsonl(name: str) -> tuple[dict, ...]:
     return _jsonl(name) if (ROOT / name).exists() else ()
+
+
+def _json(name: str):
+    return json.loads((ROOT / name).read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":

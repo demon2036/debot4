@@ -68,5 +68,9 @@ class GmgnPublicTransport:
             except (httpx.HTTPError, json.JSONDecodeError, GmgnTransportError) as exc:
                 last_error = exc
                 if attempt + 1 < self.attempts:
-                    time.sleep(0.25 * (2**attempt))
+                    delay = 5.0 * (2**attempt) if (
+                        isinstance(exc, GmgnTransportError)
+                        and "HTTP 429" in str(exc)
+                    ) else 0.25 * (2**attempt)
+                    time.sleep(delay)
         raise GmgnTransportError("GMGN public API request failed") from last_error

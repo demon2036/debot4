@@ -1,0 +1,98 @@
+{"tweet_id":"2085199072928186463","address":"0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777","semantic":"project_announcement","origin":"project","reason":"project account launch post with literal CA"}
+{"tweet_id":"2085200032832356537","address":"0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777","semantic":"market_thesis","origin":"project","reason":"creator gives explicit RWA, art, dividend and valuation thesis"}
+{"tweet_id":"2085202940441325620","address":"0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777","semantic":"project_announcement","origin":"project","reason":"project account publishes tokenomics"}
+{"tweet_id":"2085295120534962294","address":"0xc73e1b136c576d1429cb84522a8c35c81d9d7777","semantic":"scanner","origin":"automation","reason":"automated wallet and momentum alert"}
+{"tweet_id":"2085322201448816954","address":"0xc73e1b136c576d1429cb84522a8c35c81d9d7777","semantic":"scanner","origin":"automation","reason":"automated possible-FOMO wallet alert"}
+{"tweet_id":"2085349570754810111","address":"0x86a5a545a5d9f7ee14afecb7e62b7ae7bab27777","semantic":"scanner","origin":"automation","reason":"automated migration and burn statistics"}
+{"tweet_id":"2085350618236162495","address":"0x86a5a545a5d9f7ee14afecb7e62b7ae7bab27777","semantic":"project_announcement","origin":"project","reason":"project-branded burn-plan announcement"}
+{"tweet_id":"2085650699095023692","address":"0x244b112cf746e62a5df723cbde9906a6defd7777","semantic":"market_thesis","origin":"independent","reason":"predicts Binance principals will follow and names the token leader"}
+{"tweet_id":"2085654094773952538","address":"0xdc5e4d5f157482059126eb15d84f2ff9368b7777","semantic":"negative_warning","origin":"independent","reason":"dismisses token as a small-group play"}
+{"tweet_id":"2085561586077634914","address":"0xc73e1b136c576d1429cb84522a8c35c81d9d7777","semantic":"recap","origin":"automation","reason":"promotional scanner recap after a recorded large gain"}
+{"tweet_id":"2085561590175486355","address":"0xc73e1b136c576d1429cb84522a8c35c81d9d7777","semantic":"relay","origin":"automation","reason":"second-part link and referral list without a new thesis"}
+{"tweet_id":"2085651990500249969","address":"0x244b112cf746e62a5df723cbde9906a6defd7777","semantic":"market_thesis","origin":"independent","reason":"binds Binance bStocks account and slogan to exact CA as leader"}
+{"tweet_id":"2085656949635645872","address":"0xdc5e4d5f157482059126eb15d84f2ff9368b7777","semantic":"market_thesis","origin":"independent","reason":"explicitly says bullish on two slogan tokens"}
+{"tweet_id":"2085658530548478426","address":"0x244b112cf746e62a5df723cbde9906a6defd7777","semantic":"relay","origin":"automation","reason":"link and referral continuation without independent direction"}
+{"tweet_id":"2085695771261739426","address":"0x244b112cf746e62a5df723cbde9906a6defd7777","semantic":"market_thesis","origin":"independent","reason":"claims narrative read and predicts Binance, CZ and Yi He amplification"}
+{"tweet_id":"2085716094506201511","address":"0x244b112cf746e62a5df723cbde9906a6defd7777","semantic":"market_context","origin":"independent","reason":"multi-token roundup at stated current market cap"}
+{"tweet_id":"2085716094506201511","address":"0xc73e1b136c576d1429cb84522a8c35c81d9d7777","semantic":"market_context","origin":"independent","reason":"multi-token roundup at stated current market cap"}
+{"tweet_id":"2085716094506201511","address":"0xdc5e4d5f157482059126eb15d84f2ff9368b7777","semantic":"market_context","origin":"independent","reason":"multi-token roundup at stated current market cap"}
+{"tweet_id":"2085721718144839773","address":"0x244b112cf746e62a5df723cbde9906a6defd7777","semantic":"market_context","origin":"automation","reason":"front-wallet label inventory and narrative description"}
+{"tweet_id":"2085732755074318643","address":"0x244b112cf746e62a5df723cbde9906a6defd7777","semantic":"market_context","origin":"independent","reason":"comparative BSC stock-meme ranking without explicit entry"}
+{"tweet_id":"2085753595056828444","address":"0x244b112cf746e62a5df723cbde9906a6defd7777","semantic":"recap","origin":"independent","reason":"states token already made tenfold and channel called earlier"}
+{"tweet_id":"2085761080333349375","address":"0x244b112cf746e62a5df723cbde9906a6defd7777","semantic":"negative_warning","origin":"independent","reason":"labels exact CA fake and supplies competing CA"}
+{"tweet_id":"2085930533658452365","address":"0x12d5a0c58ef299bedd309ec4964ffa3145827777","semantic":"own_position","origin":"independent","reason":"says it has run and discloses a speculative bet"}
+{"tweet_id":"2086092743408071070","address":"0xe9d476ce8ba9431a6c1ae39c00e84dab5c717777","semantic":"market_thesis","origin":"independent","reason":"cites volume and suspected large team as gamble thesis"}
+{"tweet_id":"2086104528789876751","address":"0x31d19b3633ebdb60dc9d690b3e9eb1fff61a7777","semantic":"market_thesis","origin":"project","reason":"community promoter asserts lock, burn, treasury and historical-return thesis"}
+{"tweet_id":"2085941524836286478","address":"0x12d5a0c58ef299bedd309ec4964ffa3145827777","semantic":"reply_mention","origin":"independent","reason":"reply contains only mention and CA"}
+{"tweet_id":"2085964633010233404","address":"0x12d5a0c58ef299bedd309ec4964ffa3145827777","semantic":"recap","origin":"automation","reason":"automated call-to-ATH performance recap"}
+{"tweet_id":"2086056356487008742","address":"0xdc5e4d5f157482059126eb15d84f2ff9368b7777","semantic":"recap","origin":"automation","reason":"automated first-call-to-current gain recap"}
+{"tweet_id":"2086098277372764555","address":"0xe9d476ce8ba9431a6c1ae39c00e84dab5c717777","semantic":"negative_warning","origin":"independent","reason":"argues for competing T-shirt CA instead of this token"}
+{"tweet_id":"2086139789095641395","address":"0x12d5a0c58ef299bedd309ec4964ffa3145827777","semantic":"market_context","origin":"independent","reason":"broad ranking calls token a low-cap lottery and prefers another token"}
+{"tweet_id":"2086139789095641395","address":"0x244b112cf746e62a5df723cbde9906a6defd7777","semantic":"market_thesis","origin":"independent","reason":"broad ranking explicitly says this is the only preferred token in its tier"}
+{"tweet_id":"2086139789095641395","address":"0xc73e1b136c576d1429cb84522a8c35c81d9d7777","semantic":"market_context","origin":"independent","reason":"broad ranking describes token without preference"}
+{"tweet_id":"2086139789095641395","address":"0xdc5e4d5f157482059126eb15d84f2ff9368b7777","semantic":"market_context","origin":"independent","reason":"broad ranking describes token without preference"}
+{"tweet_id":"2086541464171860432","address":"0xbcad9b1b85af1cd81437252bf50b87235c0b7777","semantic":"market_thesis","origin":"independent","reason":"selects this as correct lower-fee CA against competitor"}
+{"tweet_id":"2086543928061284777","address":"0xbcad9b1b85af1cd81437252bf50b87235c0b7777","semantic":"market_thesis","origin":"independent","reason":"promotes CA using unverified SpaceX-affiliation narrative"}
+{"tweet_id":"2086278325883089362","address":"0xe9d476ce8ba9431a6c1ae39c00e84dab5c717777","semantic":"recap","origin":"automation","reason":"scanner success recap with promotional links"}
+{"tweet_id":"2086354878222463331","address":"0x9ecfbb6c0ce91d5ac00e1f7378880523cb8d7777","semantic":"bare_call","origin":"independent","reason":"standalone slogan and exact CA call"}
+{"tweet_id":"2086359629999776017","address":"0x9ecfbb6c0ce91d5ac00e1f7378880523cb8d7777","semantic":"market_thesis","origin":"independent","reason":"says split competitor died and this CA appears canonical"}
+{"tweet_id":"2086365449709896107","address":"0x9ecfbb6c0ce91d5ac00e1f7378880523cb8d7777","semantic":"market_thesis","origin":"independent","reason":"develops Binance listing, Dubai and city narrative"}
+{"tweet_id":"2086411025004589083","address":"0x31d19b3633ebdb60dc9d690b3e9eb1fff61a7777","semantic":"market_thesis","origin":"project","reason":"community reply argues tax, buyback and treasury mechanisms"}
+{"tweet_id":"2086504674837020854","address":"0x31d19b3633ebdb60dc9d690b3e9eb1fff61a7777","semantic":"market_thesis","origin":"independent","reason":"recommends token based on issuer history"}
+{"tweet_id":"2086576633549316496","address":"0x2f31614f7a8bb702f7898d379b3c23db73b87777","semantic":"scanner","origin":"automation","reason":"automated Dexscreener hot-pairs notice"}
+{"tweet_id":"2086744159382372690","address":"0xf225e70162837a811c77dc2bb413a5c06e97ffff","semantic":"market_thesis","origin":"independent","reason":"compares community pools and argues community confidence"}
+{"tweet_id":"2086845714844295618","address":"0x530227c569960ba0fa345f19cf743a477f147777","semantic":"project_announcement","origin":"project","reason":"official launch and product announcement with exact CA"}
+{"tweet_id":"2086606750330012125","address":"0x31d19b3633ebdb60dc9d690b3e9eb1fff61a7777","semantic":"scanner","origin":"automation","reason":"automated migration and burn statistics"}
+{"tweet_id":"2086625744634233171","address":"0x31d19b3633ebdb60dc9d690b3e9eb1fff61a7777","semantic":"market_thesis","origin":"independent","reason":"recommends token based on burn and lock claims"}
+{"tweet_id":"2086745859224429026","address":"0xf225e70162837a811c77dc2bb413a5c06e97ffff","semantic":"relay","origin":"relay","reason":"secondary event-bot receipt relaying unavailable Telegram call"}
+{"tweet_id":"2086799756614041739","address":"0xf225e70162837a811c77dc2bb413a5c06e97ffff","semantic":"market_thesis","origin":"independent","reason":"argues platform needs a leader and asks official amplification"}
+{"tweet_id":"2086807356059652445","address":"0x9ecfbb6c0ce91d5ac00e1f7378880523cb8d7777","semantic":"own_position","origin":"independent","reason":"claims no sale at top and asks for diamond-hand outcome"}
+{"tweet_id":"2086829910858047897","address":"0xbcad9b1b85af1cd81437252bf50b87235c0b7777","semantic":"market_context","origin":"independent","reason":"multi-token hot-meme roundup at stated cap"}
+{"tweet_id":"2086829910858047897","address":"0xf225e70162837a811c77dc2bb413a5c06e97ffff","semantic":"market_context","origin":"independent","reason":"multi-token hot-meme roundup at stated cap"}
+{"tweet_id":"2086875130098282709","address":"0xf225e70162837a811c77dc2bb413a5c06e97ffff","semantic":"market_context","origin":"independent","reason":"multi-CA community comment without token-specific thesis"}
+{"tweet_id":"2086878353684824136","address":"0xbcad9b1b85af1cd81437252bf50b87235c0b7777","semantic":"scanner","origin":"automation","reason":"automated just-moved market alert"}
+{"tweet_id":"2086881290524008889","address":"0x530227c569960ba0fa345f19cf743a477f147777","semantic":"scanner","origin":"automation","reason":"automated market-statistics alert"}
+{"tweet_id":"2086893497961906230","address":"0x530227c569960ba0fa345f19cf743a477f147777","semantic":"phishing_lure","origin":"malicious","reason":"fake claim-wallet lure on unrelated domain"}
+{"tweet_id":"2086941590640050654","address":"0xc73e1b136c576d1429cb84522a8c35c81d9d7777","semantic":"market_thesis","origin":"independent","reason":"reply recommends salary-paying cat narrative"}
+{"tweet_id":"2086945202246160555","address":"0xbcad9b1b85af1cd81437252bf50b87235c0b7777","semantic":"market_thesis","origin":"independent","reason":"predicts reaction if Elon unveils bot account"}
+{"tweet_id":"2086953970031833249","address":"0x530227c569960ba0fa345f19cf743a477f147777","semantic":"phishing_lure","origin":"malicious","reason":"fake listing-vote lure on unrelated domain"}
+{"tweet_id":"2086966263897583867","address":"0xe9d476ce8ba9431a6c1ae39c00e84dab5c717777","semantic":"scanner","origin":"automation","reason":"template market summary and statistics"}
+{"tweet_id":"2087026260103098789","address":"0x244b112cf746e62a5df723cbde9906a6defd7777","semantic":"negative_warning","origin":"independent","reason":"repeats warning that exact CA is fake"}
+{"tweet_id":"2087070625303261215","address":"0xdc5e4d5f157482059126eb15d84f2ff9368b7777","semantic":"reply_mention","origin":"independent","reason":"reply contains only mention and CA"}
+{"tweet_id":"2087079719346872613","address":"0x530227c569960ba0fa345f19cf743a477f147777","semantic":"phishing_lure","origin":"malicious","reason":"fake airdrop claim portal lure"}
+{"tweet_id":"2087107750295929315","address":"0x530227c569960ba0fa345f19cf743a477f147777","semantic":"recap","origin":"automation","reason":"scanner wallet-profit recap with promotional links"}
+{"tweet_id":"2087107755366817822","address":"0x530227c569960ba0fa345f19cf743a477f147777","semantic":"relay","origin":"automation","reason":"second-part referral and chart links"}
+{"tweet_id":"2087126678124294593","address":"0xc73e1b136c576d1429cb84522a8c35c81d9d7777","semantic":"market_thesis","origin":"independent","reason":"reply asks why cat season excludes this token"}
+{"tweet_id":"2087134608412520900","address":"0xf225e70162837a811c77dc2bb413a5c06e97ffff","semantic":"market_thesis","origin":"independent","reason":"calls for community rescue and MarsCoin comparison"}
+{"tweet_id":"2087144552276885860","address":"0x530227c569960ba0fa345f19cf743a477f147777","semantic":"market_context","origin":"independent","reason":"multi-token narrative roundup at stated cap"}
+{"tweet_id":"2087154218524397631","address":"0x530227c569960ba0fa345f19cf743a477f147777","semantic":"phishing_lure","origin":"malicious","reason":"fake holder claim-wallet lure"}
+{"tweet_id":"2087163188462662064","address":"0x530227c569960ba0fa345f19cf743a477f147777","semantic":"phishing_lure","origin":"malicious","reason":"fake holder claim-wallet lure"}
+{"tweet_id":"2087168063288623282","address":"0x530227c569960ba0fa345f19cf743a477f147777","semantic":"market_context","origin":"relay","reason":"near-copy of earlier multi-token roundup"}
+{"tweet_id":"2087192867592925480","address":"0xe9d476ce8ba9431a6c1ae39c00e84dab5c717777","semantic":"bare_call","origin":"independent","reason":"standalone ticker and exact CA"}
+{"tweet_id":"2087193021020574025","address":"0xdc5e4d5f157482059126eb15d84f2ff9368b7777","semantic":"bare_call","origin":"independent","reason":"standalone token name and exact CA"}
+{"tweet_id":"2087193897411993932","address":"0xe9d476ce8ba9431a6c1ae39c00e84dab5c717777","semantic":"reply_mention","origin":"independent","reason":"reply contains token name and exact CA only"}
+{"tweet_id":"2087193967993725015","address":"0xe9d476ce8ba9431a6c1ae39c00e84dab5c717777","semantic":"bare_call","origin":"independent","reason":"standalone token name and exact CA"}
+{"tweet_id":"2087196760112291857","address":"0x244b112cf746e62a5df723cbde9906a6defd7777","semantic":"own_position","origin":"independent","reason":"explicit buy-and-hold exhortation before predicted pump"}
+{"tweet_id":"2087198111156293960","address":"0xdc5e4d5f157482059126eb15d84f2ff9368b7777","semantic":"scanner","origin":"automation","reason":"automated market-statistics alert"}
+{"tweet_id":"2087201834821976274","address":"0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777","semantic":"market_thesis","origin":"independent","reason":"argues IP, RWA and liquidity thesis with 100M target"}
+{"tweet_id":"2087209423517212680","address":"0xdc5e4d5f157482059126eb15d84f2ff9368b7777","semantic":"scanner","origin":"automation","reason":"automated market-statistics alert"}
+{"tweet_id":"2087241713425240438","address":"0xf225e70162837a811c77dc2bb413a5c06e97ffff","semantic":"phishing_lure","origin":"malicious","reason":"fake holder claim-wallet lure"}
+{"tweet_id":"2087244491757638124","address":"0xc73e1b136c576d1429cb84522a8c35c81d9d7777","semantic":"market_thesis","origin":"independent","reason":"reply calls token a durable bullposting meme"}
+{"tweet_id":"2087248069595459710","address":"0xf225e70162837a811c77dc2bb413a5c06e97ffff","semantic":"market_thesis","origin":"independent","reason":"predicts higher price and argues foreign CTO and dividends"}
+{"tweet_id":"2087258196532478111","address":"0x530227c569960ba0fa345f19cf743a477f147777","semantic":"scanner","origin":"automation","reason":"automated sniper and market-statistics alert"}
+{"tweet_id":"2087277481053024345","address":"0xc73e1b136c576d1429cb84522a8c35c81d9d7777","semantic":"reply_mention","origin":"independent","reason":"reply contains exact CA only"}
+{"tweet_id":"2087290061423534208","address":"0x244b112cf746e62a5df723cbde9906a6defd7777","semantic":"bare_call","origin":"independent","reason":"standalone CA and ticker call"}
+{"tweet_id":"2087292496980189209","address":"0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777","semantic":"phishing_lure","origin":"malicious","reason":"fake holder claim-wallet lure"}
+{"tweet_id":"2087304661468332260","address":"0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777","semantic":"market_thesis","origin":"independent","reason":"reply recommends token as answer to stated fear"}
+{"tweet_id":"2087307781057478834","address":"0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777","semantic":"market_thesis","origin":"independent","reason":"reply supplies concise RWA feline supercycle thesis"}
+{"tweet_id":"2087311594598408342","address":"0x530227c569960ba0fa345f19cf743a477f147777","semantic":"phishing_lure","origin":"malicious","reason":"fake holder claim-wallet lure"}
+{"tweet_id":"2087315816026931679","address":"0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777","semantic":"relay","origin":"automation","reason":"event bot relays and recaps Telegram calls"}
+{"tweet_id":"2087320584724058501","address":"0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777","semantic":"phishing_lure","origin":"malicious","reason":"fake claim-wallet lure"}
+{"tweet_id":"2087321860815937849","address":"0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777","semantic":"phishing_lure","origin":"malicious","reason":"fake claim-wallet lure"}
+{"tweet_id":"2087325190636122430","address":"0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777","semantic":"phishing_lure","origin":"malicious","reason":"fake claim-wallet lure"}
+{"tweet_id":"2087327315646689786","address":"0xb0c2ab5af4028461ace3f6e1c33a4ee1404e7777","semantic":"own_position","origin":"independent","reason":"discloses sizing at stated market cap"}
+{"tweet_id":"2087328102997176779","address":"0x2f31614f7a8bb702f7898d379b3c23db73b87777","semantic":"phishing_lure","origin":"malicious","reason":"fake CEX listing vote lure"}
+{"tweet_id":"2087383719195926661","address":"0x244b112cf746e62a5df723cbde9906a6defd7777","semantic":"market_context","origin":"independent","reason":"large fourth-season narrative inventory"}
+{"tweet_id":"2087383719195926661","address":"0xdc5e4d5f157482059126eb15d84f2ff9368b7777","semantic":"market_context","origin":"independent","reason":"large fourth-season narrative inventory"}
+{"tweet_id":"2087383719195926661","address":"0xf225e70162837a811c77dc2bb413a5c06e97ffff","semantic":"market_context","origin":"independent","reason":"large fourth-season narrative inventory"}
+{"tweet_id":"2087500777501987156","address":"0x244b112cf746e62a5df723cbde9906a6defd7777","semantic":"market_thesis","origin":"independent","reason":"asks whether token can rise into first market tier"}

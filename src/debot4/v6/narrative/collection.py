@@ -2,9 +2,11 @@
 
 from __future__ import annotations
 
+from collections import Counter
 from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime
+from threading import Lock
 from typing import Protocol
 
 from ..domain import DeBotSignal
@@ -15,6 +17,12 @@ from .actor_registry import ActorRegistry, DEFAULT_ACTOR_REGISTRY
 from .debot_feed import NarrativeDeBotCandidate
 from .job_priority import narrative_job_priority
 from .job_queue import NarrativeJobQueue
+from .live_signal_filter import (
+    AllowAllSignalFilter,
+    NarrativeSignal,
+    NarrativeSignalFilter,
+    SignalFilterDecision,
+)
 from .market_signal import MarketAnomaly
 
 
@@ -76,6 +84,7 @@ class NarrativeCollector:
         max_attempts: int = 3,
         registry: ActorRegistry = DEFAULT_ACTOR_REGISTRY,
         clock: Callable[[], datetime] = utc_now,
+        signal_filter: NarrativeSignalFilter | None = None,
     ) -> None:
         if isinstance(max_attempts, bool) or not 1 <= max_attempts <= 100:
             raise ValueError("max_attempts must be between 1 and 100")
@@ -87,6 +96,9 @@ class NarrativeCollector:
         self.max_attempts = max_attempts
         self.registry = registry
         self.clock = clock
+        self.signal_filter = signal_filter or AllowAllSignalFilter()
+        self._filter_counts: Counter[tuple[bool, str]] = Counter()
+        self._filter_lock = Lock()
 
     def collect_once(self) -> CollectionCycle:
         x_posts = self.collect_x_once()
@@ -111,9 +123,27 @@ class NarrativeCollector:
             return ()
         return self.market_monitor.poll_once(accept=self._accept_market)
 
-    def _enqueue(
-        self, payload: XPost | TelegramPost | DeBotSignal | MarketAnomaly
-    ) -> None:
+    def filter_snapshot(self) -> dict[str, object]:
+        with self._filter_lock:
+            counts = dict(self._filter_counts)
+        accepted = sum(total for (keep, _), total in counts.items() if keep)
+        rejected = sum(total for (keep, _), total in counts.items() if not keep)
+        return {
+            "accepted": accepted,
+            "rejected": rejected,
+            "reasons": {
+                reason: total
+                for (_, reason), total in sorted(
+                    counts.items(), key=lambda item: item[0]
+                )
+            },
+        }
+
+    def _enqueue(self, payload: NarrativeSignal) -> None:
+        decision = self.signal_filter.decide(payload)
+        if not decision.accepted:
+            self._record_filter(decision)
+            return
         self.queue.enqueue(
             payload,
             max_attempts=self.max_attempts,
@@ -121,6 +151,11 @@ class NarrativeCollector:
                 payload, self.registry, now=self.clock()
             ),
         )
+        self._record_filter(decision)
+
+    def _record_filter(self, decision: SignalFilterDecision) -> None:
+        with self._filter_lock:
+            self._filter_counts[(decision.accepted, decision.reason)] += 1
 
     def _accept_x(self, posts: tuple[XPost, ...]) -> None:
         for post in posts:

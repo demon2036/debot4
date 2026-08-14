@@ -1,0 +1,81 @@
+{
+  "event_time_coverage": {
+    "0": {
+      "any_public": 21,
+      "automation_public": 0,
+      "fresh_any_public": 13,
+      "independent_public": 12,
+      "project_public": 13,
+      "relay_public": 0
+    },
+    "120": {
+      "any_public": 21,
+      "automation_public": 0,
+      "fresh_any_public": 13,
+      "independent_public": 12,
+      "project_public": 13,
+      "relay_public": 0
+    },
+    "15": {
+      "any_public": 21,
+      "automation_public": 0,
+      "fresh_any_public": 13,
+      "independent_public": 12,
+      "project_public": 13,
+      "relay_public": 0
+    },
+    "30": {
+      "any_public": 21,
+      "automation_public": 0,
+      "fresh_any_public": 13,
+      "independent_public": 12,
+      "project_public": 13,
+      "relay_public": 0
+    },
+    "5": {
+      "any_public": 21,
+      "automation_public": 0,
+      "fresh_any_public": 13,
+      "independent_public": 12,
+      "project_public": 13,
+      "relay_public": 0
+    },
+    "60": {
+      "any_public": 21,
+      "automation_public": 0,
+      "fresh_any_public": 13,
+      "independent_public": 12,
+      "project_public": 13,
+      "relay_public": 0
+    }
+  },
+  "output_sha256": "e96c0b6b95baea3d93df7ed15785927abfe9fa4b8b06fd77566ffc19a19ab030",
+  "schema": "debot4.bsc_week_public_advance_audit_summary.v2",
+  "source_sha256": {
+    "bsc_week_project_advance_reviews.jsonl": "a83a534532c8f4d1047ca8449b47f08277ec9f7a497e0e7e9504216b32341981",
+    "bsc_week_telegram_evidence.jsonl": "95af5c1f884fa130fb87245012967371fec24124c4123a6ae97a72b9302bd44e",
+    "bsc_week_trade_price_evidence.jsonl": "7436363bb04d70ab26982a0227ff824ebe80b6299f6fb1853df577ac85fb2e67",
+    "bsc_week_x_exact_semantic_evidence.jsonl": "e7f62abace25ecd406649114a3378301d9f3ef25421bd7558f84a8355a0f4197"
+  },
+  "target_count": 13,
+  "unique_input_event_count": 81,
+  "warnings": [
+    "Published-at event timing is a counterfactual subscription ceiling, not observed live capture.",
+    "Publisher/KOL historical selectivity and control-universe precision remain unqualified.",
+    "Project-action exact-CA binding comes from reviewed token-account metadata; the action need not contain a literal CA.",
+    "Telegram pair URLs are excluded until pair-to-exact-CA binding is independently resolved."
+  ],
+  "wave_count": 32,
+  "zero_latency_actionable_wave_event_association_lane_counts": {
+    "independent_public": 21,
+    "project_public": 89
+  },
+  "zero_latency_closest_lead_bucket_wave_counts": {
+    "1800s_to_lt_21600s": 10,
+    "21600s_to_lt_86400s": 2,
+    "300s_to_lt_1800s": 4,
+    "60s_to_lt_300s": 1,
+    "gte_86400s": 3,
+    "lt_60s": 1
+  }
+}

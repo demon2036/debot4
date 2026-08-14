@@ -1,0 +1,12 @@
+{
+  "candidate_count": 35,
+  "candidate_wave_count": 14,
+  "post_confirmation_actionable_wave_upper_bound": 13,
+  "same_block_only_wave_count": 1,
+  "schema": "debot4.bsc_week_block_signal_evidence_summary.v1",
+  "source_sha256": {
+    "bsc_week_block_signal_evidence.jsonl": "23f8a1bd973f53b79da8c0ddadec59f3db355aa82470a04315ae0caf75c99018",
+    "bsc_week_trade_price_evidence.jsonl": "7436363bb04d70ab26982a0227ff824ebe80b6299f6fb1853df577ac85fb2e67"
+  },
+  "warning": "Post-confirmation actionability is only a timing gate. Provider labels still require identity, historical outcomes, and manipulation checks."
+}

@@ -15,6 +15,8 @@ from debot4.v6.golden_dogs.x_account_queue import (
     XAccountRole,
     assess_x_account_queue,
 )
+from debot4.v6.golden_dogs.x_wallet_claim import corroborated_claim_from_mapping
+from debot4.v6.golden_dogs.wallet_risk import has_manipulative_wallet_tag
 from debot4.v6.narrative.actor_catalog import DEFAULT_ACTOR_CATALOG
 from debot4.v6.narrative.actors import ActorTier
 
@@ -115,6 +117,8 @@ def _profiles() -> dict[str, dict[str, object]]:
                  "grok_x_account_identity_verified.jsonl",
                  "grok_wallet_x_identity_verified.jsonl",
                  "grok_chinese_x_verified.jsonl",
+                 "grok_chinese_profile_verified.jsonl",
+                 "grok_chinese_profile_deep_profiles_verified.jsonl",
                  "grok_tintin_x_verified.jsonl"):
         for row in _optional_jsonl(name):
             if row.get("status") != "verified" or not row.get("profile_user_id"):
@@ -157,6 +161,19 @@ def _wallet_evidence() -> dict[str, tuple[dict[str, object], ...]]:
             "pre_peak_buy_token_count": row["pre_peak_token_count"],
             "buy_transaction_count": row["buy_transaction_count"],
             "provider_tags": row["provider_tags"], "provider_high_frequency": False,
+        })
+    for row in _json("x_public_wallet_claims.json"):
+        claim = corroborated_claim_from_mapping(row)
+        if claim is None:
+            continue
+        tags = tuple(str(tag) for tag in row.get("provider_tags", ()))
+        output[claim.stable_user_id].append({
+            "source": "public_x_wallet_claim_provider_corroborated",
+            "wallet": claim.wallet, "eligible_buy_token_count": None,
+            "pre_peak_buy_token_count": None, "buy_transaction_count": None,
+            "provider_tags": tags,
+            "provider_high_frequency": False,
+            "smart_wallet_excluded": has_manipulative_wallet_tag(tags),
         })
     return {key: tuple(value) for key, value in output.items()}
 
@@ -208,6 +225,7 @@ def _joined_x_markets() -> tuple[dict, ...]:
         *_optional_jsonl("x_account_identity_market_joins.jsonl"),
         *_optional_jsonl("x_wallet_identity_market_joins.jsonl"),
         *_optional_jsonl("chinese_x_market_joins.jsonl"),
+        *_optional_jsonl("chinese_profile_deep_x_market_joins.jsonl"),
         *_optional_jsonl("tintin_x_market_joins.jsonl"),
     )
 

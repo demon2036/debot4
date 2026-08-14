@@ -1,0 +1,56 @@
+{
+  "best_supported_driver_counts": {
+    "capital_then_social_amplification": 4,
+    "fresh_public_thesis_and_market_flow": 4,
+    "previous_block_capital_first": 4,
+    "project_operations_and_market_flow": 11,
+    "same_block_capital_first": 3,
+    "standing_narrative_and_market_flow": 6
+  },
+  "capture_class_counts": {
+    "previous_block_only_before_1_02": 6,
+    "public_before_1_02": 21,
+    "same_block_pending_or_builder_only": 5
+  },
+  "confidence_counts": {
+    "medium": 19,
+    "medium_high": 6,
+    "medium_low": 7
+  },
+  "narrative_source_target_counts": {
+    "meaningful_exact_ca_before_creation": 0,
+    "meaningful_exact_ca_publication": 12,
+    "unavailable_upstream_candidate": 1,
+    "verified_upstream_source": 4
+  },
+  "public_closest_lead_bucket_counts": {
+    "1800s_to_lt_21600s": 10,
+    "21600s_to_lt_86400s": 2,
+    "300s_to_lt_1800s": 4,
+    "60s_to_lt_300s": 1,
+    "gte_86400s": 3,
+    "lt_60s": 1
+  },
+  "schema": "debot4.bsc_week_wave_attribution_summary.v2",
+  "source_sha256": {
+    "bsc_week_minute_wave_replays.jsonl": "f4e72e9aea358d7acc919b2db664aeb58bcdf14daa6438c9d731ca41b8aaa4be",
+    "bsc_week_public_advance_audit.jsonl": "e96c0b6b95baea3d93df7ed15785927abfe9fa4b8b06fd77566ffc19a19ab030",
+    "bsc_week_trade_price_evidence.jsonl": "7436363bb04d70ab26982a0227ff824ebe80b6299f6fb1853df577ac85fb2e67",
+    "bsc_week_uncovered_pre_breakout_blocks.jsonl": "c4294795d0f8a49de1e673183f38ba97756c92500afe8564806fc687d5b62103",
+    "bsc_week_wave_attribution_reviews.jsonl": "395be725782c06fdb35884e03825fecf5d64a123807ef1e06a9ab2dc5fde62a7",
+    "bsc_week_wave_chain_joins.jsonl": "fd96e2afec2a15511b1f284a50c93c34e7ee2e8950301b973a8d6402d9888a46",
+    "bsc_week_wave_replays.jsonl": "4de9b31f826a284ec5be768caa1533ce5fa701281443534e2f249b39b7d8bc3a",
+    "bsc_week_wave_social_joins.jsonl": "c9125e80fab98b46e56753a42ac1568c6c175204f690ab30faf7f1e0fb73e63d",
+    "bsc_week_wave_x_joins.jsonl": "06af90187390c4fa2c5da48b1d7240f65c07f7717627ebb56d40edc8ea9f67db",
+    "bsc_week_x_exact_semantic_evidence.jsonl": "e7f62abace25ecd406649114a3378301d9f3ef25421bd7558f84a8355a0f4197",
+    "bsc_week_x_narrative_sources.jsonl": "aec0b05dc12e92e4cc29f14ad13a46498cb894a63f9d37c6882f898ab75b7d64"
+  },
+  "target_count": 13,
+  "warnings": [
+    "Attribution is the best-supported mechanism, not proof of causation.",
+    "Published-at public coverage is a counterfactual ceiling, not observed live capture.",
+    "Current supply times 5m high is an FDV proxy, not executable market cap.",
+    "No wallet or KOL in this winner-only audit passed point-in-time skill qualification."
+  ],
+  "wave_count": 32
+}

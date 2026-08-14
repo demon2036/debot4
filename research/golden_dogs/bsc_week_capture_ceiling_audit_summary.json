@@ -1,0 +1,94 @@
+{
+  "claims": {
+    "fresh_public_event_time_advance_ceiling": 13,
+    "public_event_time_advance_ceiling": 21,
+    "public_or_unqualified_provider_timing_ceiling": 22,
+    "qualified_provider_advance": 0
+  },
+  "latency_coverage": {
+    "0": {
+      "early_motion_detection": 27,
+      "fresh_public_advance": 13,
+      "provider_timing_ceiling": 4,
+      "public_advance": 21,
+      "qualified_provider_advance": 0,
+      "semantic_public_or_qualified_provider_advance": 21,
+      "timing_union_ceiling": 22
+    },
+    "120": {
+      "early_motion_detection": 15,
+      "fresh_public_advance": 13,
+      "provider_timing_ceiling": 0,
+      "public_advance": 21,
+      "qualified_provider_advance": 0,
+      "semantic_public_or_qualified_provider_advance": 21,
+      "timing_union_ceiling": 21
+    },
+    "15": {
+      "early_motion_detection": 22,
+      "fresh_public_advance": 13,
+      "provider_timing_ceiling": 4,
+      "public_advance": 21,
+      "qualified_provider_advance": 0,
+      "semantic_public_or_qualified_provider_advance": 21,
+      "timing_union_ceiling": 22
+    },
+    "30": {
+      "early_motion_detection": 21,
+      "fresh_public_advance": 13,
+      "provider_timing_ceiling": 3,
+      "public_advance": 21,
+      "qualified_provider_advance": 0,
+      "semantic_public_or_qualified_provider_advance": 21,
+      "timing_union_ceiling": 22
+    },
+    "5": {
+      "early_motion_detection": 23,
+      "fresh_public_advance": 13,
+      "provider_timing_ceiling": 4,
+      "public_advance": 21,
+      "qualified_provider_advance": 0,
+      "semantic_public_or_qualified_provider_advance": 21,
+      "timing_union_ceiling": 22
+    },
+    "60": {
+      "early_motion_detection": 18,
+      "fresh_public_advance": 13,
+      "provider_timing_ceiling": 1,
+      "public_advance": 21,
+      "qualified_provider_advance": 0,
+      "semantic_public_or_qualified_provider_advance": 21,
+      "timing_union_ceiling": 21
+    }
+  },
+  "output_sha256": "ac4f0d3622c137c57221fdb4a6cec60379d203744ed1f0959945f8347d776cd0",
+  "pre_1_02_provider_candidate_count": 11,
+  "pre_1_02_provider_candidate_wave_count": 5,
+  "schema": "debot4.bsc_week_capture_ceiling_audit_summary.v1",
+  "source_sha256": {
+    "bsc_week_block_signal_evidence.jsonl": "23f8a1bd973f53b79da8c0ddadec59f3db355aa82470a04315ae0caf75c99018",
+    "bsc_week_price_crossing_positions.jsonl": "c2dcaf37061d050ce04e4157eb8c13e13360a3e9d86de31ddeae60bad59906e3",
+    "bsc_week_public_advance_audit.jsonl": "e96c0b6b95baea3d93df7ed15785927abfe9fa4b8b06fd77566ffc19a19ab030",
+    "bsc_week_trade_price_evidence.jsonl": "7436363bb04d70ab26982a0227ff824ebe80b6299f6fb1853df577ac85fb2e67"
+  },
+  "target_count": 13,
+  "warnings": [
+    "Winning-wave recall is not precision and cannot prove profitability.",
+    "The timing union includes unqualified provider labels and is not deployable coverage.",
+    "Guaranteed recall is impossible for private, deleted, same-block, or unsupported signals."
+  ],
+  "wave_count": 32,
+  "zero_latency_timing_union_uncovered": [
+    "Racoonzilla#1",
+    "bStocks#1",
+    "CSI#1",
+    "CSI#2",
+    "Asian games#1",
+    "TKM#1",
+    "币安城#1",
+    "BOT#1",
+    "月薪喵#1",
+    "月薪喵#2"
+  ],
+  "zero_latency_timing_union_uncovered_count": 10
+}

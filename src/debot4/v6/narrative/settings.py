@@ -25,6 +25,7 @@ class NarrativeSettings:
     worker_idle_seconds: float = 0.25
     retry_delay_seconds: float = 5.0
     lease_seconds: float = 240.0
+    research_workers: int = 10
     x_timeout_seconds: float = 8.0
     x_egress_pool_file: Path | None = None
     x_egress_location: str = "local"
@@ -85,6 +86,8 @@ class NarrativeSettings:
             raise ValueError("X monitor workers must be between 1 and 64")
         if isinstance(self.x_repost_workers, bool) or not 1 <= self.x_repost_workers <= 32:
             raise ValueError("X repost workers must be between 1 and 32")
+        if isinstance(self.research_workers, bool) or not 1 <= self.research_workers <= 16:
+            raise ValueError("research workers must be between 1 and 16")
         object.__setattr__(self, "state_dir", state)
         object.__setattr__(self, "debot_cookie_file", debot_cookie)
         object.__setattr__(self, "telegram_realtime_config", realtime)
@@ -113,6 +116,7 @@ class NarrativeSettings:
             worker_idle_seconds=_number(env, "DEBOT4_WORKER_IDLE_SECONDS", 0.25),
             retry_delay_seconds=_number(env, "DEBOT4_RETRY_DELAY_SECONDS", 5.0),
             lease_seconds=_number(env, "DEBOT4_JOB_LEASE_SECONDS", 240.0),
+            research_workers=_integer(env, "DEBOT4_RESEARCH_WORKERS", 10),
             x_timeout_seconds=_number(env, "DEBOT4_X_TIMEOUT_SECONDS", 8.0),
             x_egress_pool_file=_optional_path(env.get(
                 "DEBOT4_X_EGRESS_POOL_FILE", str(PROJECT_ROOT / "conf" / "egress-pool.toml")

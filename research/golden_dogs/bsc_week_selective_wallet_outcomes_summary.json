@@ -1,0 +1,117 @@
+{
+  "activity_token_count": 216,
+  "complete_outcome_count": 164,
+  "hit_count": 12,
+  "mature_outcome_count": 164,
+  "measurable_outcome_count": 163,
+  "output_sha256": "4832eac2c972d2799fad85cfb7484af99acb634dc0d83ee347c336c90245dcb0",
+  "schema": "debot4.bsc_week_selective_wallet_outcomes_summary.v2",
+  "skill_screen_pass_count": 0,
+  "source_sha256": {
+    "bsc_week_selective_wallet_buys.jsonl": "94e8cd09cb904dd123c82df0d3ab51364fe0591a6ec5a9d0b271aec19faddf79"
+  },
+  "wallet_assessments": [
+    {
+      "activity_unique_tokens": 46,
+      "hit_rate": 0.0,
+      "hits": 0,
+      "mature_tokens": 16,
+      "measurable_tokens": 16,
+      "minimum_10_mature_tokens": true,
+      "minimum_20pct_hit_rate": false,
+      "skill_screen_pass": false,
+      "wallet": "0x108ad3125bae57daa6d72bd9f2060e07841889c2",
+      "x_handle": "lyleeewmc"
+    },
+    {
+      "activity_unique_tokens": 24,
+      "hit_rate": 0.05,
+      "hits": 1,
+      "mature_tokens": 20,
+      "measurable_tokens": 20,
+      "minimum_10_mature_tokens": true,
+      "minimum_20pct_hit_rate": false,
+      "skill_screen_pass": false,
+      "wallet": "0x1e115fb1f7135397d32e901d893bdf0441356c10",
+      "x_handle": "wanger2gou"
+    },
+    {
+      "activity_unique_tokens": 34,
+      "hit_rate": 0.03125,
+      "hits": 1,
+      "mature_tokens": 32,
+      "measurable_tokens": 32,
+      "minimum_10_mature_tokens": true,
+      "minimum_20pct_hit_rate": false,
+      "skill_screen_pass": false,
+      "wallet": "0x379dd75fd82daa5ae5f795e8c550eef57190c9fa",
+      "x_handle": "Tothejpg"
+    },
+    {
+      "activity_unique_tokens": 15,
+      "hit_rate": 0.09090909090909091,
+      "hits": 1,
+      "mature_tokens": 11,
+      "measurable_tokens": 11,
+      "minimum_10_mature_tokens": true,
+      "minimum_20pct_hit_rate": false,
+      "skill_screen_pass": false,
+      "wallet": "0x6c5e56c80e8a11a38f709c43c8aea2219bf98236",
+      "x_handle": "AceCzarG"
+    },
+    {
+      "activity_unique_tokens": 27,
+      "hit_rate": 0.045454545454545456,
+      "hits": 1,
+      "mature_tokens": 22,
+      "measurable_tokens": 22,
+      "minimum_10_mature_tokens": true,
+      "minimum_20pct_hit_rate": false,
+      "skill_screen_pass": false,
+      "wallet": "0x7730b1bf8a21ce829b83e1a0f360fad61d6643e4",
+      "x_handle": "c_cloudplayer"
+    },
+    {
+      "activity_unique_tokens": 15,
+      "hit_rate": 0.15384615384615385,
+      "hits": 2,
+      "mature_tokens": 13,
+      "measurable_tokens": 13,
+      "minimum_10_mature_tokens": true,
+      "minimum_20pct_hit_rate": false,
+      "skill_screen_pass": false,
+      "wallet": "0x87257e9ee9c6d95877db536c37bb606d0d96faa4",
+      "x_handle": "AkiGoa978977"
+    },
+    {
+      "activity_unique_tokens": 4,
+      "hit_rate": null,
+      "hits": 0,
+      "mature_tokens": 0,
+      "measurable_tokens": 0,
+      "minimum_10_mature_tokens": false,
+      "minimum_20pct_hit_rate": false,
+      "skill_screen_pass": false,
+      "wallet": "0xbb93a804432917f3bfbc5a63c331d8e89c43731b",
+      "x_handle": "lxkk__"
+    },
+    {
+      "activity_unique_tokens": 51,
+      "hit_rate": 0.12244897959183673,
+      "hits": 6,
+      "mature_tokens": 50,
+      "measurable_tokens": 49,
+      "minimum_10_mature_tokens": true,
+      "minimum_20pct_hit_rate": false,
+      "skill_screen_pass": false,
+      "wallet": "0xf5c2b8a1553052a9f5d47023e4cddfa51a11405c",
+      "x_handle": "xxxxliuqilin"
+    }
+  ],
+  "wallet_count": 8,
+  "warnings": [
+    "Only outcomes fully mature before each wallet's first winning-token appearance count.",
+    "Each wallet-token has its own 24h request; 5m highs exclude the partial buy candle and use a current-supply FDV proxy.",
+    "A skill-screen pass is not KOL status until point-in-time identity and control-universe precision are proven."
+  ]
+}

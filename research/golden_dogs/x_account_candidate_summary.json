@@ -1,18 +1,18 @@
 {
-  "accounts": 1471,
-  "generated_at": "2026-08-12T15:49:19.053471Z",
-  "manual_role_reviews": 86,
-  "pre_peak_exact_ca_accounts": 86,
+  "accounts": 1613,
+  "generated_at": "2026-08-12T19:19:57.320170Z",
+  "manual_role_reviews": 95,
+  "pre_peak_exact_ca_accounts": 95,
   "role_counts": {
     "catalyst": 34,
     "coordinated_promotion": 7,
-    "kol_candidate": 88,
-    "project": 8,
-    "research": 42,
+    "kol_candidate": 93,
+    "project": 9,
+    "research": 45,
     "scanner": 18,
-    "unreviewed": 1274
+    "unreviewed": 1407
   },
   "schema": "debot4.x_account_candidate_summary.v1",
-  "wallet_bound_accounts": 202,
+  "wallet_bound_accounts": 203,
   "warning": "Queue membership is not KOL qualification or an instruction to trade."
 }

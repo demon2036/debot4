@@ -1,0 +1,22 @@
+[
+  {
+    "labels": ["bStocks", "bNS"],
+    "relation": "token metadata narrative source",
+    "status_url": "https://x.com/binance/status/2085638063414259744"
+  },
+  {
+    "labels": ["月薪喵"],
+    "relation": "token metadata earliest meme source",
+    "status_url": "https://x.com/xxlb888/status/2058478160115851723"
+  },
+  {
+    "labels": ["XchangetheWorld"],
+    "relation": "token metadata slogan source",
+    "status_url": "https://x.com/cz_binance/status/2061450186107301913"
+  },
+  {
+    "labels": ["Racoonzilla"],
+    "relation": "token metadata narrative source; currently deleted",
+    "status_url": "https://x.com/PlanetOfMemes/status/2085926759644496195"
+  }
+]

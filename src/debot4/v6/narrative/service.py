@@ -21,6 +21,7 @@ from .collection import (
 )
 from .job_queue import NarrativeJobQueue
 from .job_priority import narrative_job_priority
+from .live_signal_filter import NarrativeSignalFilter
 from .worker import NarrativeResearchWorker, ResearchRuntime, WorkCycle
 
 
@@ -50,6 +51,7 @@ class NarrativeServiceConfig:
     lease_seconds: float = 120.0
     retry_delay_seconds: float = 1.0
     max_attempts: int = 3
+    research_workers: int = 1
 
     def __post_init__(self) -> None:
         _seconds(
@@ -63,6 +65,11 @@ class NarrativeServiceConfig:
         _seconds("retry_delay_seconds", self.retry_delay_seconds, 0.0, 86_400.0)
         if isinstance(self.max_attempts, bool) or not 1 <= self.max_attempts <= 100:
             raise ValueError("max_attempts must be between 1 and 100")
+        if (
+            isinstance(self.research_workers, bool)
+            or not 1 <= self.research_workers <= 16
+        ):
+            raise ValueError("research_workers must be between 1 and 16")
 
 
 class NarrativeService:
@@ -83,6 +90,7 @@ class NarrativeService:
         worker: str = "narrative-grok-1",
         registry: ActorRegistry = DEFAULT_ACTOR_REGISTRY,
         clock: Callable[[], datetime] = utc_now,
+        signal_filter: NarrativeSignalFilter | None = None,
     ) -> None:
         self.config = config or NarrativeServiceConfig()
         priority_at = utc_datetime(clock())
@@ -100,14 +108,20 @@ class NarrativeService:
             max_attempts=self.config.max_attempts,
             registry=registry,
             clock=clock,
+            signal_filter=signal_filter,
         )
-        self.worker = NarrativeResearchWorker(
-            queue,
-            research_runtime,
-            worker=worker,
-            lease_seconds=self.config.lease_seconds,
-            retry_delay_seconds=self.config.retry_delay_seconds,
+        worker_base = worker.removesuffix("-1")
+        self.workers = tuple(
+            NarrativeResearchWorker(
+                queue,
+                research_runtime,
+                worker=f"{worker_base}-{index}",
+                lease_seconds=self.config.lease_seconds,
+                retry_delay_seconds=self.config.retry_delay_seconds,
+            )
+            for index in range(1, self.config.research_workers + 1)
         )
+        self.worker = self.workers[0]
         self.telegram_realtime = telegram_realtime
         self.x_repost_monitor = x_repost_monitor
         self._error_lock = Lock()
@@ -120,6 +134,9 @@ class NarrativeService:
         }
         self.last_collector_error_type: str | None = None
         self.last_worker_error_type: str | None = None
+        self.last_worker_error_types: dict[str, str | None] = {
+            item.worker: None for item in self.workers
+        }
         self.last_realtime_error_type: str | None = None
 
     def run_source(
@@ -136,13 +153,18 @@ class NarrativeService:
                 self._set_source_error(source, type(exc).__name__)
             stop.wait(self.config.collector_seconds)
 
-    def run_worker(self, stop: Event) -> None:
+    def run_worker(
+        self,
+        stop: Event,
+        worker: NarrativeResearchWorker | None = None,
+    ) -> None:
+        selected = worker or self.worker
         while not stop.is_set():
             try:
-                cycle = self.worker.work_once()
-                self.last_worker_error_type = None
+                cycle = selected.work_once()
+                self._set_worker_error(selected.worker, None)
             except Exception as exc:
-                self.last_worker_error_type = type(exc).__name__
+                self._set_worker_error(selected.worker, type(exc).__name__)
                 stop.wait(self.config.worker_idle_seconds)
                 continue
             if cycle.idle:
@@ -178,13 +200,14 @@ class NarrativeService:
             )
             for name, collect in sources
         ]
-        threads.append(
+        threads.extend(
             Thread(
                 target=self.run_worker,
-                args=(stop,),
-                name="narrative-grok-worker",
+                args=(stop, worker),
+                name=worker.worker,
                 daemon=True,
             )
+            for worker in self.workers
         )
         if self.telegram_realtime is not None:
             threads.append(Thread(
@@ -210,6 +233,17 @@ class NarrativeService:
             self.last_collector_error_type = next(
                 (
                     item for item in self.last_source_error_types.values()
+                    if item is not None
+                ),
+                None,
+            )
+
+    def _set_worker_error(self, worker: str, error_type: str | None) -> None:
+        with self._error_lock:
+            self.last_worker_error_types[worker] = error_type
+            self.last_worker_error_type = next(
+                (
+                    item for item in self.last_worker_error_types.values()
                     if item is not None
                 ),
                 None,

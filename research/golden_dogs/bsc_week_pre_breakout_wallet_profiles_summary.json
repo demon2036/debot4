@@ -1,0 +1,68 @@
+{
+  "as_of_identity_qualified_count": 0,
+  "as_of_skill_qualified_count": 0,
+  "complete_profile_count": 30,
+  "current_x_bound_profile_count": 5,
+  "current_x_bound_profiles": [
+    {
+      "name": "Defend the West",
+      "tags": [
+        "bluechip_owner",
+        "gmgn"
+      ],
+      "wallet": "0x1fa912ac559c476665a10f04087b126c279e099e",
+      "x_handle": "real_DefendWest"
+    },
+    {
+      "name": "笨蛋玩家",
+      "tags": [
+        "fomo",
+        "gmgn"
+      ],
+      "wallet": "0x6ff848ddc24e38f96f20c4f8a3cd4fc15a27e5fa",
+      "x_handle": "Degen1998_"
+    },
+    {
+      "name": "C_Cloud（哈基云☁）",
+      "tags": [],
+      "wallet": "0x7730b1bf8a21ce829b83e1a0f360fad61d6643e4",
+      "x_handle": "c_cloudplayer"
+    },
+    {
+      "name": "bandman.eth 🔸",
+      "tags": [
+        "fomo",
+        "gmgn",
+        "top_followed",
+        "top_renamed"
+      ],
+      "wallet": "0x8579b5e47dfa5d7eacc4ea8f2ed8184d08658a64",
+      "x_handle": "BandmanEth"
+    },
+    {
+      "name": "XXXXLiu",
+      "tags": [
+        "arbitrager",
+        "gmgn"
+      ],
+      "wallet": "0xf5c2b8a1553052a9f5d47023e4cddfa51a11405c",
+      "x_handle": "xxxxliuqilin"
+    }
+  ],
+  "manipulative_profile_count": 1,
+  "profile_error_count": 0,
+  "public_uncovered_wave_count": 11,
+  "schema": "debot4.bsc_week_pre_breakout_wallet_profiles_summary.v1",
+  "shared_funder_groups": {},
+  "source_sha256": {
+    "bsc_week_pre_breakout_buys.jsonl": "0d2c1eeec725559b19e3d5f27055ad2c932b2a72bee5b7892bd17594b0a5526a",
+    "bsc_week_pre_breakout_wallet_profiles.jsonl": "dbff0f5772578e45b72af4a24038601af9744ea9fc197fee3a0893b42974f476",
+    "bsc_week_pre_breakout_wallets.jsonl": "332023327ad393f85bbfa8bd5e888e9dc4d564eb73b716ecd558712a717e28ff",
+    "bsc_week_public_advance_audit.jsonl": "e96c0b6b95baea3d93df7ed15785927abfe9fa4b8b06fd77566ffc19a19ab030"
+  },
+  "wallet_count": 30,
+  "warnings": [
+    "Current profile metadata cannot be backdated to the historical buy.",
+    "Winner-selected repetition does not establish wallet precision."
+  ]
+}

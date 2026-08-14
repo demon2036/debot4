@@ -1,0 +1,10 @@
+{
+  "multiple": "1.02",
+  "schema": "debot4.bsc_week_price_crossing_position_summary.v1",
+  "source_sha256": {
+    "bsc_week_price_crossing_positions.jsonl": "c2dcaf37061d050ce04e4157eb8c13e13360a3e9d86de31ddeae60bad59906e3",
+    "bsc_week_trade_price_evidence.jsonl": "7436363bb04d70ab26982a0227ff824ebe80b6299f6fb1853df577ac85fb2e67"
+  },
+  "target_count": 13,
+  "wave_count": 32
+}

@@ -1,0 +1,138 @@
+{
+  "advance_boundary": "An event is advance only if machine-observable before the first exact transaction reaches 1.02x the retrospective wave baseline.",
+  "conclusions": {
+    "guarantee_scope": "Completeness can be guaranteed only for configured observable feeds; private/deleted social events and private bundles are outside that scope.",
+    "ideal_raw_event_visibility": "32/32 only under zero-latency pending/builder access",
+    "ordinary_post_confirmation_ceiling_at_five_seconds": "24/32",
+    "ordinary_post_confirmation_ceiling_at_zero_latency": "27/32",
+    "qualified_predictive_advance_signals": "0/32"
+  },
+  "current_runtime": {
+    "can_claim_32_of_32_advance_capture_now": false,
+    "historical_observed_first_seen_evidence_complete": false,
+    "implemented_all_launch_transaction_stream": false,
+    "implemented_full_bsc_pending_or_builder_subscription": false,
+    "market_monitor": "CMC exact BSC 1h gainer polling every 5s; minimum +3%, $25k liquidity, $5k 1h volume, and 4 transactions."
+  },
+  "qualification": {
+    "early_gold_hits": 12,
+    "frequency_screen_pass_wallets": 8,
+    "historical_x_attributed_wallet_leads": 26,
+    "mature_wallet_token_outcomes": 164,
+    "measurable_wallet_token_outcomes": 163,
+    "point_in_time_qualified_kols_or_wallets": 0,
+    "skill_screen_pass_wallets": 0,
+    "wallet_screen_results": [
+      {
+        "hit_rate": 0.0,
+        "hits": 0,
+        "measurable_tokens": 16,
+        "skill_screen_pass": false,
+        "wallet": "0x108ad3125bae57daa6d72bd9f2060e07841889c2",
+        "x_handle": "lyleeewmc"
+      },
+      {
+        "hit_rate": 0.05,
+        "hits": 1,
+        "measurable_tokens": 20,
+        "skill_screen_pass": false,
+        "wallet": "0x1e115fb1f7135397d32e901d893bdf0441356c10",
+        "x_handle": "wanger2gou"
+      },
+      {
+        "hit_rate": 0.03125,
+        "hits": 1,
+        "measurable_tokens": 32,
+        "skill_screen_pass": false,
+        "wallet": "0x379dd75fd82daa5ae5f795e8c550eef57190c9fa",
+        "x_handle": "Tothejpg"
+      },
+      {
+        "hit_rate": 0.09090909090909091,
+        "hits": 1,
+        "measurable_tokens": 11,
+        "skill_screen_pass": false,
+        "wallet": "0x6c5e56c80e8a11a38f709c43c8aea2219bf98236",
+        "x_handle": "AceCzarG"
+      },
+      {
+        "hit_rate": 0.045454545454545456,
+        "hits": 1,
+        "measurable_tokens": 22,
+        "skill_screen_pass": false,
+        "wallet": "0x7730b1bf8a21ce829b83e1a0f360fad61d6643e4",
+        "x_handle": "c_cloudplayer"
+      },
+      {
+        "hit_rate": 0.15384615384615385,
+        "hits": 2,
+        "measurable_tokens": 13,
+        "skill_screen_pass": false,
+        "wallet": "0x87257e9ee9c6d95877db536c37bb606d0d96faa4",
+        "x_handle": "AkiGoa978977"
+      },
+      {
+        "hit_rate": null,
+        "hits": 0,
+        "measurable_tokens": 0,
+        "skill_screen_pass": false,
+        "wallet": "0xbb93a804432917f3bfbc5a63c331d8e89c43731b",
+        "x_handle": "lxkk__"
+      },
+      {
+        "hit_rate": 0.12244897959183673,
+        "hits": 6,
+        "measurable_tokens": 49,
+        "skill_screen_pass": false,
+        "wallet": "0xf5c2b8a1553052a9f5d47023e4cddfa51a11405c",
+        "x_handle": "xxxxliuqilin"
+      }
+    ]
+  },
+  "schema": "debot4.bsc_week_theoretical_capture_summary.v1",
+  "source_sha256": {
+    "bsc_week_all_x_wallet_profiles_summary.json": "cd27b05c5f43a1d04b27a4493c40437155f47759c09fba204875911e1b55af2c",
+    "bsc_week_online_capture_audit_summary.json": "142477463375266c651c6d15e77158785cffc7fb044402eb8e8790df0f773ac0",
+    "bsc_week_public_advance_audit_summary.json": "0e57044308bc8e0b3d89030de358cf9f343a941f030b8205fa3b4e207415c0cd",
+    "bsc_week_selective_wallet_outcomes_summary.json": "c26b5e28b0e436391fcf719a1b8a084a4da989d43b12c0e0cd2e980210e68388",
+    "bsc_week_uncovered_pre_breakout_blocks_summary.json": "84182f6720d658a1e7bbde8dcaaa619dcb46a80e50666a633d286bb954ab99ff"
+  },
+  "target_count": 13,
+  "warnings": [
+    "Winning-wave recall does not estimate false positives or profitability.",
+    "Published-at times are counterfactual subscription ceilings, not actual historical first-seen logs.",
+    "Seeing an early buy is not evidence that the buyer was skilled or worth copying.",
+    "Replay fresh/standing is a state boundary, not a proxy for signal recency; use explicit lead-time buckets."
+  ],
+  "wave_count": 32,
+  "winning_wave_recall_ceiling": {
+    "fresh_current_wave_public_event": 13,
+    "ideal_zero_latency_pending_or_builder_union": 32,
+    "normal_confirmation_public_union_by_latency_seconds": {
+      "0": 27,
+      "120": 21,
+      "15": 23,
+      "30": 23,
+      "5": 24,
+      "60": 21
+    },
+    "public_closest_lead_bucket_wave_counts": {
+      "1800s_to_lt_21600s": 10,
+      "21600s_to_lt_86400s": 2,
+      "300s_to_lt_1800s": 4,
+      "60s_to_lt_300s": 1,
+      "gte_86400s": 3,
+      "lt_60s": 1
+    },
+    "public_published_at_event_time": 21,
+    "reactive_1_02_before_1_20_by_latency_seconds": {
+      "0": 27,
+      "120": 15,
+      "15": 22,
+      "30": 21,
+      "5": 23,
+      "60": 18
+    },
+    "same_block_builder_or_mempool_only": 5
+  }
+}
