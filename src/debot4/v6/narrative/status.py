@@ -12,6 +12,7 @@ from typing import Any
 
 from .actor_registry import ActorRegistry, DEFAULT_ACTOR_REGISTRY
 from .monitor import TierPollingPolicy
+from .mint_location_status import read_mint_location_status
 from .research_status import summarize_research_document
 from .settings import NarrativeSettings
 from .source_status import read_source_checkpoints
@@ -20,7 +21,7 @@ from ..telegram import load_telegram_realtime_config
 
 
 JOB_STATUSES = ("pending", "leased", "done", "failed")
-STATUS_SCHEMA = "debot4.v6.narrative_status.v2"
+STATUS_SCHEMA = "debot4.v6.narrative_status.v3"
 
 
 def status_snapshot(
@@ -54,6 +55,7 @@ def status_snapshot(
             "collector_tick_seconds": current.collector_tick_seconds,
             "debot_seconds": current.debot_poll_seconds,
             "mint_seconds": current.mint_poll_seconds,
+            "chain_mint_seconds": current.chain_mint_poll_seconds,
             "market_seconds": current.market_poll_seconds,
         },
         "actors": actors,
@@ -63,6 +65,9 @@ def status_snapshot(
         },
         "configuration": _configuration(current, env),
         "jobs": _job_status(current.queue_database),
+        "mint_locations": read_mint_location_status(
+            current.mint_location_database
+        ),
         "research": _research_status(current.research_database, recent_limit),
     }
 
@@ -202,6 +207,7 @@ def _configuration(
             debot_ready, "private_cookie_file" if debot_ready else "none"
         ),
         "market": _availability(True, "coinmarketcap_exact_bsc_1h"),
+        "bsc_mint": _availability(True, "verified_flap_factory_receipts"),
         "grok": _availability(grok_source != "none", grok_source),
     }
 

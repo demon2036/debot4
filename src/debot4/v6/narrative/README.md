@@ -1,8 +1,23 @@
 # v6 narrative boundary
 
-This package is independent of every pre-v6 narrative/source package and contains
-no runtime loop. Its token, evidence, dossier, valuation, readiness, and
-FxTwitter types are all v6-owned.
+This package is independent of every pre-v6 narrative/source package. Its
+adapters, domain rules, persistence, runtime, and presentation boundaries are
+v6-owned.
+
+Exact CA location flow:
+
+1. `BscFactoryMintMonitor` polls included BSC heads every 250 ms and accepts
+   only reviewed Flap factory receipts. A successful zero-address ERC-20
+   `Transfer` from the token contract locates the Exact CA; latest-block
+   evidence is explicitly included but not finalized.
+2. `NarrativeMintMonitor` polls DeBot's `new` stage every second and persists
+   every Exact CA, including tokens with no creation time or social link.
+3. `MintLocationStore` bounds raw evidence to one day, 20,000 rows, and a
+   64 MiB SQLite page ceiling. Raw locations never queue Grok and never
+   authorize a trade.
+4. `CatalystMintState` separately joins a reviewed X post only when mint
+   metadata references the exact status ID inside the strict time window. Only
+   this hard binding may enter narrative research.
 
 Input flow:
 

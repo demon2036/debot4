@@ -4,6 +4,7 @@ from pathlib import Path
 from threading import Event, Thread
 
 from debot4.v6.narrative.job_queue import NarrativeJobQueue
+from debot4.v6.narrative.mint_location_store import MintLocationStore
 from debot4.v6.narrative.service import NarrativeService, NarrativeServiceConfig
 
 
@@ -62,6 +63,18 @@ class Reposts:
         return ()
 
 
+class ChainMints:
+    def __init__(self) -> None:
+        self.called = Event()
+        self.poll_seconds = 0.1
+
+    def poll_once(self, accept=None):
+        self.called.set()
+        if accept is not None:
+            accept(())
+        return ()
+
+
 class IdleRuntime:
     def research_active_post(self, _post):
         raise AssertionError("queue should be empty")
@@ -82,13 +95,19 @@ def test_slow_x_does_not_block_telegram_debot_or_market(tmp_path: Path) -> None:
     debot = DeBot()
     market = Market()
     reposts = Reposts()
+    chain = ChainMints()
     stop = Event()
-    with NarrativeJobQueue(tmp_path / "jobs.sqlite3") as queue:
+    with (
+        NarrativeJobQueue(tmp_path / "jobs.sqlite3") as queue,
+        MintLocationStore(tmp_path / "mints.sqlite3") as locations,
+    ):
         service = NarrativeService(
             monitor=x,
             telegram_monitor=telegram,
             debot_feed=debot,
             market_monitor=market,
+            chain_mint_monitor=chain,
+            mint_locations=locations,
             x_repost_monitor=reposts,
             queue=queue,
             research_runtime=IdleRuntime(),
@@ -103,6 +122,7 @@ def test_slow_x_does_not_block_telegram_debot_or_market(tmp_path: Path) -> None:
         assert debot.called.wait(1)
         assert market.called.wait(1)
         assert reposts.called.wait(1)
+        assert chain.called.wait(1)
         x.release.set()
         stop.set()
         runner.join(3)

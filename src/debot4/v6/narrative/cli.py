@@ -84,6 +84,8 @@ def _cmd_collect_once(_args: argparse.Namespace) -> dict[str, object]:
             "debot_signals": cycle.debot_signals,
             "market_anomalies": cycle.market_anomalies,
             "catalyst_mint_matches": cycle.catalyst_mint_matches,
+            "mint_locations": cycle.mint_locations,
+            "mint_pipeline": app.collector.mint_pipeline_snapshot(),
             "filter": app.collector.filter_snapshot(),
             "jobs": _queue_counts(app),
         }
@@ -161,6 +163,7 @@ def _cmd_run(args: argparse.Namespace) -> dict[str, object]:
             ),
             "telegram_realtime": _telegram_realtime_status(app),
             "filter": app.collector.filter_snapshot(),
+            "mint_pipeline": app.collector.mint_pipeline_snapshot(),
             "jobs": _queue_counts(app),
             "research_packages": _research_count(app),
         }

@@ -3,75 +3,33 @@
 from __future__ import annotations
 
 from collections.abc import Callable
-from dataclasses import dataclass
 from datetime import datetime
-import math
 from threading import Event, Lock, Thread
-from typing import Protocol
+from time import monotonic
 
 from ..identity import utc_datetime, utc_now
 from .actor_registry import ActorRegistry, DEFAULT_ACTOR_REGISTRY
-from .collection import (
-    CollectionCycle,
+from .collection import CollectionCycle, NarrativeCollector
+from .collection_sources import (
+    ChainMintSource,
     DeBotSource,
     MarketSource,
     MintSource,
-    NarrativeCollector,
+    RepostSource,
     TelegramSource,
+    TelegramRealtimeSource,
     XSource,
 )
 from .job_queue import NarrativeJobQueue
 from .job_priority import narrative_job_priority
 from .live_signal_filter import NarrativeSignalFilter
 from .catalyst_mint_state import CatalystMintState
+from .mint_location_store import MintLocationStore
+from .service_config import NarrativeServiceConfig
 from .worker import NarrativeResearchWorker, ResearchRuntime, WorkCycle
 
 
-MIN_COLLECTOR_SECONDS = 0.05
-MAX_COLLECTOR_SECONDS = 2.0
 THREAD_JOIN_SECONDS = 12.0
-
-
-class TelegramRealtimeSource(Protocol):
-    def run(
-        self,
-        stop: Event,
-        accept: Callable[[tuple[object, ...]], None],
-    ) -> None: ...
-
-
-class RepostSource(Protocol):
-    def poll_once(self) -> tuple[object, ...]: ...
-
-
-@dataclass(frozen=True, slots=True)
-class NarrativeServiceConfig:
-    """Bounded timings: scheduling is fast and never uses a 30-second tick."""
-
-    collector_seconds: float = 0.25
-    worker_idle_seconds: float = 0.25
-    lease_seconds: float = 120.0
-    retry_delay_seconds: float = 1.0
-    max_attempts: int = 3
-    research_workers: int = 1
-
-    def __post_init__(self) -> None:
-        _seconds(
-            "collector_seconds",
-            self.collector_seconds,
-            MIN_COLLECTOR_SECONDS,
-            MAX_COLLECTOR_SECONDS,
-        )
-        _seconds("worker_idle_seconds", self.worker_idle_seconds, 0.01, 2.0)
-        _seconds("lease_seconds", self.lease_seconds, 0.01, 86_400.0)
-        _seconds("retry_delay_seconds", self.retry_delay_seconds, 0.0, 86_400.0)
-        if isinstance(self.max_attempts, bool) or not 1 <= self.max_attempts <= 100:
-            raise ValueError("max_attempts must be between 1 and 100")
-        if (
-            isinstance(self.research_workers, bool)
-            or not 1 <= self.research_workers <= 16
-        ):
-            raise ValueError("research_workers must be between 1 and 16")
 
 
 class NarrativeService:
@@ -86,6 +44,8 @@ class NarrativeService:
         market_monitor: MarketSource | None = None,
         mint_monitor: MintSource | None = None,
         catalyst_mints: CatalystMintState | None = None,
+        chain_mint_monitor: ChainMintSource | None = None,
+        mint_locations: MintLocationStore | None = None,
         queue: NarrativeJobQueue,
         research_runtime: ResearchRuntime,
         telegram_realtime: TelegramRealtimeSource | None = None,
@@ -111,6 +71,8 @@ class NarrativeService:
             market_monitor=market_monitor,
             mint_monitor=mint_monitor,
             catalyst_mints=catalyst_mints,
+            chain_mint_monitor=chain_mint_monitor,
+            mint_locations=mint_locations,
             max_attempts=self.config.max_attempts,
             registry=registry,
             clock=clock,
@@ -138,6 +100,7 @@ class NarrativeService:
             **({"x_reposts": None} if x_repost_monitor is not None else {}),
             **({"market": None} if market_monitor is not None else {}),
             **({"debot_new_mints": None} if mint_monitor is not None else {}),
+            **({"bsc_factory_mints": None} if chain_mint_monitor is not None else {}),
         }
         self.last_collector_error_type: str | None = None
         self.last_worker_error_type: str | None = None
@@ -151,14 +114,17 @@ class NarrativeService:
         stop: Event,
         source: str,
         collect: Callable[[], object],
+        wait_seconds: float | None = None,
     ) -> None:
+        interval = self.config.collector_seconds if wait_seconds is None else wait_seconds
         while not stop.is_set():
+            started = monotonic()
             try:
                 collect()
                 self._set_source_error(source, None)
             except Exception as exc:
                 self._set_source_error(source, type(exc).__name__)
-            stop.wait(self.config.collector_seconds)
+            stop.wait(max(0.0, interval - (monotonic() - started)))
 
     def run_worker(
         self,
@@ -189,25 +155,31 @@ class NarrativeService:
     def run(self, stop: Event) -> None:
         if stop.is_set():
             return
-        sources: list[tuple[str, Callable[[], object]]] = [
-            ("x", self.collector.collect_x_once),
-            ("telegram_public", self.collector.collect_telegram_once),
-            ("debot", self.collector.collect_debot_once),
+        cadence = self.config.collector_seconds
+        sources: list[tuple[str, Callable[[], object], float]] = [
+            ("x", self.collector.collect_x_once, cadence),
+            ("telegram_public", self.collector.collect_telegram_once, cadence),
+            ("debot", self.collector.collect_debot_once, cadence),
         ]
         if self.collector.market_monitor is not None:
-            sources.append(("market", self.collector.collect_market_once))
+            sources.append(("market", self.collector.collect_market_once, cadence))
         if self.collector.mint_monitor is not None:
-            sources.append(("debot_new_mints", self.collector.collect_mints_once))
+            sources.append(("debot_new_mints", self.collector.collect_mints_once, cadence))
+        if self.collector.chain_mint_monitor is not None:
+            sources.append((
+                "bsc_factory_mints", self.collector.collect_chain_mints_once,
+                min(cadence, self.collector.chain_mint_monitor.poll_seconds),
+            ))
         if self.x_repost_monitor is not None:
-            sources.append(("x_reposts", self.x_repost_monitor.poll_once))
+            sources.append(("x_reposts", self.x_repost_monitor.poll_once, cadence))
         threads = [
             Thread(
                 target=self.run_source,
-                args=(stop, name, collect),
+                args=(stop, name, collect, wait_seconds),
                 name=f"narrative-{name}",
                 daemon=True,
             )
-            for name, collect in sources
+            for name, collect, wait_seconds in sources
         ]
         threads.extend(
             Thread(
@@ -257,15 +229,6 @@ class NarrativeService:
                 ),
                 None,
             )
-
-
-def _seconds(name: str, value: float, minimum: float, maximum: float) -> None:
-    if isinstance(value, bool) or not math.isfinite(float(value)):
-        raise ValueError(f"{name} must be a finite number")
-    if not minimum <= float(value) <= maximum:
-        raise ValueError(f"{name} must be between {minimum} and {maximum}")
-
-
 __all__ = [
     "CollectionCycle",
     "NarrativeCollector",

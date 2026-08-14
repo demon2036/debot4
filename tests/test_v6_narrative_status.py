@@ -7,6 +7,12 @@ import sqlite3
 
 from debot4.v6.debot.credentials import DeBotCookie, save_debot_cookies
 from debot4.v6.narrative.job_queue import SCHEMA as JOB_SCHEMA
+from debot4.v6.narrative.chain_mint_state import (
+    ChainMintCheckpoint,
+    ChainMintCheckpointStore,
+)
+from debot4.v6.narrative.mint_location import DEBOT_NEW_SOURCE, MintLocation
+from debot4.v6.narrative.mint_location_store import MintLocationStore
 from debot4.v6.narrative.research_store import SCHEMA as RESEARCH_SCHEMA
 from debot4.v6.narrative.settings import NarrativeSettings
 from debot4.v6.narrative.status import status_snapshot
@@ -50,6 +56,16 @@ def _databases(settings: NarrativeSettings) -> None:
                     0, json.dumps({"secret": f"research-body-{number}"}), stamp,
                 ),
             )
+    with MintLocationStore(
+        settings.mint_location_database, clock=lambda: NOW
+    ) as locations:
+        locations.record((MintLocation(
+            exact_ca="0x417bda357cce720467edc56ebc6bb4c9ea497777",
+            source=DEBOT_NEW_SOURCE, observed_at=NOW, created_at=None,
+        ),))
+    ChainMintCheckpointStore(settings.chain_mint_checkpoint_path).save(
+        ChainMintCheckpoint(115_824_174, "0x" + "1" * 64)
+    )
 
 
 def _cookies(settings: NarrativeSettings) -> None:
@@ -84,6 +100,14 @@ def test_snapshot_reads_exact_databases_and_never_exposes_credentials(
         "counts": {"pending": 1, "leased": 0, "done": 1, "failed": 1},
     }
     assert snapshot["research"]["total"] == 2
+    assert snapshot["mint_locations"]["available"] is True
+    assert snapshot["mint_locations"]["unique_exact_cas"] == 1
+    assert snapshot["sources"]["bsc_factory_mints"]["last_processed_block"] == (
+        115_824_174
+    )
+    assert snapshot["sources"]["bsc_factory_mints"]["finality"] == (
+        "included_not_finalized"
+    )
     latest = snapshot["research"]["recent_packages"]
     assert [item["package_id"] for item in latest] == ["package-2"]
     assert latest[0]["authorizes_trade"] is False
@@ -115,6 +139,7 @@ def test_actor_cadence_matches_the_reviewed_monitor_and_skips_unverified_ids(
         "collector_tick_seconds": 0.25,
         "debot_seconds": 1.0,
         "mint_seconds": 1.0,
+        "chain_mint_seconds": 0.25,
         "market_seconds": 5.0,
     }
     assert snapshot["configuration"]["market"]["source"] == (

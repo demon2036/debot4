@@ -3,8 +3,6 @@
 from __future__ import annotations
 
 from contextlib import ExitStack
-from dataclasses import dataclass, field
-from threading import Event
 
 from ..grok import Grok2ApiClient
 from ..dex_audit.http import DirectJsonClient
@@ -15,94 +13,30 @@ from ..telegram import (
 )
 from ..telegram.http import TelegramHtmlHttp
 from ..x import (
-    FxEgressPool,
     FxJsonHttp,
-    FxTwitterRepostMonitor,
     XTimelineClient,
 )
 from .debot_feed import NarrativeDeBotFeed
 from .actor_registry import DEFAULT_ACTOR_REGISTRY
+from .app_runtime import NarrativeApp
 from .app_x_sources import x_egress as _x_egress, x_reposts as _x_reposts
-from .catalyst_mint_state import CatalystMintState
+from .app_mint_sources import build_mint_sources
 from .fxtwitter import FxTwitterClient
 from .job_queue import NarrativeJobQueue
 from .live_signal_filter import BscRealtimeSignalFilter
 from .market_monitor import MarketAnomalyMonitor
-from .mint_monitor import NarrativeMintMonitor
 from .research_runtime import NarrativeResearchRuntime
 from .research_store import NarrativeResearchStore
 from .service import (
-    CollectionCycle,
     NarrativeCollector,
     NarrativeService,
     NarrativeServiceConfig,
-    WorkCycle,
 )
 from .settings import NarrativeSettings
 from .monitor import NarrativeMonitor
 from .telegram_monitor import TelegramNarrativeMonitor
 from .trusted_ingest import XStatusVerifier
 from .trusted_telegram import TelegramPostVerifier
-
-
-@dataclass(slots=True)
-class NarrativeApp:
-    """Owned runtime graph with deterministic, idempotent cleanup."""
-
-    settings: NarrativeSettings
-    monitor: NarrativeMonitor
-    telegram_monitor: TelegramNarrativeMonitor
-    telegram_client: TelegramPublicClient
-    telegram_realtime: TelegramRealtimeMonitor | None
-    x_repost_monitor: FxTwitterRepostMonitor | None
-    debot_feed: NarrativeDeBotFeed
-    market_monitor: MarketAnomalyMonitor
-    mint_monitor: NarrativeMintMonitor
-    catalyst_mints: CatalystMintState
-    queue: NarrativeJobQueue
-    collector: NarrativeCollector
-    x_egress_pool: FxEgressPool | None = None
-    grok: Grok2ApiClient | None = None
-    verifier: XStatusVerifier | None = None
-    telegram_verifier: TelegramPostVerifier | None = None
-    research_store: NarrativeResearchStore | None = None
-    research_runtime: NarrativeResearchRuntime | None = None
-    service: NarrativeService | None = None
-    _resources: ExitStack = field(default_factory=ExitStack, repr=False)
-    _closed: bool = field(default=False, init=False, repr=False)
-
-    def __enter__(self) -> "NarrativeApp":
-        self._ensure_open()
-        return self
-
-    def __exit__(self, *_args: object) -> None:
-        self.close()
-
-    def close(self) -> None:
-        if self._closed:
-            return
-        self._closed = True
-        self._resources.close()
-
-    def collect_once(self) -> CollectionCycle:
-        self._ensure_open()
-        return self.collector.collect_once()
-
-    def work_once(self) -> WorkCycle:
-        self._ensure_open()
-        if self.service is None:
-            raise RuntimeError("narrative research is not configured")
-        return self.service.worker.work_once()
-
-    def run(self, stop: Event) -> None:
-        self._ensure_open()
-        if self.service is None:
-            raise RuntimeError("narrative research is not configured")
-        self.service.run(stop)
-
-    def _ensure_open(self) -> None:
-        if self._closed:
-            raise RuntimeError("narrative application is closed")
 
 
 def build_narrative_app(
@@ -145,14 +79,7 @@ def build_narrative_app(
             poll_seconds=config.debot_poll_seconds,
         )
         resources.callback(debot_feed.close)
-        mint_monitor = NarrativeMintMonitor.from_credentials(
-            credential_file=config.debot_cookie_file,
-            timeout_seconds=config.debot_timeout_seconds,
-            max_response_bytes=config.max_response_bytes,
-            poll_seconds=config.mint_poll_seconds,
-        )
-        resources.callback(mint_monitor.close)
-        catalyst_mints = CatalystMintState(config.catalyst_mint_state_path)
+        mint_sources = build_mint_sources(config, resources)
         market_monitor = MarketAnomalyMonitor(
             config.market_checkpoint_path,
             client=DirectJsonClient(
@@ -170,8 +97,10 @@ def build_narrative_app(
             debot_feed,
             queue,
             market_monitor=market_monitor,
-            mint_monitor=mint_monitor,
-            catalyst_mints=catalyst_mints,
+            mint_monitor=mint_sources.debot,
+            catalyst_mints=mint_sources.catalyst,
+            chain_mint_monitor=mint_sources.chain,
+            mint_locations=mint_sources.locations,
             signal_filter=signal_filter,
         )
         app = NarrativeApp(
@@ -183,8 +112,11 @@ def build_narrative_app(
             x_repost_monitor=x_repost_monitor,
             debot_feed=debot_feed,
             market_monitor=market_monitor,
-            mint_monitor=mint_monitor,
-            catalyst_mints=catalyst_mints,
+            mint_monitor=mint_sources.debot,
+            catalyst_mints=mint_sources.catalyst,
+            chain_mint_monitor=mint_sources.chain,
+            mint_locations=mint_sources.locations,
+            bsc_mint_rpc=mint_sources.rpc,
             queue=queue,
             collector=collector,
             x_egress_pool=x_egress_pool,
@@ -215,8 +147,10 @@ def build_narrative_app(
             telegram_monitor=telegram_monitor,
             debot_feed=debot_feed,
             market_monitor=market_monitor,
-            mint_monitor=mint_monitor,
-            catalyst_mints=catalyst_mints,
+            mint_monitor=mint_sources.debot,
+            catalyst_mints=mint_sources.catalyst,
+            chain_mint_monitor=mint_sources.chain,
+            mint_locations=mint_sources.locations,
             queue=queue,
             research_runtime=runtime,
             telegram_realtime=realtime,

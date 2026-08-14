@@ -9,6 +9,7 @@ from pathlib import Path
 from types import MappingProxyType
 from typing import Any, Mapping
 
+from .chain_mint_state import STATE_SCHEMA as CHAIN_MINT_STATE_SCHEMA
 from .settings import NarrativeSettings
 
 
@@ -32,10 +33,14 @@ def read_source_checkpoints(settings: NarrativeSettings) -> SourceCheckpointStat
     market_document, market_updated = _read_document(
         settings.market_checkpoint_path
     )
+    chain_document, chain_updated = _read_document(
+        settings.chain_mint_checkpoint_path
+    )
     x_latest = _x_latest(x_document)
     telegram_channels = _mapping(telegram_document, "channels")
     seen_signals = _sequence(debot_document, "seen_signal_ids")
     emitted = _mapping(market_document, "emitted")
+    chain_block = _chain_block(chain_document)
     public = {
         "x": {
             "available": x_document is not None,
@@ -60,6 +65,12 @@ def read_source_checkpoints(settings: NarrativeSettings) -> SourceCheckpointStat
             "available": market_document is not None,
             "emitted_anomalies": len(emitted),
             "updated_at": market_updated,
+        },
+        "bsc_factory_mints": {
+            "available": chain_block is not None,
+            "last_processed_block": chain_block,
+            "finality": "included_not_finalized",
+            "updated_at": chain_updated,
         },
     }
     return SourceCheckpointStatus(
@@ -119,3 +130,12 @@ def _sequence(document: dict[str, Any] | None, key: str) -> tuple[object, ...]:
 
 def _positive_integer(value: object) -> bool:
     return isinstance(value, int) and not isinstance(value, bool) and value > 0
+
+
+def _chain_block(document: dict[str, Any] | None) -> int | None:
+    if document is None or document.get("schema") != CHAIN_MINT_STATE_SCHEMA:
+        return None
+    value = document.get("block_number")
+    if isinstance(value, bool) or not isinstance(value, int) or value < 0:
+        return None
+    return value

@@ -1,73 +1,25 @@
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import timedelta
 from decimal import Decimal
 from pathlib import Path
 
 from debot4.v6.debot.ranks_models import RankPage, RankSnapshot
 from debot4.v6.debot.ranks_parser import parse_ranks
 from debot4.v6.narrative.catalyst_mint_state import CatalystMintState
-from debot4.v6.narrative.collection import NarrativeCollector
-from debot4.v6.narrative.job_payloads import encode_job_input
-from debot4.v6.narrative.job_queue import JobStatus, NarrativeJobQueue
-from debot4.v6.narrative.live_signal_filter import BscRealtimeSignalFilter
 from debot4.v6.narrative.mint_monitor import NarrativeMintMonitor
-from debot4.v6.x.models import XPost
-
-
-UTC = timezone.utc
-BBROKER_CA = "0xf1969f437fe3c485468fb17b0d9861c24dcd7777"
-BBROKER_STATUS = "2087894611733922300"
-BBROKER_POST_AT = datetime(2026, 8, 13, 13, 30, 41, tzinfo=UTC)
-BBROKER_MINT_AT = datetime(2026, 8, 13, 13, 32, 2, tzinfo=UTC)
-FLAP_CA = "0x6d2137fe9113d28135edfb274cb0d94447497777"
-FLAP_STATUS = "2088104486892138899"
-FLAP_POST_AT = datetime(2026, 8, 14, 3, 24, 39, tzinfo=UTC)
-FLAP_MINT_AT = datetime(2026, 8, 14, 3, 24, 55, tzinfo=UTC)
-
-
-def _post(
-    status_id: str = BBROKER_STATUS,
-    created_at: datetime = BBROKER_POST_AT,
-    fetched_at: datetime | None = None,
-) -> XPost:
-    return XPost(
-        status_id,
-        "flapdotsh",
-        "Introducing the Flap bBroker Vault on BNB Chain, powered by bStocks.",
-        created_at,
-        fetched_at or created_at + timedelta(seconds=5),
-    )
-
-
-def _mint(
-    *,
-    exact_ca: str = BBROKER_CA,
-    status_id: str = BBROKER_STATUS,
-    created_at: datetime = BBROKER_MINT_AT,
-    fetched_at: datetime | None = None,
-    social_urls: tuple[str, ...] | None = None,
-) -> RankSnapshot:
-    urls = social_urls or (
-        f"https://x.com/flapdotsh/status/{status_id}",
-        "https://availablepools.com",
-    )
-    return RankSnapshot(
-        exact_ca,
-        "new",
-        fetched_at or created_at + timedelta(seconds=1),
-        "bBroker",
-        "bBroker",
-        0,
-        (),
-        Decimal("0"),
-        Decimal("5000.67"),
-        False,
-        created_at,
-        "flap",
-        None,
-        urls,
-    )
+from tests.v6_catalyst_mint_samples import (
+    BBROKER_CA,
+    BBROKER_MINT_AT,
+    BBROKER_POST_AT,
+    BBROKER_STATUS,
+    FLAP_CA,
+    FLAP_MINT_AT,
+    FLAP_POST_AT,
+    FLAP_STATUS,
+    catalyst_post as _post,
+    mint_snapshot as _mint,
+)
 
 
 def test_real_bbroker_rank_shape_keeps_creation_and_exact_status_metadata() -> None:
@@ -200,62 +152,3 @@ def test_mint_monitor_self_throttles_without_delaying_due_results() -> None:
     timer.value = 1.0
     assert monitor.poll_once(accepted.append) == (_mint(),)
     assert client.calls == 2 and len(accepted) == 2
-
-
-class _XSource:
-    def __init__(self, post: XPost) -> None:
-        self.post = post
-
-    def monitor_once(self, accept=None) -> tuple[XPost, ...]:
-        posts = (self.post,)
-        if accept is not None:
-            accept(posts)
-        return posts
-
-
-class _MintSource:
-    def __init__(self, mint: RankSnapshot) -> None:
-        self.mint = mint
-
-    def poll_once(self, accept=None) -> tuple[RankSnapshot, ...]:
-        snapshots = (self.mint,)
-        if accept is not None:
-            accept(snapshots)
-        return snapshots
-
-
-def test_collector_turns_no_ca_bbroker_post_into_exact_ca_job(
-    tmp_path: Path,
-) -> None:
-    post, mint = _post(), _mint()
-    observed_at = mint.fetched_at
-    state = CatalystMintState(
-        tmp_path / "join.json", clock=lambda: observed_at
-    )
-    with NarrativeJobQueue(
-        tmp_path / "jobs.sqlite3", clock=lambda: observed_at
-    ) as queue:
-        collector = NarrativeCollector(
-            _XSource(post),
-            object(),
-            object(),
-            queue,
-            mint_monitor=_MintSource(mint),
-            catalyst_mints=state,
-            clock=lambda: observed_at,
-            signal_filter=BscRealtimeSignalFilter(clock=lambda: observed_at),
-        )
-
-        assert collector.collect_x_once() == (post,)
-        (match,) = collector.collect_mints_once()
-
-        match_job_id = encode_job_input(match)[0]
-        queued = queue.get(match_job_id)
-        assert queued is not None
-        assert queued.kind == "passive_catalyst_mint"
-        assert queued.priority == 2
-        assert queue.counts()[JobStatus.PENDING] == 2
-        assert collector.filter_snapshot()["reasons"] == {
-            "exact_catalyst_mint_binding": 1,
-            "reviewed_catalyst_event": 1,
-        }

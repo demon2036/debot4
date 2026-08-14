@@ -7,17 +7,24 @@ from collections.abc import Callable
 from dataclasses import dataclass
 from datetime import datetime
 from threading import Lock
-from typing import Protocol
 
 from ..debot.ranks_models import RankSnapshot
-from ..domain import DeBotSignal
 from ..identity import utc_now
 from ..telegram.models import TelegramPost
 from ..x.models import XPost
 from .actor_registry import ActorRegistry, DEFAULT_ACTOR_REGISTRY
 from .catalyst_mint import CatalystMintMatch
 from .catalyst_mint_state import CatalystMintState
+from .collection_sources import (
+    ChainMintSource,
+    DeBotSource,
+    MarketSource,
+    MintSource,
+    TelegramSource,
+    XSource,
+)
 from .debot_feed import NarrativeDeBotCandidate
+from .debot_mint_location import location_from_debot
 from .job_priority import narrative_job_priority
 from .job_queue import NarrativeJobQueue
 from .live_signal_filter import (
@@ -27,41 +34,9 @@ from .live_signal_filter import (
     SignalFilterDecision,
 )
 from .market_signal import MarketAnomaly
-
-
-class XSource(Protocol):
-    def monitor_once(
-        self, accept: Callable[[tuple[XPost, ...]], None] | None = None,
-    ) -> tuple[XPost, ...]: ...
-
-
-class TelegramSource(Protocol):
-    def monitor_once(
-        self, accept: Callable[[tuple[TelegramPost, ...]], None] | None = None,
-    ) -> tuple[TelegramPost, ...]: ...
-
-
-class DeBotSource(Protocol):
-    def poll_once(
-        self,
-        *,
-        anomaly: str | None = None,
-        accept: Callable[[tuple[NarrativeDeBotCandidate, ...]], object] | None = None,
-    ) -> tuple[NarrativeDeBotCandidate, ...]: ...
-
-
-class MarketSource(Protocol):
-    def poll_once(
-        self,
-        accept: Callable[[tuple[MarketAnomaly, ...]], object] | None = None,
-    ) -> tuple[MarketAnomaly, ...]: ...
-
-
-class MintSource(Protocol):
-    def poll_once(
-        self,
-        accept: Callable[[tuple[RankSnapshot, ...]], object] | None = None,
-    ) -> tuple[RankSnapshot, ...]: ...
+from .mint_collection import MintCollectionPipeline
+from .mint_location import MintLocation
+from .mint_location_store import MintLocationStore
 
 
 @dataclass(frozen=True, slots=True)
@@ -71,6 +46,7 @@ class CollectionCycle:
     debot_signals: int
     market_anomalies: int = 0
     catalyst_mint_matches: int = 0
+    mint_locations: int = 0
 
     @property
     def active_posts(self) -> int:
@@ -97,6 +73,8 @@ class NarrativeCollector:
         market_monitor: MarketSource | None = None,
         mint_monitor: MintSource | None = None,
         catalyst_mints: CatalystMintState | None = None,
+        chain_mint_monitor: ChainMintSource | None = None,
+        mint_locations: MintLocationStore | None = None,
         max_attempts: int = 3,
         registry: ActorRegistry = DEFAULT_ACTOR_REGISTRY,
         clock: Callable[[], datetime] = utc_now,
@@ -108,10 +86,17 @@ class NarrativeCollector:
         self.telegram_monitor = telegram_monitor
         self.debot_feed = debot_feed
         self.market_monitor = market_monitor
-        if (mint_monitor is None) != (catalyst_mints is None):
-            raise ValueError("mint monitor and catalyst state must be configured together")
+        if catalyst_mints is not None and mint_monitor is None:
+            raise ValueError("catalyst state requires the DeBot mint monitor")
+        if (
+            (mint_monitor is not None or chain_mint_monitor is not None)
+            and mint_locations is None
+        ):
+            raise ValueError("mint sources require durable mint location storage")
         self.mint_monitor = mint_monitor
         self.catalyst_mints = catalyst_mints
+        self.chain_mint_monitor = chain_mint_monitor
+        self._mint_pipeline = MintCollectionPipeline(mint_locations)
         self.queue = queue
         self.max_attempts = max_attempts
         self.registry = registry
@@ -126,9 +111,10 @@ class NarrativeCollector:
         candidates = self.collect_debot_once()
         anomalies = self.collect_market_once()
         matches = self.collect_mints_once()
+        self.collect_chain_mints_once()
         return CollectionCycle(
             len(x_posts), len(telegram_posts), len(candidates), len(anomalies),
-            len(matches),
+            len(matches), self._mint_pipeline.cycle_inserted(),
         )
 
     def collect_x_once(self) -> tuple[XPost, ...]:
@@ -148,6 +134,7 @@ class NarrativeCollector:
     def collect_mints_once(self) -> tuple[CatalystMintMatch, ...]:
         if self.mint_monitor is None:
             return ()
+        self._mint_pipeline.reset_cycle_source(chain=False)
         accepted: list[CatalystMintMatch] = []
 
         def consume(snapshots: tuple[RankSnapshot, ...]) -> None:
@@ -155,6 +142,14 @@ class NarrativeCollector:
 
         self.mint_monitor.poll_once(accept=consume)
         return tuple(accepted)
+
+    def collect_chain_mints_once(self) -> tuple[MintLocation, ...]:
+        if self.chain_mint_monitor is None:
+            return ()
+        self._mint_pipeline.reset_cycle_source(chain=True)
+        return self.chain_mint_monitor.poll_once(
+            accept=self._accept_chain_mints
+        )
 
     def filter_snapshot(self) -> dict[str, object]:
         with self._filter_lock:
@@ -171,6 +166,10 @@ class NarrativeCollector:
                 )
             },
         }
+
+    def mint_pipeline_snapshot(self) -> dict[str, object]:
+        filtering = self.filter_snapshot()
+        return self._mint_pipeline.snapshot(int(filtering["accepted"]))
 
     def _enqueue(self, payload: NarrativeSignal) -> bool:
         decision = self.signal_filter.decide(payload)
@@ -218,14 +217,27 @@ class NarrativeCollector:
     def _accept_mints(
         self, snapshots: tuple[RankSnapshot, ...]
     ) -> tuple[CatalystMintMatch, ...]:
+        locations = tuple(location_from_debot(item) for item in snapshots)
+        self._record_locations(locations, chain=False)
         if self.catalyst_mints is None:
             return ()
         return self._persist_matches(self.catalyst_mints.observe_mints(snapshots))
+
+    def _accept_chain_mints(
+        self, locations: tuple[MintLocation, ...]
+    ) -> None:
+        self._record_locations(locations, chain=True)
+
+    def _record_locations(
+        self, locations: tuple[MintLocation, ...], *, chain: bool,
+    ) -> None:
+        self._mint_pipeline.record(locations, chain=chain)
 
     def _persist_matches(
         self, matches: tuple[CatalystMintMatch, ...]
     ) -> tuple[CatalystMintMatch, ...]:
         accepted = tuple(match for match in matches if self._enqueue(match))
+        self._mint_pipeline.record_hard_bindings(len(accepted))
         if matches and self.catalyst_mints is not None:
             self.catalyst_mints.acknowledge(match.match_id for match in matches)
         return accepted

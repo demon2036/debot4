@@ -62,6 +62,17 @@ def test_full_app_wires_real_interfaces_and_closes_in_reverse_order(
         "poll_seconds": 0.75,
     }
     assert calls["catalyst_state_path"] == settings.catalyst_mint_state_path
+    assert calls["mint_location_path"] == settings.mint_location_database
+    assert calls["bsc_rpc"] == (settings.bsc_rpc_endpoints, {
+        "timeout_seconds": settings.chain_mint_timeout_seconds,
+        "max_response_bytes": settings.max_response_bytes,
+    })
+    assert calls["chain_monitor"] == {
+        "checkpoint_path": settings.chain_mint_checkpoint_path,
+        "poll_seconds": settings.chain_mint_poll_seconds,
+        "startup_lookback_blocks": settings.chain_mint_startup_lookback_blocks,
+        "max_catchup_blocks": settings.chain_mint_max_catchup_blocks,
+    }
     market = app.market_monitor
     assert market[1] == (settings.market_checkpoint_path,)
     assert market[2]["poll_seconds"] == 2.5
@@ -99,6 +110,8 @@ def test_full_app_wires_real_interfaces_and_closes_in_reverse_order(
     assert service["market_monitor"] is app.market_monitor
     assert service["mint_monitor"] is app.mint_monitor
     assert service["catalyst_mints"] is app.catalyst_mints
+    assert service["chain_mint_monitor"] is app.chain_mint_monitor
+    assert service["mint_locations"] is app.mint_locations
     assert service["queue"] is app.queue
     assert service["research_runtime"] is app.research_runtime
     assert service["telegram_realtime"] is None
@@ -113,7 +126,9 @@ def test_full_app_wires_real_interfaces_and_closes_in_reverse_order(
 
     app.close()
     app.close()
-    assert calls["closed"] == ["store", "queue", "mint-monitor", "feed"]
+    assert calls["closed"] == [
+        "store", "queue", "bsc-rpc", "mint-locations", "mint-monitor", "feed"
+    ]
 
 
 def test_collection_app_never_loads_grok_and_rejects_worker_use(
@@ -131,7 +146,9 @@ def test_collection_app_never_loads_grok_and_rejects_worker_use(
 
     assert "grok_from_env" not in calls
     assert "store_path" not in calls
-    assert calls["closed"] == ["queue", "mint-monitor", "feed"]
+    assert calls["closed"] == [
+        "queue", "bsc-rpc", "mint-locations", "mint-monitor", "feed"
+    ]
 
 
 def test_full_app_wires_private_realtime_config_only_when_enabled(
@@ -171,4 +188,6 @@ def test_failed_research_assembly_closes_collector_resources(
     with pytest.raises(RuntimeError, match="private key"):
         narrative_app.build_narrative_app(_settings(tmp_path))
 
-    assert calls["closed"] == ["queue", "mint-monitor", "feed"]
+    assert calls["closed"] == [
+        "queue", "bsc-rpc", "mint-locations", "mint-monitor", "feed"
+    ]

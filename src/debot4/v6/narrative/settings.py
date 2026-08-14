@@ -8,6 +8,14 @@ import os
 from pathlib import Path
 from typing import Mapping
 
+from .settings_env import (
+    DEFAULT_BSC_RPC_ENDPOINTS,
+    csv,
+    integer,
+    number,
+    optional_path,
+)
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[4]
 
@@ -22,6 +30,11 @@ class NarrativeSettings:
     collector_tick_seconds: float = 0.25
     debot_poll_seconds: float = 2.0
     mint_poll_seconds: float = 1.0
+    chain_mint_poll_seconds: float = 0.25
+    chain_mint_timeout_seconds: float = 3.0
+    chain_mint_startup_lookback_blocks: int = 3
+    chain_mint_max_catchup_blocks: int = 64
+    bsc_rpc_endpoints: tuple[str, ...] = DEFAULT_BSC_RPC_ENDPOINTS
     market_poll_seconds: float = 5.0
     worker_idle_seconds: float = 0.25
     retry_delay_seconds: float = 5.0
@@ -56,6 +69,8 @@ class NarrativeSettings:
             self.collector_tick_seconds,
             self.debot_poll_seconds,
             self.mint_poll_seconds,
+            self.chain_mint_poll_seconds,
+            self.chain_mint_timeout_seconds,
             self.market_poll_seconds,
             self.worker_idle_seconds,
             self.retry_delay_seconds,
@@ -74,6 +89,10 @@ class NarrativeSettings:
             raise ValueError("DeBot poll must be between 0.25 and 5 seconds")
         if not 0.25 <= self.mint_poll_seconds <= 5:
             raise ValueError("mint poll must be between 0.25 and 5 seconds")
+        if not 0.1 <= self.chain_mint_poll_seconds <= 2:
+            raise ValueError("chain mint poll must be between 0.1 and 2 seconds")
+        if not 0.1 <= self.chain_mint_timeout_seconds <= 30:
+            raise ValueError("chain mint timeout must be between 0.1 and 30 seconds")
         if not 0.5 <= self.market_poll_seconds <= 15:
             raise ValueError("market poll must be between 0.5 and 15 seconds")
         if not 0.05 <= self.worker_idle_seconds <= 5:
@@ -92,10 +111,28 @@ class NarrativeSettings:
             raise ValueError("X repost workers must be between 1 and 32")
         if isinstance(self.research_workers, bool) or not 1 <= self.research_workers <= 16:
             raise ValueError("research workers must be between 1 and 16")
+        if (
+            isinstance(self.chain_mint_startup_lookback_blocks, bool)
+            or not 1 <= self.chain_mint_startup_lookback_blocks <= 16
+        ):
+            raise ValueError("chain mint startup lookback must be between 1 and 16")
+        if (
+            isinstance(self.chain_mint_max_catchup_blocks, bool)
+            or not self.chain_mint_startup_lookback_blocks
+            <= self.chain_mint_max_catchup_blocks <= 512
+        ):
+            raise ValueError("chain mint catchup bound is invalid")
+        endpoints = tuple(dict.fromkeys(
+            str(value).strip() for value in self.bsc_rpc_endpoints
+            if str(value).strip()
+        ))
+        if not endpoints or len(endpoints) > 8:
+            raise ValueError("one to eight BSC RPC endpoints are required")
         object.__setattr__(self, "state_dir", state)
         object.__setattr__(self, "debot_cookie_file", debot_cookie)
         object.__setattr__(self, "telegram_realtime_config", realtime)
         object.__setattr__(self, "x_egress_pool_file", egress)
+        object.__setattr__(self, "bsc_rpc_endpoints", endpoints)
 
     @classmethod
     def from_env(
@@ -111,44 +148,60 @@ class NarrativeSettings:
                 Path.home() / ".config" / "debot4" / "credentials"
                 / "debot_cookies.json",
             )),
-            telegram_realtime_config=_optional_path(
+            telegram_realtime_config=optional_path(
                 env.get("DEBOT4_TELEGRAM_REALTIME_CONFIG", "")
             ),
-            collector_tick_seconds=_number(env, "DEBOT4_COLLECTOR_TICK_SECONDS", 0.25),
-            debot_poll_seconds=_number(env, "DEBOT4_DEBOT_POLL_SECONDS", 2.0),
-            mint_poll_seconds=_number(env, "DEBOT4_MINT_POLL_SECONDS", 1.0),
-            market_poll_seconds=_number(env, "DEBOT4_MARKET_POLL_SECONDS", 5.0),
-            worker_idle_seconds=_number(env, "DEBOT4_WORKER_IDLE_SECONDS", 0.25),
-            retry_delay_seconds=_number(env, "DEBOT4_RETRY_DELAY_SECONDS", 5.0),
-            lease_seconds=_number(env, "DEBOT4_JOB_LEASE_SECONDS", 240.0),
-            research_workers=_integer(env, "DEBOT4_RESEARCH_WORKERS", 10),
-            x_timeout_seconds=_number(env, "DEBOT4_X_TIMEOUT_SECONDS", 8.0),
-            x_egress_pool_file=_optional_path(env.get(
+            collector_tick_seconds=number(env, "DEBOT4_COLLECTOR_TICK_SECONDS", 0.25),
+            debot_poll_seconds=number(env, "DEBOT4_DEBOT_POLL_SECONDS", 2.0),
+            mint_poll_seconds=number(env, "DEBOT4_MINT_POLL_SECONDS", 1.0),
+            chain_mint_poll_seconds=number(
+                env, "DEBOT4_CHAIN_MINT_POLL_SECONDS", 0.25
+            ),
+            chain_mint_timeout_seconds=number(
+                env, "DEBOT4_CHAIN_MINT_TIMEOUT_SECONDS", 3.0
+            ),
+            chain_mint_startup_lookback_blocks=integer(
+                env, "DEBOT4_CHAIN_MINT_STARTUP_LOOKBACK_BLOCKS", 3
+            ),
+            chain_mint_max_catchup_blocks=integer(
+                env, "DEBOT4_CHAIN_MINT_MAX_CATCHUP_BLOCKS", 64
+            ),
+            bsc_rpc_endpoints=csv(
+                env.get("DEBOT4_BSC_RPC_ENDPOINTS", ""),
+                DEFAULT_BSC_RPC_ENDPOINTS,
+            ),
+            market_poll_seconds=number(env, "DEBOT4_MARKET_POLL_SECONDS", 5.0),
+            worker_idle_seconds=number(env, "DEBOT4_WORKER_IDLE_SECONDS", 0.25),
+            retry_delay_seconds=number(env, "DEBOT4_RETRY_DELAY_SECONDS", 5.0),
+            lease_seconds=number(env, "DEBOT4_JOB_LEASE_SECONDS", 240.0),
+            research_workers=integer(env, "DEBOT4_RESEARCH_WORKERS", 10),
+            x_timeout_seconds=number(env, "DEBOT4_X_TIMEOUT_SECONDS", 8.0),
+            x_egress_pool_file=optional_path(env.get(
                 "DEBOT4_X_EGRESS_POOL_FILE", str(PROJECT_ROOT / "conf" / "egress-pool.toml")
             )),
             x_egress_location=env.get(
                 "DEBOT4_X_EGRESS_LOCATION", "local"
             ).strip().casefold(),
-            x_egress_attempts=_integer(
+            x_egress_attempts=integer(
                 env, "DEBOT4_X_EGRESS_ATTEMPTS", 3
             ),
-            x_monitor_workers=_integer(
+            x_monitor_workers=integer(
                 env, "DEBOT4_X_MONITOR_WORKERS", 40
             ),
-            x_repost_workers=_integer(
+            x_repost_workers=integer(
                 env, "DEBOT4_X_REPOST_WORKERS", 10
             ),
-            telegram_timeout_seconds=_number(
+            telegram_timeout_seconds=number(
                 env, "DEBOT4_TELEGRAM_TIMEOUT_SECONDS", 8.0
             ),
-            telegram_realtime_retry_seconds=_number(
+            telegram_realtime_retry_seconds=number(
                 env, "DEBOT4_TELEGRAM_REALTIME_RETRY_SECONDS", 2.0
             ),
-            debot_timeout_seconds=_number(env, "DEBOT4_DEBOT_TIMEOUT_SECONDS", 5.0),
-            market_timeout_seconds=_number(
+            debot_timeout_seconds=number(env, "DEBOT4_DEBOT_TIMEOUT_SECONDS", 5.0),
+            market_timeout_seconds=number(
                 env, "DEBOT4_MARKET_TIMEOUT_SECONDS", 5.0
             ),
-            max_response_bytes=_integer(
+            max_response_bytes=integer(
                 env, "DEBOT4_MAX_RESPONSE_BYTES", 2_000_000
             ),
         )
@@ -174,30 +227,17 @@ class NarrativeSettings:
         return self.state_dir / "catalyst-mints.json"
 
     @property
+    def chain_mint_checkpoint_path(self) -> Path:
+        return self.state_dir / "chain-mint-checkpoint.json"
+
+    @property
+    def mint_location_database(self) -> Path:
+        return self.state_dir / "mint-locations.sqlite3"
+
+    @property
     def queue_database(self) -> Path:
         return self.state_dir / "jobs.sqlite3"
 
     @property
     def research_database(self) -> Path:
         return self.state_dir / "research.sqlite3"
-
-
-def _number(env: Mapping[str, str], key: str, default: float) -> float:
-    try:
-        return float(env.get(key, str(default)))
-    except ValueError:
-        raise ValueError(f"{key} must be numeric") from None
-
-
-def _integer(env: Mapping[str, str], key: str, default: int) -> int:
-    value = env.get(key, str(default))
-    try:
-        if any(char in value for char in ".eE"):
-            raise ValueError
-        return int(value)
-    except ValueError:
-        raise ValueError(f"{key} must be an integer") from None
-
-
-def _optional_path(value: str) -> Path | None:
-    return Path(value.strip()) if value.strip() else None
