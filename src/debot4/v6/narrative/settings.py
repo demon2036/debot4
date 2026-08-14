@@ -29,7 +29,7 @@ class NarrativeSettings:
     telegram_realtime_config: Path | None = None
     collector_tick_seconds: float = 0.25
     debot_poll_seconds: float = 2.0
-    mint_poll_seconds: float = 1.0
+    mint_poll_seconds: float = 0.5
     chain_mint_poll_seconds: float = 0.25
     chain_mint_timeout_seconds: float = 3.0
     chain_mint_startup_lookback_blocks: int = 3
@@ -153,7 +153,7 @@ class NarrativeSettings:
             ),
             collector_tick_seconds=number(env, "DEBOT4_COLLECTOR_TICK_SECONDS", 0.25),
             debot_poll_seconds=number(env, "DEBOT4_DEBOT_POLL_SECONDS", 2.0),
-            mint_poll_seconds=number(env, "DEBOT4_MINT_POLL_SECONDS", 1.0),
+            mint_poll_seconds=number(env, "DEBOT4_MINT_POLL_SECONDS", 0.5),
             chain_mint_poll_seconds=number(
                 env, "DEBOT4_CHAIN_MINT_POLL_SECONDS", 0.25
             ),

@@ -9,10 +9,10 @@ def test_defaults_are_fast_and_use_isolated_state_directory() -> None:
     settings = NarrativeSettings.from_env({})
     assert settings.collector_tick_seconds == 0.25
     assert settings.debot_poll_seconds == 2.0
-    assert settings.mint_poll_seconds == 1.0
+    assert settings.mint_poll_seconds == 0.5
     assert settings.chain_mint_poll_seconds == 0.25
     assert settings.chain_mint_timeout_seconds == 3.0
-    assert len(settings.bsc_rpc_endpoints) == 4
+    assert len(settings.bsc_rpc_endpoints) == 3
     assert settings.market_poll_seconds == 5.0
     assert settings.x_egress_pool_file.name == "egress-pool.toml"
     assert settings.x_egress_location == "local"

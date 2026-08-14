@@ -11,7 +11,7 @@ from ..debot.ranks_client import DeBotRanksClient
 from ..debot.ranks_models import RankSnapshot
 
 
-DEFAULT_MINT_POLL_SECONDS = 1.0
+DEFAULT_MINT_POLL_SECONDS = 0.5
 
 
 class NarrativeMintMonitor:

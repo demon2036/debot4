@@ -1,4 +1,4 @@
-"""Immutable BSC zero-transfer evidence and exact Flap-CA location rules."""
+"""Immutable BSC zero-transfer evidence and launchpad-CA location rules."""
 
 from __future__ import annotations
 
@@ -13,7 +13,7 @@ TRANSFER_TOPIC = (
     "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
 )
 ZERO_TOPIC = "0x" + "0" * 64
-FLAP_TOKEN_SUFFIX = "7777"
+KNOWN_LAUNCHPAD_TOKEN_SUFFIXES = ("4444", "7777", "8888", "ffff")
 
 
 @dataclass(frozen=True, slots=True)
@@ -36,7 +36,7 @@ class BscZeroTransferLog:
     data: str
 
 
-def locate_flap_mint_logs(
+def locate_launchpad_mint_logs(
     block: BscMintBlock,
     logs: tuple[BscZeroTransferLog, ...],
     *,
@@ -58,7 +58,7 @@ def locate_flap_mint_logs(
             or item.block_hash != block.block_hash
         ):
             raise ValueError("BSC mint log does not belong to its block")
-        if not item.token_address.endswith(FLAP_TOKEN_SUFFIX):
+        if not item.token_address.endswith(KNOWN_LAUNCHPAD_TOKEN_SUFFIXES):
             continue
         if _quantity(item.data) <= 0:
             continue

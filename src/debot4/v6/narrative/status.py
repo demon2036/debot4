@@ -207,7 +207,9 @@ def _configuration(
             debot_ready, "private_cookie_file" if debot_ready else "none"
         ),
         "market": _availability(True, "coinmarketcap_exact_bsc_1h"),
-        "bsc_mint": _availability(True, "verified_flap_factory_receipts"),
+        "bsc_mint": _availability(
+            True, "bsc_zero_transfer_known_launchpad_suffixes"
+        ),
         "grok": _availability(grok_source != "none", grok_source),
     }
 

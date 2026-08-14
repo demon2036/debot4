@@ -10,7 +10,7 @@ from debot4.v6.debot.ranks_models import RankSnapshot
 from debot4.v6.narrative.chain_mint import (
     BscMintBlock,
     BscZeroTransferLog,
-    locate_flap_mint_logs,
+    locate_launchpad_mint_logs,
 )
 from debot4.v6.narrative.debot_mint_location import location_from_debot
 from debot4.v6.narrative.mint_location import (
@@ -69,7 +69,7 @@ def test_debot_location_keeps_exact_ca_without_social_or_creation_time() -> None
 def test_route_independent_log_extracts_real_current_flap_ca() -> None:
     block, mint_log = _chain_inputs()
 
-    (location,) = locate_flap_mint_logs(
+    (location,) = locate_launchpad_mint_logs(
         block, (mint_log,), observed_at=NOW + timedelta(seconds=1)
     )
 
@@ -84,6 +84,19 @@ def test_route_independent_log_extracts_real_current_flap_ca() -> None:
     assert location.authorizes_trade is False
 
 
+@pytest.mark.parametrize("suffix", ["4444", "7777", "8888", "ffff"])
+def test_chain_rule_covers_observed_flap_and_four_meme_suffixes(
+    suffix: str,
+) -> None:
+    block, mint_log = _chain_inputs(exact_ca="0x" + "1" * 36 + suffix)
+
+    (location,) = locate_launchpad_mint_logs(
+        block, (mint_log,), observed_at=NOW
+    )
+
+    assert location.exact_ca.endswith(suffix)
+
+
 @pytest.mark.parametrize(
     ("exact_ca", "data"),
     [
@@ -91,12 +104,12 @@ def test_route_independent_log_extracts_real_current_flap_ca() -> None:
         (CA, "0x" + "0" * 64),
     ],
 )
-def test_chain_rule_ignores_non_flap_or_zero_quantity_logs(
+def test_chain_rule_ignores_unknown_suffix_or_zero_quantity_logs(
     exact_ca: str, data: str,
 ) -> None:
     block, mint_log = _chain_inputs(exact_ca=exact_ca, data=data)
 
-    assert locate_flap_mint_logs(
+    assert locate_launchpad_mint_logs(
         block, (mint_log,), observed_at=NOW
     ) == ()
 
@@ -110,7 +123,7 @@ def test_chain_rule_rejects_log_from_a_different_block() -> None:
     )
 
     with pytest.raises(ValueError, match="does not belong"):
-        locate_flap_mint_logs(block, (wrong,), observed_at=NOW)
+        locate_launchpad_mint_logs(block, (wrong,), observed_at=NOW)
 
 
 def test_store_keeps_no_link_ca_then_enriches_without_hot_loop_writes(
@@ -152,7 +165,7 @@ def test_store_keeps_reincluded_transaction_as_distinct_reorg_evidence(
     tmp_path: Path,
 ) -> None:
     block, mint_log = _chain_inputs()
-    (location,) = locate_flap_mint_logs(
+    (location,) = locate_launchpad_mint_logs(
         block, (mint_log,), observed_at=NOW
     )
     database = tmp_path / "mint.sqlite3"
@@ -172,7 +185,7 @@ def test_store_rejects_same_receipt_identity_with_changed_position(
     tmp_path: Path,
 ) -> None:
     block, mint_log = _chain_inputs()
-    (location,) = locate_flap_mint_logs(
+    (location,) = locate_launchpad_mint_logs(
         block, (mint_log,), observed_at=NOW
     )
     database = tmp_path / "mint.sqlite3"

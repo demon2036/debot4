@@ -11,7 +11,8 @@ from typing import Protocol
 from ..identity import utc_datetime, utc_now
 from .chain_mint import (
     BscMintBlock,
-    locate_flap_mint_logs,
+    KNOWN_LAUNCHPAD_TOKEN_SUFFIXES,
+    locate_launchpad_mint_logs,
 )
 from .chain_mint_state import ChainMintCheckpoint, ChainMintCheckpointStore
 from .mint_location import MintLocation
@@ -115,7 +116,8 @@ class BscMintMonitor:
             "locations_persisted": self.locations_persisted,
             "skipped_stale_blocks": self.skipped_stale_blocks,
             "reorg_recoveries": self.reorg_recoveries,
-            "location_invariant": "erc20_zero_transfer_suffix_7777",
+            "location_invariant": "erc20_zero_transfer_known_launchpad_suffix",
+            "candidate_suffixes": list(KNOWN_LAUNCHPAD_TOKEN_SUFFIXES),
             "route_independent": True,
             "confirmation_depth": 0,
             "finality": "included_not_finalized",
@@ -147,7 +149,7 @@ class BscMintMonitor:
 
     def _locations(self, block: BscMintBlock) -> tuple[MintLocation, ...]:
         observed = utc_datetime(self.clock())
-        return locate_flap_mint_logs(
+        return locate_launchpad_mint_logs(
             block,
             block.zero_transfers,
             observed_at=observed,

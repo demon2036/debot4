@@ -117,6 +117,9 @@ def test_snapshot_reads_exact_databases_and_never_exposes_credentials(
     assert configuration["x"]["source"] == "fxtwitter_public_api"
     assert configuration["debot"]["available"] is True
     assert configuration["grok"]["available"] is True
+    assert configuration["bsc_mint"]["source"] == (
+        "bsc_zero_transfer_known_launchpad_suffixes"
+    )
     raw = json.dumps(snapshot)
     for secret in (*env.values(), "research-body-2"):
         assert secret not in raw
@@ -138,7 +141,7 @@ def test_actor_cadence_matches_the_reviewed_monitor_and_skips_unverified_ids(
     assert snapshot["polling"] == {
         "collector_tick_seconds": 0.25,
         "debot_seconds": 1.0,
-        "mint_seconds": 1.0,
+        "mint_seconds": 0.5,
         "chain_mint_seconds": 0.25,
         "market_seconds": 5.0,
     }
