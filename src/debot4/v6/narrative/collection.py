@@ -191,12 +191,10 @@ class NarrativeCollector:
             self._filter_counts[(decision.accepted, decision.reason)] += 1
 
     def _accept_x(self, posts: tuple[XPost, ...]) -> None:
-        accepted: list[XPost] = []
+        if posts and self.catalyst_mints is not None:
+            self._persist_matches(self.catalyst_mints.observe_posts(posts))
         for post in posts:
-            if self._enqueue(post):
-                accepted.append(post)
-        if accepted and self.catalyst_mints is not None:
-            self._persist_matches(self.catalyst_mints.observe_posts(accepted))
+            self._enqueue(post)
 
     def accept_telegram(self, posts: tuple[TelegramPost, ...]) -> None:
         """Persist realtime or public Telegram observations idempotently."""

@@ -10,7 +10,12 @@ from debot4.v6.narrative.job_queue import JobStatus, NarrativeJobQueue
 from debot4.v6.narrative.live_signal_filter import BscRealtimeSignalFilter
 from debot4.v6.narrative.mint_location_store import MintLocationStore
 from debot4.v6.x.models import XPost
-from tests.v6_catalyst_mint_samples import catalyst_post, mint_snapshot
+from tests.v6_catalyst_mint_samples import (
+    BBROKER_POST_AT,
+    BBROKER_STATUS,
+    catalyst_post,
+    mint_snapshot,
+)
 
 
 class _XSource:
@@ -94,3 +99,44 @@ def test_no_social_mint_is_located_without_queueing_grok(tmp_path: Path) -> None
         pipeline = collector.mint_pipeline_snapshot()
         assert pipeline["hard_catalyst_bindings_queued"] == 0
         assert pipeline["raw_location_queues_research"] is False
+
+
+def test_routine_post_stays_available_for_later_exact_mint_binding(
+    tmp_path: Path,
+) -> None:
+    post = XPost(
+        BBROKER_STATUS, "GCsheng", "早安", BBROKER_POST_AT,
+        BBROKER_POST_AT,
+    )
+    mint = mint_snapshot(social_urls=(
+        f"https://x.com/GCsheng/status/{BBROKER_STATUS}",
+    ))
+    observed_at = mint.fetched_at
+    state = CatalystMintState(
+        tmp_path / "join.json", clock=lambda: observed_at,
+    )
+    with (
+        NarrativeJobQueue(
+            tmp_path / "jobs.sqlite3", clock=lambda: observed_at,
+        ) as queue,
+        MintLocationStore(
+            tmp_path / "mint.sqlite3", clock=lambda: observed_at,
+        ) as locations,
+    ):
+        collector = NarrativeCollector(
+            _XSource(post), object(), object(), queue,
+            mint_monitor=_MintSource(mint), catalyst_mints=state,
+            mint_locations=locations, clock=lambda: observed_at,
+            signal_filter=BscRealtimeSignalFilter(clock=lambda: observed_at),
+        )
+
+        collector.collect_x_once()
+        assert queue.counts()[JobStatus.PENDING] == 0
+        (match,) = collector.collect_mints_once()
+
+        assert match.exact_ca == mint.token_address
+        assert queue.counts()[JobStatus.PENDING] == 1
+        assert collector.filter_snapshot()["reasons"] == {
+            "exact_catalyst_mint_binding": 1,
+            "routine_x_chatter": 1,
+        }
