@@ -47,6 +47,16 @@ def _handler(request: httpx.Request) -> httpx.Response:
                 "transactionHash": TX, "blockNumber": "0xa",
                 "blockHash": BLOCK_HASH, "transactionIndex": "0x7",
                 "logIndex": "0x9", "removed": False,
+            }, {
+                "address": "0x1111111111111111111111111111111111111111",
+                "topics": [
+                    TRANSFER_TOPIC, ZERO_TOPIC,
+                    "0x" + "5" * 64, "0x" + "6" * 64,
+                ],
+                "data": "0x", "transactionHash": TX,
+                "blockNumber": "0xa", "blockHash": BLOCK_HASH,
+                "transactionIndex": "0x7", "logIndex": "0xa",
+                "removed": False,
             }]
         else:
             raise AssertionError(method)

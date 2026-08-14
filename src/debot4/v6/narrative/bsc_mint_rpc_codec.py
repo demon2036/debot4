@@ -17,6 +17,7 @@ from .chain_mint import (
 
 
 _HASH = re.compile(r"0x[0-9a-f]{64}")
+_HEX = re.compile(r"0x[0-9a-f]*")
 _QUANTITY = re.compile(r"0x(?:0|[1-9a-f][0-9a-f]*)")
 _WORD = re.compile(r"0x[0-9a-f]{64}")
 
@@ -57,18 +58,11 @@ def zero_transfers_from_rpc(
 ) -> tuple[BscZeroTransferLog, ...]:
     if not isinstance(raw, list) or len(raw) > 10_000:
         raise ValueError
-    logs = tuple(_zero_transfer(item) for item in raw)
-    if any(
-        item.block_number != block.number or item.block_hash != block.block_hash
-        for item in logs
-    ):
-        raise ValueError
-    identities = tuple(
-        (item.transaction_hash, item.log_index) for item in logs
-    )
+    decoded = tuple(_zero_transfer(item, block) for item in raw)
+    identities = tuple(identity for identity, _item in decoded)
     if len(set(identities)) != len(identities):
         raise ValueError
-    return logs
+    return tuple(item for _identity, item in decoded if item is not None)
 
 
 def batch_values(payload: object, ids: Sequence[int]) -> tuple[object, ...]:
@@ -106,11 +100,13 @@ def rpc_hash(value: object) -> str:
     return result
 
 
-def _zero_transfer(raw: object) -> BscZeroTransferLog:
+def _zero_transfer(
+    raw: object, block: BscMintBlock,
+) -> tuple[tuple[str, int], BscZeroTransferLog | None]:
     if not isinstance(raw, Mapping) or raw.get("removed") is not False:
         raise ValueError
     topics = raw.get("topics")
-    if not isinstance(topics, list) or len(topics) != 3:
+    if not isinstance(topics, list) or not 2 <= len(topics) <= 8:
         raise ValueError
     normalized = tuple(str(item).casefold() for item in topics)
     if (
@@ -119,15 +115,26 @@ def _zero_transfer(raw: object) -> BscZeroTransferLog:
         or normalized[1] != ZERO_TOPIC
     ):
         raise ValueError
-    data = str(raw.get("data") or "").casefold()
-    if not _WORD.fullmatch(data):
+    token_address = bsc_address(raw.get("address"))
+    transaction_hash = rpc_hash(raw.get("transactionHash"))
+    block_number = rpc_quantity(raw.get("blockNumber"))
+    block_hash = rpc_hash(raw.get("blockHash"))
+    transaction_index = rpc_quantity(raw.get("transactionIndex"))
+    log_index = rpc_quantity(raw.get("logIndex"))
+    if block_number != block.number or block_hash != block.block_hash:
         raise ValueError
-    return BscZeroTransferLog(
-        token_address=bsc_address(raw.get("address")),
-        transaction_hash=rpc_hash(raw.get("transactionHash")),
-        block_number=rpc_quantity(raw.get("blockNumber")),
-        block_hash=rpc_hash(raw.get("blockHash")),
-        transaction_index=rpc_quantity(raw.get("transactionIndex")),
-        log_index=rpc_quantity(raw.get("logIndex")),
+    data = str(raw.get("data") or "").casefold()
+    if not _HEX.fullmatch(data) or len(data) % 2:
+        raise ValueError
+    identity = (transaction_hash, log_index)
+    if len(normalized) != 3 or not _WORD.fullmatch(data):
+        return identity, None
+    return identity, BscZeroTransferLog(
+        token_address=token_address,
+        transaction_hash=transaction_hash,
+        block_number=block_number,
+        block_hash=block_hash,
+        transaction_index=transaction_index,
+        log_index=log_index,
         data=data,
     )
