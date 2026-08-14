@@ -7,10 +7,10 @@ from typing import Mapping
 
 
 DEFAULT_BSC_RPC_ENDPOINTS = (
-    "https://bsc-dataseed.binance.org",
     "https://bsc.publicnode.com",
     "https://bsc-mainnet.public.blastapi.io",
     "https://1rpc.io/bnb",
+    "https://bsc-dataseed.binance.org",
 )
 
 

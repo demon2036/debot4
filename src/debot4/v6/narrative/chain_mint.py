@@ -22,6 +22,7 @@ class BscMintBlock:
     block_hash: str
     parent_hash: str
     timestamp: datetime
+    zero_transfers: tuple[BscZeroTransferLog, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)

@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -35,12 +36,15 @@ class _Rpc:
         logs: tuple[BscZeroTransferLog, ...] = (),
     ) -> None:
         self.blocks = {item.number: item for item in blocks}
-        self.logs: dict[int, list[BscZeroTransferLog]] = {}
+        grouped: dict[int, list[BscZeroTransferLog]] = {}
         for item in logs:
-            self.logs.setdefault(item.block_number, []).append(item)
+            grouped.setdefault(item.block_number, []).append(item)
+        for number, items in grouped.items():
+            self.blocks[number] = replace(
+                self.blocks[number], zero_transfers=tuple(items)
+            )
         self.head_calls = 0
         self.block_calls: list[int] = []
-        self.log_calls: list[int] = []
 
     def latest_block_number(self) -> int:
         self.head_calls += 1
@@ -49,13 +53,6 @@ class _Rpc:
     def fetch_block(self, number: int) -> BscMintBlock:
         self.block_calls.append(number)
         return self.blocks[number]
-
-    def fetch_zero_transfers(
-        self, block: BscMintBlock,
-    ) -> tuple[BscZeroTransferLog, ...]:
-        self.log_calls.append(block.number)
-        return tuple(self.logs.get(block.number, ()))
-
 
 def _hash(number: int) -> str:
     return "0x" + format(number, "064x")
@@ -147,7 +144,7 @@ def test_empty_blocks_checkpoint_and_poll_is_self_throttled(tmp_path: Path) -> N
     timer.value = 0.25
     assert monitor.poll_once(lambda _items: None) == ()
     assert rpc.head_calls == 2
-    assert rpc.log_calls == [10]
+    assert rpc.block_calls == [10]
 
 
 def test_stale_checkpoint_uses_bounded_recent_catchup(tmp_path: Path) -> None:

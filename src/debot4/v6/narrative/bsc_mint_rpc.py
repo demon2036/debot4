@@ -14,13 +14,11 @@ from .chain_mint import (
     TRANSFER_TOPIC,
     ZERO_TOPIC,
     BscMintBlock,
-    BscZeroTransferLog,
 )
 from .bsc_mint_rpc_codec import (
     batch_values,
-    block_from_rpc,
+    mint_block_from_rpc,
     rpc_quantity,
-    zero_transfers_from_rpc,
 )
 
 
@@ -70,20 +68,19 @@ class BscMintRpcClient:
     def fetch_block(self, number: int) -> BscMintBlock:
         if isinstance(number, bool) or number < 0:
             raise ValueError("BSC block number must be non-negative")
+        quantity = hex(number)
         return self._batch(
-            (("eth_getBlockByNumber", (hex(number), False)),),
-            validator=lambda rows: (block_from_rpc(rows[0], number),),
-        )[0]
-
-    def fetch_zero_transfers(
-        self, block: BscMintBlock,
-    ) -> tuple[BscZeroTransferLog, ...]:
-        return self._batch(
-            (("eth_getLogs", ({
-                "blockHash": block.block_hash,
-                "topics": [TRANSFER_TOPIC, ZERO_TOPIC],
-            },)),),
-            validator=lambda rows: (zero_transfers_from_rpc(rows[0], block),),
+            (
+                ("eth_getBlockByNumber", (quantity, False)),
+                ("eth_getLogs", ({
+                    "fromBlock": quantity,
+                    "toBlock": quantity,
+                    "topics": [TRANSFER_TOPIC, ZERO_TOPIC],
+                },)),
+            ),
+            validator=lambda rows: (
+                mint_block_from_rpc(rows[0], rows[1], number),
+            ),
         )[0]
 
     def _batch(
@@ -115,6 +112,7 @@ class BscMintRpcClient:
                     continue
                 self._next_endpoint = index
                 return values
+            self._next_endpoint = (self._next_endpoint + 1) % len(self.endpoints)
         raise BscMintRpcError("all BSC mint RPC endpoints failed")
 
     def _post(self, endpoint: str, body: list[dict[str, object]]) -> object:

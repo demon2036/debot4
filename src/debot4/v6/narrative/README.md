@@ -11,6 +11,8 @@ Exact CA location flow:
    emitted by an address ending in the reviewed Flap `7777` suffix locates the
    Exact CA without depending on a mutable factory/router address. Latest-block
    evidence is explicitly included but not finalized and infers no launchpad.
+   The header and filtered logs are fetched as one same-endpoint batch and must
+   agree on block number and hash before the checkpoint advances.
 2. `NarrativeMintMonitor` polls DeBot's `new` stage every second and persists
    every Exact CA, including tokens with no creation time or social link.
 3. `MintLocationStore` bounds raw evidence to one day, 20,000 rows, and a

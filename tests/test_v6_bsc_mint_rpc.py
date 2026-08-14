@@ -37,7 +37,7 @@ def _handler(request: httpx.Request) -> httpx.Response:
             }
         elif method == "eth_getLogs":
             assert call["params"] == [{
-                "blockHash": BLOCK_HASH,
+                "fromBlock": "0xa", "toBlock": "0xa",
                 "topics": [TRANSFER_TOPIC, ZERO_TOPIC],
             }]
             value = [{
@@ -60,7 +60,7 @@ def test_rpc_adapter_parses_bounded_headers_and_zero_transfers() -> None:
 
         assert rpc.latest_block_number() == 10
         block = rpc.fetch_block(10)
-        (mint_log,) = rpc.fetch_zero_transfers(block)
+        (mint_log,) = block.zero_transfers
 
     assert block.number == 10
     assert block.block_hash == BLOCK_HASH
@@ -87,6 +87,31 @@ def test_rpc_fails_over_when_first_endpoint_omits_response_identity() -> None:
         assert rpc.latest_block_number() == 10
 
     assert hosts == ["bad.example", "good.example"]
+
+
+def test_block_header_and_logs_fail_over_as_one_evidence_batch() -> None:
+    hosts: list[str] = []
+
+    def handler(request: httpx.Request) -> httpx.Response:
+        hosts.append(str(request.url.host))
+        calls = json.loads(request.content)
+        if request.url.host == "bad.example":
+            return httpx.Response(200, json=[
+                {"jsonrpc": "2.0", "id": item["id"],
+                 "error": {"code": -32005, "message": "unsupported"}}
+                for item in calls
+            ])
+        return _handler(request)
+
+    with httpx.Client(transport=httpx.MockTransport(handler)) as http:
+        rpc = BscMintRpcClient(
+            ("https://bad.example", "https://good.example"), client=http
+        )
+        block = rpc.fetch_block(10)
+
+    assert hosts == ["bad.example", "good.example"]
+    assert block.number == 10
+    assert block.zero_transfers[0].token_address == CA
 
 
 def test_rpc_rejects_credential_url_and_oversized_response() -> None:

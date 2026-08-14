@@ -11,7 +11,6 @@ from typing import Protocol
 from ..identity import utc_datetime, utc_now
 from .chain_mint import (
     BscMintBlock,
-    BscZeroTransferLog,
     locate_flap_mint_logs,
 )
 from .chain_mint_state import ChainMintCheckpoint, ChainMintCheckpointStore
@@ -24,9 +23,6 @@ DEFAULT_CHAIN_MINT_POLL_SECONDS = 0.25
 class ChainMintRpc(Protocol):
     def latest_block_number(self) -> int: ...
     def fetch_block(self, number: int) -> BscMintBlock: ...
-    def fetch_zero_transfers(
-        self, block: BscMintBlock,
-    ) -> tuple[BscZeroTransferLog, ...]: ...
 
 
 class BscMintMonitor:
@@ -153,6 +149,6 @@ class BscMintMonitor:
         observed = utc_datetime(self.clock())
         return locate_flap_mint_logs(
             block,
-            self.rpc.fetch_zero_transfers(block),
+            block.zero_transfers,
             observed_at=observed,
         )

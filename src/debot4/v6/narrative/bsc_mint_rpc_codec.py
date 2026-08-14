@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
+from dataclasses import replace
 from datetime import datetime, timezone
 import re
 
@@ -18,6 +19,16 @@ from .chain_mint import (
 _HASH = re.compile(r"0x[0-9a-f]{64}")
 _QUANTITY = re.compile(r"0x(?:0|[1-9a-f][0-9a-f]*)")
 _WORD = re.compile(r"0x[0-9a-f]{64}")
+
+
+def mint_block_from_rpc(
+    raw_block: object, raw_logs: object, expected_number: int,
+) -> BscMintBlock:
+    block = block_from_rpc(raw_block, expected_number)
+    return replace(
+        block,
+        zero_transfers=zero_transfers_from_rpc(raw_logs, block),
+    )
 
 
 def block_from_rpc(raw: object, expected_number: int) -> BscMintBlock:
