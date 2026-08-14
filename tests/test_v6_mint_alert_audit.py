@@ -12,6 +12,7 @@ from debot4.v6.narrative.debot_mint_location import location_from_debot
 from debot4.v6.narrative.mint_alert_audit import audit_mint_alerts
 from debot4.v6.narrative.mint_alert_audit_reader import (
     MintAlertAuditReadError,
+    count_debot_exact_cas,
     read_debot_mints,
     read_mint_alerts,
     wait_for_mint_alert_audit_inputs,
@@ -23,6 +24,7 @@ from debot4.v6.narrative.mint_location_store import MintLocationStore
 from tests.v6_catalyst_mint_samples import (
     BUDUJIN_CA,
     BUDUJIN_DELIVERED_AT,
+    BUDUJIN_MINT_AT,
     BUDUJIN_OBSERVED_AT,
     BUDUJIN_POST_AT,
     budujin_match,
@@ -49,6 +51,7 @@ def _board(*, source: str = "coinmarketcap_datahub", exact: bool = True) -> Boar
             price_usd=Decimal("0.01"),
             volume_h1_usd=Decimal("20000"),
             txns_h1=20,
+            published_at_us=int(BUDUJIN_MINT_AT.timestamp() * 1_000_000),
         ),),
         attempts=(),
     )
@@ -141,6 +144,7 @@ def test_reader_waits_for_runtime_owned_files(tmp_path: Path) -> None:
     assert inputs.gate.policy_started_at == BUDUJIN_OBSERVED_AT
     assert inputs.alerts == ()
     assert inputs.debot_mints == ()
+    assert inputs.debot_exact_ca_count == 0
     assert elapsed == [0.1]
 
 
@@ -185,6 +189,53 @@ def test_selected_match_without_durable_alert_is_a_hard_violation(
     assert report.review_required is True
     assert report.attention_required is True
     assert report.as_public_dict()["status"] == "attention"
+
+
+def test_old_market_leader_is_not_treated_as_a_missed_new_mint(
+    tmp_path: Path,
+) -> None:
+    gate = MintAlertGate(tmp_path / "gate.json", clock=lambda: BUDUJIN_DELIVERED_AT)
+    state = read_mint_alert_gate_state(gate.path)
+    assert state is not None
+    old = replace(
+        _board().rows[0],
+        token_address="0x04e6d1a23d1da5e78f22c793a632fe0cf5f6c8a0",
+        symbol="DOGO",
+        published_at_us=1_708_128_000_000_000,
+    )
+
+    report = audit_mint_alerts(
+        state, (), (), replace(_board(), rows=(old,)), now=BUDUJIN_DELIVERED_AT
+    )
+
+    assert report.market_leads == ()
+    assert report.review_required is False
+    assert report.attention_required is False
+    assert report.market_scope.exclusions[0].reason == (
+        "published_before_policy_start"
+    )
+
+
+def test_reader_filters_before_group_limit_and_counts_all_debot_cas(
+    tmp_path: Path,
+) -> None:
+    path = tmp_path / "locations.sqlite3"
+    other_cas = tuple(f"0x{number:040x}" for number in (1, 2))
+    with MintLocationStore(path) as locations:
+        locations.record((
+            location_from_debot(replace(budujin_mint(), stage="new")),
+            location_from_debot(replace(budujin_mint(), stage="completed")),
+            *(location_from_debot(budujin_mint(exact_ca=exact_ca))
+              for exact_ca in other_cas),
+        ))
+
+    selected = read_debot_mints(
+        path, since=BUDUJIN_POST_AT, exact_cas=(BUDUJIN_CA,), limit=1
+    )
+
+    assert len(selected) == 1
+    assert selected[0].sources == ("debot_completed", "debot_new")
+    assert count_debot_exact_cas(path, since=BUDUJIN_POST_AT) == 3
 
 
 def test_inexact_market_fallback_is_explicitly_unavailable(

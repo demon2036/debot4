@@ -41,6 +41,7 @@ class Gainer:
     price_usd: Decimal | None
     volume_h1_usd: Decimal | None
     txns_h1: int | None
+    published_at_us: int | None = None
 
 
 @dataclass(frozen=True, slots=True)

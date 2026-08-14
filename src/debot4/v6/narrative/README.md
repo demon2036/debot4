@@ -49,17 +49,20 @@ output is a lead until its source URL and identity are independently verified.
 
 ## Ten-minute audit
 
-`python -m debot4.v6.narrative.audit_mint_alerts` reads the gate, DeBot mint
-locations, and alert outbox in SQLite read-only mode, then compares them with
-the exact CoinMarketCap BSC one-hour gainer board.
+`python -m debot4.v6.narrative.audit_mint_alerts` fetches the exact CoinMarketCap
+BSC one-hour gainer board, then reads the gate, alert outbox, and only the DeBot
+mint rows for those exact CAs in SQLite read-only mode. A separate aggregate
+count preserves overall DeBot coverage without loading the full observation set.
 
 Hard violations include a selected gate match missing from the outbox, a recent
 orphan alert, an alert attached to a rejected group, unresolved state beyond the
-SLA, and detection or delivery after 15 seconds. A current market leader that
-was seen by DeBot but not alerted is marked for review. It is not treated as
+SLA, and detection or delivery after 15 seconds. Of the quality-qualified market
+leaders, only tokens with a trustworthy publish time inside the last two hours
+and no earlier than this alert policy are checked for coverage. Older tokens,
+future timestamps, and missing timestamps are reported as scope exclusions, not
+mint misses. An eligible leader without an alert is marked for review; it is not
 proof of a miss because a current one-hour board is not a historical fixed-window
-golden-dog label. GeckoTerminal fallback data is reported as unavailable for
-this exact-ranking audit.
+golden-dog label. GeckoTerminal fallback data is reported as unavailable.
 
 ## Safety boundary
 

@@ -9,6 +9,7 @@ from decimal import Decimal
 from ..identity import bsc_address, utc_datetime
 from .market_signal import MarketAnomaly
 from .mint_alert import MintAlert
+from .mint_market_scope import MintMarketScope
 from .mint_location import DEBOT_STAGE_SOURCES
 
 
@@ -103,6 +104,7 @@ class MintAlertAuditReport:
     market_source: str
     market_available: bool
     market_failure_reason: str | None
+    market_scope: MintMarketScope
     violations: tuple[AuditViolation, ...]
     market_leads: tuple[MarketCoverageRow, ...]
 
@@ -130,6 +132,7 @@ class MintAlertAuditReport:
             "market_source": self.market_source,
             "market_available": self.market_available,
             "market_failure_reason": self.market_failure_reason,
+            "market_scope": self.market_scope.as_public_dict(),
             "review_required": self.review_required,
             "violations": [item.as_public_dict() for item in self.violations],
             "market_leads": [item.as_public_dict() for item in self.market_leads],

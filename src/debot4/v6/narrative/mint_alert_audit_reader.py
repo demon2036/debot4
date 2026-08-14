@@ -31,6 +31,7 @@ class MintAlertAuditInputs:
     gate: MintAlertGateState
     alerts: tuple[StoredMintAlert, ...]
     debot_mints: tuple[DeBotMintSeen, ...]
+    debot_exact_ca_count: int
 
 
 def wait_for_mint_alert_audit_inputs(
@@ -39,6 +40,7 @@ def wait_for_mint_alert_audit_inputs(
     location_path: str | Path,
     *,
     now: datetime,
+    debot_exact_cas: tuple[str, ...] | None = None,
     timeout_seconds: float = 15.0,
     poll_seconds: float = 0.1,
     monotonic_clock: Callable[[], float] = monotonic,
@@ -65,8 +67,15 @@ def wait_for_mint_alert_audit_inputs(
             current = utc_datetime(now)
             since = max(gate.policy_started_at, current - timedelta(days=1))
             alerts = read_mint_alerts(alert_path, since=since)
-            debot_mints = read_debot_mints(location_path, since=since)
-            return MintAlertAuditInputs(gate, alerts, debot_mints)
+            debot_exact_ca_count = count_debot_exact_cas(
+                location_path, since=since
+            )
+            debot_mints = read_debot_mints(
+                location_path, since=since, exact_cas=debot_exact_cas
+            )
+            return MintAlertAuditInputs(
+                gate, alerts, debot_mints, debot_exact_ca_count
+            )
         except MintAlertAuditReadError as exc:
             last_error = exc
         remaining = deadline - monotonic_clock()
@@ -107,39 +116,41 @@ def read_mint_alerts(
 
 
 def read_debot_mints(
-    path: str | Path, *, since: datetime, limit: int = 5_000,
+    path: str | Path,
+    *,
+    since: datetime,
+    exact_cas: tuple[str, ...] | None = None,
+    limit: int = 5_000,
 ) -> tuple[DeBotMintSeen, ...]:
     _validate_limit(limit)
+    addresses = (
+        None
+        if exact_cas is None
+        else tuple(dict.fromkeys(bsc_address(item) for item in exact_cas))
+    )
     database = _connect(path, "mint location database")
-    stage_sources = tuple(sorted(DEBOT_STAGE_SOURCES.values()))
-    placeholders = ",".join("?" for _ in stage_sources)
-    parameters = (*stage_sources, utc_datetime(since).isoformat())
     try:
+        if addresses == ():
+            return ()
+        where, parameters = _debot_where(since, addresses)
         rows = database.execute(
-            f"SELECT exact_ca,source,first_observed_at,last_observed_at "
-            f"FROM {LOCATION_TABLE} WHERE source IN ({placeholders}) "
-            "AND last_observed_at>=? ORDER BY last_observed_at DESC LIMIT ?",
+            f"SELECT exact_ca,MIN(first_observed_at) AS first_observed_at,"
+            "MAX(last_observed_at) AS last_observed_at,"
+            f"GROUP_CONCAT(DISTINCT source) AS sources FROM {LOCATION_TABLE} "
+            f"WHERE {where} GROUP BY exact_ca "
+            "ORDER BY last_observed_at DESC,exact_ca LIMIT ?",
             (*parameters, limit + 1),
         ).fetchall()
         if len(rows) > limit:
             raise MintAlertAuditReadError("DeBot mint audit row limit exceeded")
-        grouped: dict[str, tuple[datetime, datetime, set[str]]] = {}
-        for row in rows:
-            exact_ca = bsc_address(row["exact_ca"])
-            first = utc_datetime(datetime.fromisoformat(row["first_observed_at"]))
-            last = utc_datetime(datetime.fromisoformat(row["last_observed_at"]))
-            source = str(row["source"])
-            previous = grouped.get(exact_ca)
-            if previous is None:
-                grouped[exact_ca] = (first, last, {source})
-            else:
-                grouped[exact_ca] = (
-                    min(previous[0], first), max(previous[1], last),
-                    previous[2] | {source},
-                )
         return tuple(
-            DeBotMintSeen(exact_ca, first, last, tuple(sources))
-            for exact_ca, (first, last, sources) in sorted(grouped.items())
+            DeBotMintSeen(
+                row["exact_ca"],
+                datetime.fromisoformat(row["first_observed_at"]),
+                datetime.fromisoformat(row["last_observed_at"]),
+                tuple(str(row["sources"]).split(",")),
+            )
+            for row in rows
         )
     except MintAlertAuditReadError:
         raise
@@ -147,6 +158,38 @@ def read_debot_mints(
         raise MintAlertAuditReadError("cannot read mint location database") from exc
     finally:
         database.close()
+
+
+def count_debot_exact_cas(
+    path: str | Path, *, since: datetime,
+) -> int:
+    database = _connect(path, "mint location database")
+    try:
+        where, parameters = _debot_where(since, None)
+        row = database.execute(
+            f"SELECT COUNT(DISTINCT exact_ca) FROM {LOCATION_TABLE} WHERE {where}",
+            parameters,
+        ).fetchone()
+        return int(row[0])
+    except (sqlite3.Error, TypeError, ValueError) as exc:
+        raise MintAlertAuditReadError("cannot count DeBot mint locations") from exc
+    finally:
+        database.close()
+
+
+def _debot_where(
+    since: datetime, exact_cas: tuple[str, ...] | None,
+) -> tuple[str, tuple[object, ...]]:
+    stage_sources = tuple(sorted(DEBOT_STAGE_SOURCES.values()))
+    source_marks = ",".join("?" for _ in stage_sources)
+    clauses = [f"source IN ({source_marks})", "last_observed_at>=?"]
+    parameters: list[object] = [
+        *stage_sources, utc_datetime(since).isoformat()
+    ]
+    if exact_cas is not None:
+        clauses.append("exact_ca IN (" + ",".join("?" for _ in exact_cas) + ")")
+        parameters.extend(exact_cas)
+    return " AND ".join(clauses), tuple(parameters)
 
 
 def _connect(path: str | Path, label: str) -> sqlite3.Connection:
@@ -175,6 +218,7 @@ def _validate_limit(limit: int) -> None:
 __all__ = [
     "MintAlertAuditInputs",
     "MintAlertAuditReadError",
+    "count_debot_exact_cas",
     "read_debot_mints",
     "read_mint_alerts",
     "wait_for_mint_alert_audit_inputs",

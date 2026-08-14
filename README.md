@@ -55,9 +55,10 @@ Japan, and global English-language communities.
 - Delivers mint alerts independently from research; the default credential-free
   sink emits immediately flushed JSONL while SQLite and the dashboard retain
   delivery and 15-second SLA evidence.
-- Audits the durable X-to-mint gate, outbox delivery, and current exact CMC BSC
-  1h leaders every ten minutes. Market leaders without an alert are review
-  leads, not retroactive alert evidence.
+- Audits the durable X-to-mint gate, outbox delivery, and exact CMC BSC 1h
+  leaders every ten minutes. Only quality-qualified tokens published within the
+  last two hours and after this alert policy started become review leads; old
+  tokens and rows without trustworthy publish time are explicitly excluded.
 - Polls an exact-CA BSC 1h mover board at a configurable 0.5–15 second cadence.
 - Prioritizes fresh high-authority events over historical replay work.
 - Uses Grok to investigate origin, why-now, propagation path, competing CAs,

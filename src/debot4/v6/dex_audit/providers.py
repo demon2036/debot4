@@ -122,6 +122,7 @@ def _cmc_rows(payload: Any, minimum: Decimal) -> list[Gainer]:
                 price_usd=_decimal(item.get("p", item.get("priceUsd"))),
                 volume_h1_usd=_decimal(None if h1 is None else h1.get("vu", h1.get("volumeUsd"))),
                 txns_h1=_integer(None if h1 is None else h1.get("txs", h1.get("transactions"))),
+                published_at_us=_milliseconds_to_microseconds(item.get("pubAt")),
             )
         )
     return rows
@@ -187,6 +188,22 @@ def _integer(value: object) -> int | None:
         return None if value is None else int(value)
     except (TypeError, ValueError):
         return None
+
+
+def _milliseconds_to_microseconds(value: object) -> int | None:
+    if value in (None, "") or isinstance(value, bool):
+        return None
+    try:
+        milliseconds = Decimal(str(value))
+    except (InvalidOperation, ValueError):
+        return None
+    if (
+        not milliseconds.is_finite()
+        or milliseconds <= 0
+        or milliseconds != milliseconds.to_integral_value()
+    ):
+        return None
+    return int(milliseconds) * 1_000
 
 
 def _sum_txns(value: object) -> int | None:

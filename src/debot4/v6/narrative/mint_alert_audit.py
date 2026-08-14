@@ -15,6 +15,7 @@ from .mint_alert_audit_models import (
 )
 from .mint_alert_audit_rules import alert_violations
 from .mint_alert_gate_codec import MintAlertGateGroup, MintAlertGateState
+from .mint_market_scope import scope_recent_mint_candidates
 
 
 EXACT_MARKET_SOURCE = "coinmarketcap_datahub"
@@ -28,6 +29,7 @@ def audit_mint_alerts(
     *,
     now: datetime,
     policy: MarketQualityPolicy | None = None,
+    debot_exact_ca_count: int | None = None,
 ) -> MintAlertAuditReport:
     """Audit alert invariants and classify exact current market leads."""
 
@@ -36,18 +38,29 @@ def audit_mint_alerts(
         board.source == EXACT_MARKET_SOURCE and board.ranking_exact and board.success
     )
     selection = (policy or MarketQualityPolicy()).select(board)
+    scope = scope_recent_mint_candidates(
+        selection.anomalies if market_available else (),
+        board.rows,
+        now=current,
+        policy_started_at=gate.policy_started_at,
+    )
     leads = _market_coverage(
-        selection.anomalies if market_available else (), gate, alerts, debot_mints
+        scope.eligible, gate, alerts, debot_mints
     )
     return MintAlertAuditReport(
         as_of=current,
         policy_started_at=gate.policy_started_at,
         gate_groups=len(gate.groups),
         alerts=len(alerts),
-        debot_exact_cas=len(debot_mints),
+        debot_exact_cas=(
+            len(debot_mints)
+            if debot_exact_ca_count is None
+            else debot_exact_ca_count
+        ),
         market_source=board.source,
         market_available=market_available,
         market_failure_reason=_market_failure(board, market_available),
+        market_scope=scope,
         violations=alert_violations(gate, alerts, current),
         market_leads=leads,
     )

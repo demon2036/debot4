@@ -16,12 +16,6 @@ def main() -> int:
     now = utc_now()
     try:
         settings = NarrativeSettings.from_env()
-        inputs = wait_for_mint_alert_audit_inputs(
-            settings.mint_alert_gate_path,
-            settings.mint_alert_database,
-            settings.mint_location_database,
-            now=now,
-        )
         board = fetch_bsc_gainers(
             DirectJsonClient(
                 timeout_seconds=settings.market_timeout_seconds,
@@ -30,8 +24,20 @@ def main() -> int:
             as_of_us=int(now.timestamp() * 1_000_000),
             limit=100,
         )
+        inputs = wait_for_mint_alert_audit_inputs(
+            settings.mint_alert_gate_path,
+            settings.mint_alert_database,
+            settings.mint_location_database,
+            now=utc_now(),
+            debot_exact_cas=tuple(row.token_address for row in board.rows),
+        )
         report = audit_mint_alerts(
-            inputs.gate, inputs.alerts, inputs.debot_mints, board, now=now
+            inputs.gate,
+            inputs.alerts,
+            inputs.debot_mints,
+            board,
+            now=utc_now(),
+            debot_exact_ca_count=inputs.debot_exact_ca_count,
         )
         print(json.dumps(
             report.as_public_dict(), ensure_ascii=False,

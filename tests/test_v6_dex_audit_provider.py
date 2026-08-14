@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from collections.abc import Iterable
 
+import pytest
+
 from debot4.v6.dex_audit.models import HttpAttempt, JsonResponse
 from debot4.v6.dex_audit.providers import CMC_URL, GECKO_URL, fetch_bsc_gainers
 
@@ -41,6 +43,7 @@ def cmc_item(number: int, change: float, *, liquidity: int = 30_000) -> dict:
         "liqUsd": str(liquidity),
         "mcap": str(number * 100_000),
         "p": "0.001",
+        "pubAt": 1_725_000_000_000 + number,
         "sts": [
             {
                 "tp": "1h",
@@ -67,6 +70,7 @@ def test_cmc_board_is_filtered_deduplicated_and_locally_sorted() -> None:
     assert board.source == "coinmarketcap_datahub"
     assert len(board.rows) == 20
     assert [row.h1_change_pct for row in board.rows[:3]] == [1000, 24, 23]
+    assert board.rows[0].published_at_us == 1_725_000_000_025_000
     assert len({row.token_address for row in board.rows}) == 20
     assert len(client.calls) == 1
     request = client.calls[0]
@@ -118,5 +122,20 @@ def test_gecko_fallback_is_explicitly_not_a_global_ranking() -> None:
     assert board.source == "geckoterminal"
     assert [str(row.h1_change_pct) for row in board.rows] == ["9.5", "4.5", "2.5"]
     assert all(row.pair_address for row in board.rows)
+    assert all(row.published_at_us is None for row in board.rows)
     assert "not global" in (board.failure_reason or "")
     assert len(board.attempts) == 2
+
+
+@pytest.mark.parametrize("published_at", [None, True, 0, -1, "NaN", "1.5"])
+def test_cmc_invalid_publish_time_is_not_invented(published_at: object) -> None:
+    item = cmc_item(1, 5)
+    item["pubAt"] = published_at
+    client = FakeClient([JsonResponse(
+        {"data": {"leaderboardList": [item]}},
+        attempt("coinmarketcap_datahub", CMC_URL),
+    )])
+
+    board = fetch_bsc_gainers(client, as_of_us=100)
+
+    assert board.rows[0].published_at_us is None
