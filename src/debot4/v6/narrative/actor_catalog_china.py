@@ -45,7 +45,11 @@ CHINA_ACTORS = (
         languages=("zh",), regions=("china",), aliases=("王小二",),
         priority=3, basis=PROFILE_REVIEW,
         evidence=("https://x.com/lookonchain/status/1975782365650952370",),
-        risks=("position and performance claims require independent chronology",),
+        risks=(
+            "position and performance claims require independent chronology",
+            "protected X account; realtime public timeline unavailable",
+        ),
+        monitor_x=False,
     ),
     actor(
         "GCsheng", "1344963706657017858", "深大高财生.milady",

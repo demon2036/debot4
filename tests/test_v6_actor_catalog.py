@@ -138,6 +138,13 @@ def test_rejected_noise_accounts_are_not_monitored() -> None:
     assert {"elonmusk", "cz_binance"} <= handles
 
 
+def test_protected_x_account_is_not_claimed_as_realtime_monitored() -> None:
+    protected = DEFAULT_ACTOR_REGISTRY.resolve("brc20niubi")
+
+    assert protected.monitor_x is False
+    assert any("protected X account" in risk for risk in protected.risk_notes)
+
+
 def test_bsc_audit_kols_keep_exact_post_evidence_and_propagation_only_power() -> None:
     handles = {
         "99x_fjtl", "52hz_eth", "meligamble",
