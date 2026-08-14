@@ -10,6 +10,7 @@ from typing import Mapping
 
 from .settings_env import (
     DEFAULT_BSC_RPC_ENDPOINTS,
+    boolean,
     csv,
     integer,
     number,
@@ -30,6 +31,7 @@ class NarrativeSettings:
     collector_tick_seconds: float = 0.25
     debot_poll_seconds: float = 2.0
     mint_poll_seconds: float = 0.5
+    chain_mint_audit_enabled: bool = False
     chain_mint_poll_seconds: float = 0.25
     chain_mint_timeout_seconds: float = 3.0
     chain_mint_startup_lookback_blocks: int = 3
@@ -89,6 +91,8 @@ class NarrativeSettings:
             raise ValueError("DeBot poll must be between 0.25 and 5 seconds")
         if not 0.25 <= self.mint_poll_seconds <= 5:
             raise ValueError("mint poll must be between 0.25 and 5 seconds")
+        if not isinstance(self.chain_mint_audit_enabled, bool):
+            raise ValueError("chain mint audit enabled must be a boolean")
         if not 0.1 <= self.chain_mint_poll_seconds <= 2:
             raise ValueError("chain mint poll must be between 0.1 and 2 seconds")
         if not 0.1 <= self.chain_mint_timeout_seconds <= 30:
@@ -154,6 +158,9 @@ class NarrativeSettings:
             collector_tick_seconds=number(env, "DEBOT4_COLLECTOR_TICK_SECONDS", 0.25),
             debot_poll_seconds=number(env, "DEBOT4_DEBOT_POLL_SECONDS", 2.0),
             mint_poll_seconds=number(env, "DEBOT4_MINT_POLL_SECONDS", 0.5),
+            chain_mint_audit_enabled=boolean(
+                env, "DEBOT4_CHAIN_MINT_AUDIT_ENABLED", False
+            ),
             chain_mint_poll_seconds=number(
                 env, "DEBOT4_CHAIN_MINT_POLL_SECONDS", 0.25
             ),
@@ -233,6 +240,10 @@ class NarrativeSettings:
     @property
     def mint_location_database(self) -> Path:
         return self.state_dir / "mint-locations.sqlite3"
+
+    @property
+    def mint_alert_database(self) -> Path:
+        return self.state_dir / "mint-alerts.sqlite3"
 
     @property
     def queue_database(self) -> Path:

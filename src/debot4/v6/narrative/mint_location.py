@@ -6,13 +6,21 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from decimal import Decimal
 import re
+from types import MappingProxyType
 
 from ..identity import bsc_address, utc_datetime
 
 
 DEBOT_NEW_SOURCE = "debot_new"
+DEBOT_COMPLETING_SOURCE = "debot_completing"
+DEBOT_COMPLETED_SOURCE = "debot_completed"
+DEBOT_STAGE_SOURCES = MappingProxyType({
+    "new": DEBOT_NEW_SOURCE,
+    "completing": DEBOT_COMPLETING_SOURCE,
+    "completed": DEBOT_COMPLETED_SOURCE,
+})
 BSC_LOG_SOURCE = "bsc_zero_transfer_log"
-MINT_LOCATION_SOURCES = frozenset({DEBOT_NEW_SOURCE, BSC_LOG_SOURCE})
+MINT_LOCATION_SOURCES = frozenset((*DEBOT_STAGE_SOURCES.values(), BSC_LOG_SOURCE))
 _HASH = re.compile(r"0x[0-9a-f]{64}")
 
 

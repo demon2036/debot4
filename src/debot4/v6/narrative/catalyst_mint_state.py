@@ -11,7 +11,7 @@ from pathlib import Path
 from threading import RLock
 import tempfile
 
-from ..debot.ranks_models import RankSnapshot
+from ..debot.ranks_models import RANK_STAGES, RankSnapshot
 from ..identity import utc_datetime, utc_now
 from ..x.models import XPost
 from .catalyst_mint import CatalystMintMatch, x_status_ids
@@ -24,6 +24,7 @@ from .catalyst_mint_state_codec import (
 
 
 STATE_SCHEMA = "debot4.v6.catalyst-mint-state.v1"
+_STAGE_ORDER = {stage: index for index, stage in enumerate(RANK_STAGES)}
 
 
 class CatalystMintStateError(ValueError):
@@ -120,15 +121,24 @@ class CatalystMintState:
             return True
         if old.created_at != item.created_at:
             raise CatalystMintStateError("one token has conflicting creation times")
+        social_urls = tuple(dict.fromkeys((*old.social_urls, *item.social_urls)))
+        social_enriched = social_urls != old.social_urls
+        stage = max((old.stage, item.stage), key=_STAGE_ORDER.__getitem__)
         merged = replace(
             old,
-            fetched_at=min(old.fetched_at, item.fetched_at),
+            stage=stage,
+            fetched_at=(
+                item.fetched_at
+                if social_enriched
+                else min(old.fetched_at, item.fetched_at)
+            ),
             name=old.name or item.name,
             symbol=old.symbol or item.symbol,
             provider_fdv_usd=old.provider_fdv_usd or item.provider_fdv_usd,
             launchpad=old.launchpad or item.launchpad,
             description=old.description or item.description,
-            social_urls=tuple(dict.fromkeys((*old.social_urls, *item.social_urls))),
+            social_urls=social_urls,
+            launched=old.launched or item.launched,
         )
         if merged != old:
             self._mints[item.token_address] = merged

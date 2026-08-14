@@ -25,6 +25,8 @@ from .fxtwitter import FxTwitterClient
 from .job_queue import NarrativeJobQueue
 from .live_signal_filter import BscRealtimeSignalFilter
 from .market_monitor import MarketAnomalyMonitor
+from .mint_alert_delivery import JsonLineMintAlertSink, MintAlertDispatcher
+from .mint_alert_store import MintAlertStore
 from .research_runtime import NarrativeResearchRuntime
 from .research_store import NarrativeResearchStore
 from .service import (
@@ -80,6 +82,11 @@ def build_narrative_app(
         )
         resources.callback(debot_feed.close)
         mint_sources = build_mint_sources(config, resources)
+        mint_alerts = MintAlertStore(config.mint_alert_database)
+        resources.callback(mint_alerts.close)
+        mint_alert_dispatcher = MintAlertDispatcher(
+            mint_alerts, JsonLineMintAlertSink()
+        )
         market_monitor = MarketAnomalyMonitor(
             config.market_checkpoint_path,
             client=DirectJsonClient(
@@ -101,6 +108,7 @@ def build_narrative_app(
             catalyst_mints=mint_sources.catalyst,
             chain_mint_monitor=mint_sources.chain,
             mint_locations=mint_sources.locations,
+            mint_alerts=mint_alerts,
             signal_filter=signal_filter,
         )
         app = NarrativeApp(
@@ -116,6 +124,8 @@ def build_narrative_app(
             catalyst_mints=mint_sources.catalyst,
             chain_mint_monitor=mint_sources.chain,
             mint_locations=mint_sources.locations,
+            mint_alerts=mint_alerts,
+            mint_alert_dispatcher=mint_alert_dispatcher,
             bsc_mint_rpc=mint_sources.rpc,
             queue=queue,
             collector=collector,
@@ -151,6 +161,8 @@ def build_narrative_app(
             catalyst_mints=mint_sources.catalyst,
             chain_mint_monitor=mint_sources.chain,
             mint_locations=mint_sources.locations,
+            mint_alerts=mint_alerts,
+            mint_alert_dispatcher=mint_alert_dispatcher,
             queue=queue,
             research_runtime=runtime,
             telegram_realtime=realtime,

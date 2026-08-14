@@ -58,6 +58,12 @@ class ChainMintSource(Protocol):
     ) -> tuple[MintLocation, ...]: ...
 
 
+class MintAlertDelivery(Protocol):
+    poll_seconds: float
+
+    def dispatch_once(self) -> object: ...
+
+
 class TelegramRealtimeSource(Protocol):
     def run(
         self,

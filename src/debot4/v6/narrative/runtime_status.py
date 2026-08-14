@@ -34,7 +34,13 @@ def app_status_snapshot(app: NarrativeApp) -> dict[str, Any]:
         "research_workers": len(service.workers),
         "signal_filter": app.collector.filter_snapshot(),
         "mint_pipeline": app.collector.mint_pipeline_snapshot(),
-        "bsc_mints": app.chain_mint_monitor.snapshot(),
+        "mint_alert_delivery": app.mint_alert_dispatcher.snapshot(),
+        "debot_mints": app.mint_monitor.snapshot(),
+        "bsc_mints": (
+            None
+            if app.chain_mint_monitor is None
+            else app.chain_mint_monitor.snapshot()
+        ),
         "telegram_realtime_error_type": service.last_realtime_error_type,
         "telegram_realtime": realtime,
         "x_reposts": reposts,

@@ -15,6 +15,8 @@ from debot4.v6.narrative.chain_mint import (
 from debot4.v6.narrative.debot_mint_location import location_from_debot
 from debot4.v6.narrative.mint_location import (
     BSC_LOG_SOURCE,
+    DEBOT_COMPLETED_SOURCE,
+    DEBOT_COMPLETING_SOURCE,
     DEBOT_NEW_SOURCE,
     MintLocation,
 )
@@ -34,13 +36,15 @@ PARENT_HASH = "0x" + "2" * 64
 
 def _snapshot(
     *,
+    stage: str = "new",
     fetched_at: datetime = NOW,
     created_at: datetime | None = None,
     social_urls: tuple[str, ...] = (),
 ) -> RankSnapshot:
     return RankSnapshot(
-        CA, "new", fetched_at, "No Link", "NL", 0, (), None,
-        Decimal("4200"), False, created_at, "flap", None, social_urls,
+        CA, stage, fetched_at, "No Link", "NL", 0, (), None,
+        Decimal("4200"), stage == "completed", created_at, "flap", None,
+        social_urls,
     )
 
 
@@ -56,11 +60,21 @@ def _chain_inputs(
     return block, mint_log
 
 
-def test_debot_location_keeps_exact_ca_without_social_or_creation_time() -> None:
-    location = location_from_debot(_snapshot())
+@pytest.mark.parametrize(
+    ("stage", "source"),
+    [
+        ("new", DEBOT_NEW_SOURCE),
+        ("completing", DEBOT_COMPLETING_SOURCE),
+        ("completed", DEBOT_COMPLETED_SOURCE),
+    ],
+)
+def test_debot_location_keeps_exact_ca_in_every_stage(
+    stage: str, source: str,
+) -> None:
+    location = location_from_debot(_snapshot(stage=stage))
 
     assert location.exact_ca == CA
-    assert location.source == DEBOT_NEW_SOURCE
+    assert location.source == source
     assert location.created_at is None
     assert location.social_urls == ()
     assert location.authorizes_trade is False

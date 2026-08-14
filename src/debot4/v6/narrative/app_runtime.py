@@ -15,6 +15,8 @@ from .chain_mint_monitor import BscMintMonitor
 from .debot_feed import NarrativeDeBotFeed
 from .job_queue import NarrativeJobQueue
 from .market_monitor import MarketAnomalyMonitor
+from .mint_alert_delivery import MintAlertDispatcher
+from .mint_alert_store import MintAlertStore
 from .mint_location_store import MintLocationStore
 from .mint_monitor import NarrativeMintMonitor
 from .monitor import NarrativeMonitor
@@ -41,9 +43,11 @@ class NarrativeApp:
     market_monitor: MarketAnomalyMonitor
     mint_monitor: NarrativeMintMonitor
     catalyst_mints: CatalystMintState
-    chain_mint_monitor: BscMintMonitor
+    chain_mint_monitor: BscMintMonitor | None
     mint_locations: MintLocationStore
-    bsc_mint_rpc: BscMintRpcClient
+    mint_alerts: MintAlertStore
+    mint_alert_dispatcher: MintAlertDispatcher
+    bsc_mint_rpc: BscMintRpcClient | None
     queue: NarrativeJobQueue
     collector: NarrativeCollector
     x_egress_pool: FxEgressPool | None = None
@@ -71,7 +75,9 @@ class NarrativeApp:
 
     def collect_once(self) -> CollectionCycle:
         self._ensure_open()
-        return self.collector.collect_once()
+        cycle = self.collector.collect_once()
+        self.mint_alert_dispatcher.dispatch_once()
+        return cycle
 
     def work_once(self) -> WorkCycle:
         self._ensure_open()

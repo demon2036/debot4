@@ -40,8 +40,12 @@ class FakeApp:
             mint_pipeline_snapshot=lambda: {
                 "narrative_signals_queued": 3,
                 "mint_locations": {"unique_exact_cas": 2},
+                "mint_alerts": {"total": 2, "pending_delivery": 0},
                 "hard_catalyst_bindings_queued": 0,
             },
+        )
+        self.mint_alert_dispatcher = SimpleNamespace(
+            snapshot=lambda: {"delivered": 2}
         )
         self.service = SimpleNamespace(
             last_collector_error_type=None,
@@ -105,6 +109,7 @@ def test_collect_once_is_json_and_does_not_request_grok(
         "mint_pipeline": {
             "narrative_signals_queued": 3,
             "mint_locations": {"unique_exact_cas": 2},
+            "mint_alerts": {"total": 2, "pending_delivery": 0},
             "hard_catalyst_bindings_queued": 0,
         },
         "filter": {"accepted": 3, "rejected": 2, "reasons": {"test": 5}},

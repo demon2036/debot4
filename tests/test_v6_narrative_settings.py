@@ -10,6 +10,7 @@ def test_defaults_are_fast_and_use_isolated_state_directory() -> None:
     assert settings.collector_tick_seconds == 0.25
     assert settings.debot_poll_seconds == 2.0
     assert settings.mint_poll_seconds == 0.5
+    assert settings.chain_mint_audit_enabled is False
     assert settings.chain_mint_poll_seconds == 0.25
     assert settings.chain_mint_timeout_seconds == 3.0
     assert len(settings.bsc_rpc_endpoints) == 3
@@ -24,6 +25,7 @@ def test_defaults_are_fast_and_use_isolated_state_directory() -> None:
     assert settings.catalyst_mint_state_path.name == "catalyst-mints.json"
     assert settings.chain_mint_checkpoint_path.name == "chain-mint-checkpoint.json"
     assert settings.mint_location_database.name == "mint-locations.sqlite3"
+    assert settings.mint_alert_database.name == "mint-alerts.sqlite3"
     assert settings.queue_database.name == "jobs.sqlite3"
     assert settings.research_database.parent == settings.state_dir
 
@@ -36,6 +38,7 @@ def test_environment_overrides_are_validated(tmp_path: Path) -> None:
         "DEBOT4_COLLECTOR_TICK_SECONDS": "0.1",
         "DEBOT4_DEBOT_POLL_SECONDS": "0.5",
         "DEBOT4_MINT_POLL_SECONDS": "0.75",
+        "DEBOT4_CHAIN_MINT_AUDIT_ENABLED": "yes",
         "DEBOT4_CHAIN_MINT_POLL_SECONDS": "0.2",
         "DEBOT4_CHAIN_MINT_TIMEOUT_SECONDS": "2",
         "DEBOT4_CHAIN_MINT_STARTUP_LOOKBACK_BLOCKS": "4",
@@ -59,6 +62,7 @@ def test_environment_overrides_are_validated(tmp_path: Path) -> None:
     assert settings.collector_tick_seconds == 0.1
     assert settings.debot_poll_seconds == 0.5
     assert settings.mint_poll_seconds == 0.75
+    assert settings.chain_mint_audit_enabled is True
     assert settings.chain_mint_poll_seconds == 0.2
     assert settings.chain_mint_timeout_seconds == 2
     assert settings.chain_mint_startup_lookback_blocks == 4
@@ -85,6 +89,7 @@ def test_environment_overrides_are_validated(tmp_path: Path) -> None:
         ("DEBOT4_COLLECTOR_TICK_SECONDS", "3"),
         ("DEBOT4_DEBOT_POLL_SECONDS", "30"),
         ("DEBOT4_MINT_POLL_SECONDS", "0.1"),
+        ("DEBOT4_CHAIN_MINT_AUDIT_ENABLED", "maybe"),
         ("DEBOT4_CHAIN_MINT_POLL_SECONDS", "3"),
         ("DEBOT4_CHAIN_MINT_TIMEOUT_SECONDS", "31"),
         ("DEBOT4_CHAIN_MINT_STARTUP_LOOKBACK_BLOCKS", "0"),

@@ -13,12 +13,16 @@ profitability.
 
 ```text
 external sources
-├── X / FxTwitter timelines
+├── monitored X / FxTwitter timelines (alert trigger)
 ├── Telegram public pages and optional personal-session realtime feed
 ├── DeBot KOL and Smart Money signals
+├── DeBot new / completing / completed exact-CA candidates
+├── optional BSC zero-address mint-log audit (off by default)
 └── exact-CA BSC 1h market movers
     └── concurrent collectors
         ├── identity checks and source checkpoints
+        ├── exact X-status ↔ DeBot CA binding and deterministic gate
+        │   └── durable exact-CA mint alert outbox
         ├── durable priority queue (SQLite)
         └── Grok narrative worker
             ├── active research: a monitored actor publishes
@@ -41,7 +45,16 @@ Japan, and global English-language communities.
 - Preserves original posts, replies, quotes, articles, cards, and polls.
 - Runs DeBot, X, Telegram, market, and research loops independently so a slow
   model request does not stop collection.
-- Polls the DeBot source at a configurable 0.25–5 second cadence.
+- Polls the DeBot signal feed at a configurable 0.25–5 second cadence.
+- Polls one DeBot mint stage every 0.25–5 seconds, covering `new`,
+  `completing`, and `completed`; the default full scan cycle is 1.5 seconds.
+- Raises a mint alert only when a monitored X post is referenced by the exact
+  status URL in a DeBot mint candidate and the deterministic signal gate passes.
+- Keeps models and RPC outside the 15-second alert path. Optional BSC mint-log
+  auditing is disabled by default and never creates a mint alert.
+- Delivers mint alerts independently from research; the default credential-free
+  sink emits immediately flushed JSONL while SQLite and the dashboard retain
+  delivery and 15-second SLA evidence.
 - Polls an exact-CA BSC 1h mover board at a configurable 0.5–15 second cadence.
 - Prioritizes fresh high-authority events over historical replay work.
 - Uses Grok to investigate origin, why-now, propagation path, competing CAs,
@@ -104,6 +117,7 @@ DEBOT4_GROK2API_KEY
 DEBOT4_GROK2API_KEY_FILE
 DEBOT4_GROK2API_BASE_URL
 DEBOT4_TELEGRAM_REALTIME_CONFIG
+DEBOT4_CHAIN_MINT_AUDIT_ENABLED
 DEBOT4_BSC_RPC_ENDPOINTS
 DEBOT4_CHAIN_MINT_POLL_SECONDS
 DEBOT4_CHAIN_MINT_TIMEOUT_SECONDS

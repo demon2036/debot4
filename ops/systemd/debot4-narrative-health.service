@@ -1,0 +1,10 @@
+[Unit]
+Description=Record a DeBot4 narrative health snapshot
+After=debot4-narrative.service
+Wants=debot4-narrative.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/curl --fail --silent --show-error http://127.0.0.1:8777/api/status
+StandardOutput=journal
+StandardError=journal

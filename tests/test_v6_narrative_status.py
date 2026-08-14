@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
 import sqlite3
@@ -11,6 +11,8 @@ from debot4.v6.narrative.chain_mint_state import (
     ChainMintCheckpoint,
     ChainMintCheckpointStore,
 )
+from debot4.v6.narrative.catalyst_mint import CatalystMintMatch
+from debot4.v6.narrative.mint_alert_store import MintAlertStore
 from debot4.v6.narrative.mint_location import DEBOT_NEW_SOURCE, MintLocation
 from debot4.v6.narrative.mint_location_store import MintLocationStore
 from debot4.v6.narrative.research_store import SCHEMA as RESEARCH_SCHEMA
@@ -56,13 +58,37 @@ def _databases(settings: NarrativeSettings) -> None:
                     0, json.dumps({"secret": f"research-body-{number}"}), stamp,
                 ),
             )
+    location = MintLocation(
+        exact_ca="0x417bda357cce720467edc56ebc6bb4c9ea497777",
+        source=DEBOT_NEW_SOURCE, observed_at=NOW, created_at=None,
+    )
     with MintLocationStore(
         settings.mint_location_database, clock=lambda: NOW
     ) as locations:
-        locations.record((MintLocation(
-            exact_ca="0x417bda357cce720467edc56ebc6bb4c9ea497777",
-            source=DEBOT_NEW_SOURCE, observed_at=NOW, created_at=None,
-        ),))
+        locations.record((location,))
+    with MintAlertStore(
+        settings.mint_alert_database, clock=lambda: NOW
+    ) as alerts:
+        match = CatalystMintMatch(
+            exact_ca=location.exact_ca,
+            token_stage="new",
+            token_created_at=NOW - timedelta(seconds=5),
+            observed_at=NOW,
+            token_name="Status Token",
+            token_symbol="STATUS",
+            provider_fdv_usd=None,
+            launchpad="flap",
+            token_description=None,
+            token_social_urls=("https://x.com/example/status/123456789",),
+            token_status_url="https://x.com/example/status/123456789",
+            catalyst_tweet_id="123456789",
+            catalyst_author="example",
+            catalyst_text="Status test catalyst",
+            catalyst_created_at=NOW - timedelta(seconds=10),
+            catalyst_fetched_at=NOW - timedelta(seconds=8),
+        )
+        write = alerts.record((match,))
+        alerts.mark_delivered(write.created[0].alert_id, NOW)
     ChainMintCheckpointStore(settings.chain_mint_checkpoint_path).save(
         ChainMintCheckpoint(115_824_174, "0x" + "1" * 64)
     )
@@ -102,6 +128,10 @@ def test_snapshot_reads_exact_databases_and_never_exposes_credentials(
     assert snapshot["research"]["total"] == 2
     assert snapshot["mint_locations"]["available"] is True
     assert snapshot["mint_locations"]["unique_exact_cas"] == 1
+    assert snapshot["mint_alerts"]["available"] is True
+    assert snapshot["mint_alerts"]["total"] == 1
+    assert snapshot["mint_alerts"]["delivered"] == 1
+    assert snapshot["mint_alerts"]["detection_sla_met"] == 1
     assert snapshot["sources"]["bsc_mints"]["last_processed_block"] == (
         115_824_174
     )
@@ -117,9 +147,12 @@ def test_snapshot_reads_exact_databases_and_never_exposes_credentials(
     assert configuration["x"]["source"] == "fxtwitter_public_api"
     assert configuration["debot"]["available"] is True
     assert configuration["grok"]["available"] is True
-    assert configuration["bsc_mint"]["source"] == (
-        "bsc_zero_transfer_known_launchpad_suffixes"
-    )
+    assert configuration["bsc_mint"] == {
+        "available": False,
+        "source": "disabled",
+        "credentials_exposed": False,
+    }
+    assert configuration["mint_alert"]["source"] == "durable_sqlite_jsonl"
     raw = json.dumps(snapshot)
     for secret in (*env.values(), "research-body-2"):
         assert secret not in raw
@@ -142,7 +175,8 @@ def test_actor_cadence_matches_the_reviewed_monitor_and_skips_unverified_ids(
         "collector_tick_seconds": 0.25,
         "debot_seconds": 1.0,
         "mint_seconds": 0.5,
-        "chain_mint_seconds": 0.25,
+        "chain_mint_seconds": None,
+        "mint_alert_seconds": 0.25,
         "market_seconds": 5.0,
     }
     assert snapshot["configuration"]["market"]["source"] == (
@@ -157,6 +191,7 @@ def test_missing_or_wrong_schema_is_reported_without_creating_databases(
     snapshot = status_snapshot(settings, environ={}, clock=lambda: NOW)
     assert snapshot["jobs"]["available"] is False
     assert snapshot["research"]["available"] is False
+    assert snapshot["mint_alerts"]["available"] is False
     assert not settings.state_dir.exists()
 
     settings.state_dir.mkdir()

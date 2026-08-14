@@ -164,6 +164,7 @@ def _cmd_run(args: argparse.Namespace) -> dict[str, object]:
             "telegram_realtime": _telegram_realtime_status(app),
             "filter": app.collector.filter_snapshot(),
             "mint_pipeline": app.collector.mint_pipeline_snapshot(),
+            "mint_alert_delivery": app.mint_alert_dispatcher.snapshot(),
             "jobs": _queue_counts(app),
             "research_packages": _research_count(app),
         }

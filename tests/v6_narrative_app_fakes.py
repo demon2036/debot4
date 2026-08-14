@@ -53,6 +53,24 @@ def patch_app_graph(
         def close(self) -> None:
             closed.append("mint-locations")
 
+    class MintAlerts:
+        def __init__(self, path: Path) -> None:
+            calls["mint_alert_path"] = path
+
+        def close(self) -> None:
+            closed.append("mint-alerts")
+
+    class AlertDispatcher:
+        def __init__(self, store: object, sink: object) -> None:
+            calls["mint_alert_dispatcher"] = (store, sink)
+            self.dispatches = 0
+
+        def dispatch_once(self) -> None:
+            self.dispatches += 1
+
+        def snapshot(self) -> dict[str, int]:
+            return {"delivered": self.dispatches}
+
     class Rpc:
         def __init__(self, endpoints: tuple[str, ...], **kwargs: object) -> None:
             calls["bsc_rpc"] = (endpoints, kwargs)
@@ -85,13 +103,14 @@ def patch_app_graph(
             catalyst_mints: object | None = None,
             chain_mint_monitor: object | None = None,
             mint_locations: object | None = None,
+            mint_alerts: object | None = None,
             signal_filter: object | None = None,
         ) -> None:
             calls.setdefault("collectors", []).append(
                 (
                     monitor, telegram, feed, queue, market_monitor,
                     mint_monitor, catalyst_mints, chain_mint_monitor,
-                    mint_locations, signal_filter,
+                    mint_locations, mint_alerts, signal_filter,
                 )
             )
             self.signal_filter = signal_filter
@@ -116,6 +135,7 @@ def patch_app_graph(
                 catalyst_mints=kwargs["catalyst_mints"],
                 chain_mint_monitor=kwargs["chain_mint_monitor"],
                 mint_locations=kwargs["mint_locations"],
+                mint_alerts=kwargs["mint_alerts"],
                 signal_filter=kwargs["signal_filter"],
             )
             self.worker = Worker()
@@ -154,18 +174,21 @@ def patch_app_graph(
         resources.callback(monitor.close)
         locations = MintLocations(settings.mint_location_database)
         resources.callback(locations.close)
-        rpc = Rpc(
-            settings.bsc_rpc_endpoints,
-            timeout_seconds=settings.chain_mint_timeout_seconds,
-            max_response_bytes=settings.max_response_bytes,
-        )
-        resources.callback(rpc.close)
-        chain = ChainMonitor(
-            checkpoint_path=settings.chain_mint_checkpoint_path,
-            poll_seconds=settings.chain_mint_poll_seconds,
-            startup_lookback_blocks=settings.chain_mint_startup_lookback_blocks,
-            max_catchup_blocks=settings.chain_mint_max_catchup_blocks,
-        )
+        rpc = None
+        chain = None
+        if settings.chain_mint_audit_enabled:
+            rpc = Rpc(
+                settings.bsc_rpc_endpoints,
+                timeout_seconds=settings.chain_mint_timeout_seconds,
+                max_response_bytes=settings.max_response_bytes,
+            )
+            resources.callback(rpc.close)
+            chain = ChainMonitor(
+                checkpoint_path=settings.chain_mint_checkpoint_path,
+                poll_seconds=settings.chain_mint_poll_seconds,
+                startup_lookback_blocks=settings.chain_mint_startup_lookback_blocks,
+                max_catchup_blocks=settings.chain_mint_max_catchup_blocks,
+            )
         return SimpleNamespace(
             debot=monitor,
             catalyst=CatalystState(settings.catalyst_mint_state_path),
@@ -196,6 +219,11 @@ def patch_app_graph(
     )
     monkeypatch.setattr(narrative_app, "NarrativeDeBotFeed", Feed)
     monkeypatch.setattr(narrative_app, "build_mint_sources", make_mint_sources)
+    monkeypatch.setattr(narrative_app, "MintAlertStore", MintAlerts)
+    monkeypatch.setattr(
+        narrative_app, "JsonLineMintAlertSink", lambda: "mint-alert-sink"
+    )
+    monkeypatch.setattr(narrative_app, "MintAlertDispatcher", AlertDispatcher)
     monkeypatch.setattr(
         narrative_app, "DirectJsonClient", lambda **kwargs: ("market-http", kwargs)
     )

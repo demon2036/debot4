@@ -1,0 +1,31 @@
+[Unit]
+Description=DeBot4 exact X-to-mint narrative monitor
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=root
+WorkingDirectory=/opt/debot4
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONPATH=/opt/debot4/src
+Environment=DEBOT4_NARRATIVE_STATE_DIR=/opt/debot4/var/narrative
+Environment=DEBOT4_DEBOT_COOKIE_FILE=/root/.config/debot4/credentials/debot_cookies.json
+Environment=DEBOT4_GROK2API_KEY_FILE=/root/.config/debot4/credentials/grok2api_narrative.key
+Environment=DEBOT4_GROK2API_BASE_URL=http://127.0.0.1:8339
+Environment=DEBOT4_X_EGRESS_LOCATION=remote
+Environment=DEBOT4_CHAIN_MINT_AUDIT_ENABLED=false
+ExecStartPre=/usr/bin/install -d -m 0700 /opt/debot4/var/narrative
+ExecStart=/opt/debot4/.venv/bin/python -m debot4.v6.narrative.serve --host 127.0.0.1 --port 8777
+Restart=always
+RestartSec=3
+TimeoutStopSec=30
+NoNewPrivileges=true
+PrivateTmp=true
+UMask=0077
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=multi-user.target

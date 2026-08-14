@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from datetime import timedelta
+from dataclasses import replace
 from decimal import Decimal
 from pathlib import Path
 
@@ -132,12 +133,14 @@ class _Timer:
 class _RanksClient:
     def __init__(self, snapshot: RankSnapshot) -> None:
         self.snapshot = snapshot
-        self.calls = 0
+        self.calls: list[str] = []
 
     def fetch(self, stage: str) -> RankPage:
-        assert stage == "new"
-        self.calls += 1
-        return RankPage(stage, (self.snapshot,), self.snapshot.fetched_at, 500)
+        self.calls.append(stage)
+        snapshot = replace(
+            self.snapshot, stage=stage, launched=stage == "completed"
+        )
+        return RankPage(stage, (snapshot,), snapshot.fetched_at, 500)
 
 
 def test_mint_monitor_self_throttles_without_delaying_due_results() -> None:
@@ -146,9 +149,41 @@ def test_mint_monitor_self_throttles_without_delaying_due_results() -> None:
     monitor = NarrativeMintMonitor(client, poll_seconds=1, timer=timer)
     accepted: list[tuple[RankSnapshot, ...]] = []
 
-    assert monitor.poll_once(accepted.append) == (_mint(),)
+    assert monitor.poll_once(accepted.append) == (_mint(stage="new"),)
     timer.value = 0.99
     assert monitor.poll_once(accepted.append) == ()
     timer.value = 1.0
-    assert monitor.poll_once(accepted.append) == (_mint(),)
-    assert client.calls == 2 and len(accepted) == 2
+    assert monitor.poll_once(accepted.append) == (_mint(stage="completing"),)
+    timer.value = 2.0
+    assert monitor.poll_once(accepted.append) == (_mint(stage="completed"),)
+    timer.value = 3.0
+    assert monitor.poll_once(accepted.append) == (_mint(stage="new"),)
+    assert client.calls == ["new", "completing", "completed", "new"]
+    assert len(accepted) == 4
+    assert monitor.snapshot() == {
+        "poll_seconds": 1.0,
+        "stages": ["new", "completing", "completed"],
+        "full_cycle_seconds": 3.0,
+        "last_stage": "new",
+        "last_snapshot_count": 1,
+        "last_stage_counts": {"new": 1, "completing": 1, "completed": 1},
+    }
+
+
+def test_state_keeps_latest_stage_without_losing_first_match_time(
+    tmp_path: Path,
+) -> None:
+    state = CatalystMintState(
+        tmp_path / "state.json",
+        clock=lambda: BBROKER_MINT_AT + timedelta(minutes=1),
+    )
+    first_seen = BBROKER_MINT_AT + timedelta(seconds=1)
+    state.observe_mints((_mint(stage="new", fetched_at=first_seen),))
+    state.observe_mints((_mint(
+        stage="completed", fetched_at=first_seen + timedelta(seconds=8)
+    ),))
+
+    (match,) = state.observe_posts((_post(),))
+
+    assert match.token_stage == "completed"
+    assert match.observed_at == first_seen

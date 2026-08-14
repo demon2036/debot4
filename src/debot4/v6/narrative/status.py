@@ -12,6 +12,8 @@ from typing import Any
 
 from .actor_registry import ActorRegistry, DEFAULT_ACTOR_REGISTRY
 from .monitor import TierPollingPolicy
+from .mint_alert_delivery import DEFAULT_ALERT_POLL_SECONDS
+from .mint_alert_status import read_mint_alert_status
 from .mint_location_status import read_mint_location_status
 from .research_status import summarize_research_document
 from .settings import NarrativeSettings
@@ -21,7 +23,7 @@ from ..telegram import load_telegram_realtime_config
 
 
 JOB_STATUSES = ("pending", "leased", "done", "failed")
-STATUS_SCHEMA = "debot4.v6.narrative_status.v3"
+STATUS_SCHEMA = "debot4.v6.narrative_status.v4"
 
 
 def status_snapshot(
@@ -55,7 +57,11 @@ def status_snapshot(
             "collector_tick_seconds": current.collector_tick_seconds,
             "debot_seconds": current.debot_poll_seconds,
             "mint_seconds": current.mint_poll_seconds,
-            "chain_mint_seconds": current.chain_mint_poll_seconds,
+            "chain_mint_seconds": (
+                current.chain_mint_poll_seconds
+                if current.chain_mint_audit_enabled else None
+            ),
+            "mint_alert_seconds": DEFAULT_ALERT_POLL_SECONDS,
             "market_seconds": current.market_poll_seconds,
         },
         "actors": actors,
@@ -68,6 +74,7 @@ def status_snapshot(
         "mint_locations": read_mint_location_status(
             current.mint_location_database
         ),
+        "mint_alerts": read_mint_alert_status(current.mint_alert_database),
         "research": _research_status(current.research_database, recent_limit),
     }
 
@@ -208,8 +215,13 @@ def _configuration(
         ),
         "market": _availability(True, "coinmarketcap_exact_bsc_1h"),
         "bsc_mint": _availability(
-            True, "bsc_zero_transfer_known_launchpad_suffixes"
+            settings.chain_mint_audit_enabled,
+            (
+                "bsc_zero_transfer_known_launchpad_suffixes"
+                if settings.chain_mint_audit_enabled else "disabled"
+            ),
         ),
+        "mint_alert": _availability(True, "durable_sqlite_jsonl"),
         "grok": _availability(grok_source != "none", grok_source),
     }
 

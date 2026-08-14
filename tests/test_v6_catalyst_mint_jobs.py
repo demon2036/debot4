@@ -29,6 +29,7 @@ STATUS_URL = f"https://x.com/flapdotsh/status/{STATUS_ID}"
 def _match() -> CatalystMintMatch:
     return CatalystMintMatch(
         exact_ca=CA,
+        token_stage="new",
         token_created_at=MINT_AT,
         observed_at=MINT_AT + timedelta(seconds=1),
         token_name="bBroker",

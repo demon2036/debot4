@@ -19,8 +19,8 @@ class NarrativeMintSources:
     debot: NarrativeMintMonitor
     catalyst: CatalystMintState
     locations: MintLocationStore
-    rpc: BscMintRpcClient
-    chain: BscMintMonitor
+    rpc: BscMintRpcClient | None
+    chain: BscMintMonitor | None
 
 
 def build_mint_sources(
@@ -35,6 +35,14 @@ def build_mint_sources(
     resources.callback(debot.close)
     locations = MintLocationStore(settings.mint_location_database)
     resources.callback(locations.close)
+    if not settings.chain_mint_audit_enabled:
+        return NarrativeMintSources(
+            debot=debot,
+            catalyst=CatalystMintState(settings.catalyst_mint_state_path),
+            locations=locations,
+            rpc=None,
+            chain=None,
+        )
     rpc = BscMintRpcClient(
         settings.bsc_rpc_endpoints,
         timeout_seconds=settings.chain_mint_timeout_seconds,

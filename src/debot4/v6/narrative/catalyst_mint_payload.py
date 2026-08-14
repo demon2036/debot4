@@ -15,6 +15,7 @@ def catalyst_mint_payload(value: CatalystMintMatch) -> dict[str, object]:
         "match_id": value.match_id,
         "match_kind": value.match_kind,
         "exact_ca": value.exact_ca,
+        "token_stage": value.token_stage,
         "token_created_at": value.token_created_at.isoformat(),
         "observed_at": value.observed_at.isoformat(),
         "token_name": value.token_name,
@@ -38,6 +39,7 @@ def catalyst_mint_from_payload(payload: Mapping[str, Any]) -> CatalystMintMatch:
         raise ValueError("invalid catalyst mint binding semantics")
     value = CatalystMintMatch(
         exact_ca=str(payload["exact_ca"]),
+        token_stage=str(payload.get("token_stage", "new")),
         token_created_at=_time(payload["token_created_at"]),
         observed_at=_time(payload["observed_at"]),
         token_name=_optional(payload.get("token_name")),

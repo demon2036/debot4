@@ -18,6 +18,7 @@ def _settings(tmp_path: Path) -> NarrativeSettings:
         collector_tick_seconds=0.5,
         debot_poll_seconds=1.5,
         mint_poll_seconds=0.75,
+        chain_mint_audit_enabled=True,
         market_poll_seconds=2.5,
         worker_idle_seconds=0.75,
         retry_delay_seconds=4,
@@ -63,6 +64,10 @@ def test_full_app_wires_real_interfaces_and_closes_in_reverse_order(
     }
     assert calls["catalyst_state_path"] == settings.catalyst_mint_state_path
     assert calls["mint_location_path"] == settings.mint_location_database
+    assert calls["mint_alert_path"] == settings.mint_alert_database
+    assert calls["mint_alert_dispatcher"] == (
+        app.mint_alerts, "mint-alert-sink"
+    )
     assert calls["bsc_rpc"] == (settings.bsc_rpc_endpoints, {
         "timeout_seconds": settings.chain_mint_timeout_seconds,
         "max_response_bytes": settings.max_response_bytes,
@@ -112,6 +117,8 @@ def test_full_app_wires_real_interfaces_and_closes_in_reverse_order(
     assert service["catalyst_mints"] is app.catalyst_mints
     assert service["chain_mint_monitor"] is app.chain_mint_monitor
     assert service["mint_locations"] is app.mint_locations
+    assert service["mint_alerts"] is app.mint_alerts
+    assert service["mint_alert_dispatcher"] is app.mint_alert_dispatcher
     assert service["queue"] is app.queue
     assert service["research_runtime"] is app.research_runtime
     assert service["telegram_realtime"] is None
@@ -127,7 +134,8 @@ def test_full_app_wires_real_interfaces_and_closes_in_reverse_order(
     app.close()
     app.close()
     assert calls["closed"] == [
-        "store", "queue", "bsc-rpc", "mint-locations", "mint-monitor", "feed"
+        "store", "queue", "mint-alerts", "bsc-rpc", "mint-locations",
+        "mint-monitor", "feed",
     ]
 
 
@@ -140,6 +148,7 @@ def test_collection_app_never_loads_grok_and_rejects_worker_use(
 
     with narrative_app.build_collection_app(_settings(tmp_path)) as app:
         assert app.collect_once() == CollectionCycle(2, 1, 3, 4)
+        assert app.mint_alert_dispatcher.dispatches == 1
         assert app.grok is None and app.research_store is None
         with pytest.raises(RuntimeError, match="not configured"):
             app.work_once()
@@ -147,7 +156,27 @@ def test_collection_app_never_loads_grok_and_rejects_worker_use(
     assert "grok_from_env" not in calls
     assert "store_path" not in calls
     assert calls["closed"] == [
-        "queue", "bsc-rpc", "mint-locations", "mint-monitor", "feed"
+        "queue", "mint-alerts", "bsc-rpc", "mint-locations",
+        "mint-monitor", "feed",
+    ]
+
+
+def test_chain_rpc_audit_is_not_built_when_disabled(
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    calls: dict[str, object] = {}
+    patch_app_graph(monkeypatch, calls)
+    settings = replace(_settings(tmp_path), chain_mint_audit_enabled=False)
+
+    with narrative_app.build_collection_app(settings) as app:
+        assert app.bsc_mint_rpc is None
+        assert app.chain_mint_monitor is None
+        assert calls["collectors"][-1][7] is None
+
+    assert "bsc_rpc" not in calls and "chain_monitor" not in calls
+    assert calls["closed"] == [
+        "queue", "mint-alerts", "mint-locations", "mint-monitor", "feed",
     ]
 
 
@@ -189,5 +218,6 @@ def test_failed_research_assembly_closes_collector_resources(
         narrative_app.build_narrative_app(_settings(tmp_path))
 
     assert calls["closed"] == [
-        "queue", "bsc-rpc", "mint-locations", "mint-monitor", "feed"
+        "queue", "mint-alerts", "bsc-rpc", "mint-locations",
+        "mint-monitor", "feed",
     ]

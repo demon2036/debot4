@@ -218,6 +218,7 @@ def test_catalyst_mint_research_uses_its_distinct_audit_mode(
 ) -> None:
     match = CatalystMintMatch(
         exact_ca=TOKEN,
+        token_stage="new",
         token_created_at=NOW - timedelta(minutes=1),
         observed_at=NOW - timedelta(seconds=30),
         token_name="bBroker",

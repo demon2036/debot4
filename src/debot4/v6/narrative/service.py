@@ -14,6 +14,7 @@ from .collection_sources import (
     ChainMintSource,
     DeBotSource,
     MarketSource,
+    MintAlertDelivery,
     MintSource,
     RepostSource,
     TelegramSource,
@@ -24,6 +25,7 @@ from .job_queue import NarrativeJobQueue
 from .job_priority import narrative_job_priority
 from .live_signal_filter import NarrativeSignalFilter
 from .catalyst_mint_state import CatalystMintState
+from .mint_alert_store import MintAlertStore
 from .mint_location_store import MintLocationStore
 from .service_config import NarrativeServiceConfig
 from .worker import NarrativeResearchWorker, ResearchRuntime, WorkCycle
@@ -46,6 +48,8 @@ class NarrativeService:
         catalyst_mints: CatalystMintState | None = None,
         chain_mint_monitor: ChainMintSource | None = None,
         mint_locations: MintLocationStore | None = None,
+        mint_alerts: MintAlertStore | None = None,
+        mint_alert_dispatcher: MintAlertDelivery | None = None,
         queue: NarrativeJobQueue,
         research_runtime: ResearchRuntime,
         telegram_realtime: TelegramRealtimeSource | None = None,
@@ -73,6 +77,7 @@ class NarrativeService:
             catalyst_mints=catalyst_mints,
             chain_mint_monitor=chain_mint_monitor,
             mint_locations=mint_locations,
+            mint_alerts=mint_alerts,
             max_attempts=self.config.max_attempts,
             registry=registry,
             clock=clock,
@@ -92,6 +97,7 @@ class NarrativeService:
         self.worker = self.workers[0]
         self.telegram_realtime = telegram_realtime
         self.x_repost_monitor = x_repost_monitor
+        self.mint_alert_dispatcher = mint_alert_dispatcher
         self._error_lock = Lock()
         self.last_source_error_types: dict[str, str | None] = {
             "x": None,
@@ -99,8 +105,12 @@ class NarrativeService:
             "debot": None,
             **({"x_reposts": None} if x_repost_monitor is not None else {}),
             **({"market": None} if market_monitor is not None else {}),
-            **({"debot_new_mints": None} if mint_monitor is not None else {}),
+            **({"debot_mints": None} if mint_monitor is not None else {}),
             **({"bsc_mints": None} if chain_mint_monitor is not None else {}),
+            **(
+                {"mint_alert_delivery": None}
+                if mint_alert_dispatcher is not None else {}
+            ),
         }
         self.last_collector_error_type: str | None = None
         self.last_worker_error_type: str | None = None
@@ -164,11 +174,17 @@ class NarrativeService:
         if self.collector.market_monitor is not None:
             sources.append(("market", self.collector.collect_market_once, cadence))
         if self.collector.mint_monitor is not None:
-            sources.append(("debot_new_mints", self.collector.collect_mints_once, cadence))
+            sources.append(("debot_mints", self.collector.collect_mints_once, cadence))
         if self.collector.chain_mint_monitor is not None:
             sources.append((
                 "bsc_mints", self.collector.collect_chain_mints_once,
                 min(cadence, self.collector.chain_mint_monitor.poll_seconds),
+            ))
+        if self.mint_alert_dispatcher is not None:
+            sources.append((
+                "mint_alert_delivery",
+                self.mint_alert_dispatcher.dispatch_once,
+                self.mint_alert_dispatcher.poll_seconds,
             ))
         if self.x_repost_monitor is not None:
             sources.append(("x_reposts", self.x_repost_monitor.poll_once, cadence))

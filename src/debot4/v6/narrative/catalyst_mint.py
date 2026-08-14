@@ -1,4 +1,4 @@
-"""Deterministic evidence joining one reviewed X catalyst to one new BSC mint."""
+"""Deterministic evidence joining one monitored X catalyst to one BSC mint."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from decimal import Decimal
 
-from ..debot.ranks_models import RankSnapshot
+from ..debot.ranks_models import RANK_STAGES, RankSnapshot
 from ..identity import bsc_address, stable_id, utc_datetime
 from ..x.models import XPost
 from .fxtwitter import FxTwitterError, parse_x_status_url
@@ -23,6 +23,7 @@ class CatalystMintMatch:
     """Exact metadata binding, never an endorsement, price cause, or buy signal."""
 
     exact_ca: str
+    token_stage: str
     token_created_at: datetime
     observed_at: datetime
     token_name: str | None
@@ -43,6 +44,9 @@ class CatalystMintMatch:
 
     def __post_init__(self) -> None:
         exact_ca = bsc_address(self.exact_ca)
+        stage = str(self.token_stage).strip().casefold()
+        if stage not in RANK_STAGES:
+            raise ValueError("invalid DeBot mint stage")
         token_created = utc_datetime(self.token_created_at)
         observed = utc_datetime(self.observed_at)
         catalyst_created = utc_datetime(self.catalyst_created_at)
@@ -73,6 +77,7 @@ class CatalystMintMatch:
         if status_url not in urls:
             raise ValueError("matched status URL must be present in token metadata")
         object.__setattr__(self, "exact_ca", exact_ca)
+        object.__setattr__(self, "token_stage", stage)
         object.__setattr__(self, "token_created_at", token_created)
         object.__setattr__(self, "observed_at", observed)
         object.__setattr__(self, "catalyst_created_at", catalyst_created)
@@ -122,6 +127,7 @@ class CatalystMintMatch:
         observed = max(utc_datetime(post.fetched_at), utc_datetime(snapshot.fetched_at))
         return cls(
             exact_ca=snapshot.token_address,
+            token_stage=snapshot.stage,
             token_created_at=snapshot.created_at,
             observed_at=observed,
             token_name=snapshot.name,

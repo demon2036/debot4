@@ -34,6 +34,7 @@ from .live_signal_filter import (
     SignalFilterDecision,
 )
 from .market_signal import MarketAnomaly
+from .mint_alert_store import MintAlertStore
 from .mint_collection import MintCollectionPipeline
 from .mint_location import MintLocation
 from .mint_location_store import MintLocationStore
@@ -75,6 +76,7 @@ class NarrativeCollector:
         catalyst_mints: CatalystMintState | None = None,
         chain_mint_monitor: ChainMintSource | None = None,
         mint_locations: MintLocationStore | None = None,
+        mint_alerts: MintAlertStore | None = None,
         max_attempts: int = 3,
         registry: ActorRegistry = DEFAULT_ACTOR_REGISTRY,
         clock: Callable[[], datetime] = utc_now,
@@ -93,9 +95,12 @@ class NarrativeCollector:
             and mint_locations is None
         ):
             raise ValueError("mint sources require durable mint location storage")
+        if (catalyst_mints is None) != (mint_alerts is None):
+            raise ValueError("catalyst state and mint alert storage must be paired")
         self.mint_monitor = mint_monitor
         self.catalyst_mints = catalyst_mints
         self.chain_mint_monitor = chain_mint_monitor
+        self.mint_alerts = mint_alerts
         self._mint_pipeline = MintCollectionPipeline(mint_locations)
         self.queue = queue
         self.max_attempts = max_attempts
@@ -169,13 +174,26 @@ class NarrativeCollector:
 
     def mint_pipeline_snapshot(self) -> dict[str, object]:
         filtering = self.filter_snapshot()
-        return self._mint_pipeline.snapshot(int(filtering["accepted"]))
+        snapshot = self._mint_pipeline.snapshot(int(filtering["accepted"]))
+        snapshot["mint_alerts"] = (
+            {"configured": False, "total": 0, "pending_delivery": 0}
+            if self.mint_alerts is None
+            else {"configured": True, **self.mint_alerts.snapshot()}
+        )
+        return snapshot
 
-    def _enqueue(self, payload: NarrativeSignal) -> bool:
+    def _enqueue(
+        self,
+        payload: NarrativeSignal,
+        *,
+        before_queue: Callable[[NarrativeSignal], None] | None = None,
+    ) -> bool:
         decision = self.signal_filter.decide(payload)
         if not decision.accepted:
             self._record_filter(decision)
             return False
+        if before_queue is not None:
+            before_queue(payload)
         self.queue.enqueue(
             payload,
             max_attempts=self.max_attempts,
@@ -234,8 +252,19 @@ class NarrativeCollector:
     def _persist_matches(
         self, matches: tuple[CatalystMintMatch, ...]
     ) -> tuple[CatalystMintMatch, ...]:
-        accepted = tuple(match for match in matches if self._enqueue(match))
+        accepted = tuple(
+            match
+            for match in matches
+            if self._enqueue(match, before_queue=self._record_mint_alert)
+        )
         self._mint_pipeline.record_hard_bindings(len(accepted))
         if matches and self.catalyst_mints is not None:
             self.catalyst_mints.acknowledge(match.match_id for match in matches)
         return accepted
+
+    def _record_mint_alert(self, signal: NarrativeSignal) -> None:
+        if not isinstance(signal, CatalystMintMatch):
+            raise TypeError("only catalyst mint matches may create mint alerts")
+        if self.mint_alerts is None:
+            raise RuntimeError("mint alert persistence is unavailable")
+        self.mint_alerts.record((signal,))

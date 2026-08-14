@@ -7,6 +7,9 @@ from datetime import datetime
 from decimal import Decimal
 
 
+RANK_STAGES = ("new", "completing", "completed")
+
+
 @dataclass(frozen=True, slots=True)
 class RankSnapshot:
     token_address: str

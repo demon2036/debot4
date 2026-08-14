@@ -30,6 +30,15 @@ def integer(env: Mapping[str, str], key: str, default: int) -> int:
         raise ValueError(f"{key} must be an integer") from None
 
 
+def boolean(env: Mapping[str, str], key: str, default: bool) -> bool:
+    value = env.get(key, "true" if default else "false").strip().casefold()
+    if value in {"1", "true", "yes", "on"}:
+        return True
+    if value in {"0", "false", "no", "off"}:
+        return False
+    raise ValueError(f"{key} must be a boolean")
+
+
 def optional_path(value: str) -> Path | None:
     return Path(value.strip()) if value.strip() else None
 

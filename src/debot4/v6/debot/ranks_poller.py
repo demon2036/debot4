@@ -10,12 +10,11 @@ from ..identity import json_safe, stable_id
 from ..ledger import V6Ledger
 from ..state import RuntimeState
 from .ranks_client import DeBotRanksClient
-from .ranks_models import RankKolIncrease, RankPage
+from .ranks_models import RANK_STAGES, RankKolIncrease, RankPage
 from .ranks_state import RankState
 
 
 SOURCE = "debot:bsc:ranks-kol-increase"
-STAGES = ("new", "completing", "completed")
 
 
 class DeBotRanksPoller:
@@ -34,7 +33,7 @@ class DeBotRanksPoller:
         index = 0
         while not stop.is_set():
             started = monotonic()
-            stage = STAGES[index % len(STAGES)]
+            stage = RANK_STAGES[index % len(RANK_STAGES)]
             index += 1
             try:
                 page = self.client.fetch(stage)
