@@ -2,15 +2,13 @@
 
 from __future__ import annotations
 
-from datetime import timedelta
 import json
 
 from ..dex_audit.http import DirectJsonClient
 from ..dex_audit.providers import fetch_bsc_gainers
 from ..identity import utc_now
 from .mint_alert_audit import audit_mint_alerts
-from .mint_alert_audit_reader import read_debot_mints, read_mint_alerts
-from .mint_alert_gate_codec import read_mint_alert_gate_state
+from .mint_alert_audit_reader import wait_for_mint_alert_audit_inputs
 from .settings import NarrativeSettings
 
 
@@ -18,13 +16,11 @@ def main() -> int:
     now = utc_now()
     try:
         settings = NarrativeSettings.from_env()
-        gate = read_mint_alert_gate_state(settings.mint_alert_gate_path)
-        if gate is None:
-            raise RuntimeError("mint alert gate state is unavailable")
-        since = max(gate.policy_started_at, now - timedelta(days=1))
-        alerts = read_mint_alerts(settings.mint_alert_database, since=since)
-        debot_mints = read_debot_mints(
-            settings.mint_location_database, since=since
+        inputs = wait_for_mint_alert_audit_inputs(
+            settings.mint_alert_gate_path,
+            settings.mint_alert_database,
+            settings.mint_location_database,
+            now=now,
         )
         board = fetch_bsc_gainers(
             DirectJsonClient(
@@ -35,7 +31,7 @@ def main() -> int:
             limit=100,
         )
         report = audit_mint_alerts(
-            gate, alerts, debot_mints, board, now=now
+            inputs.gate, inputs.alerts, inputs.debot_mints, board, now=now
         )
         print(json.dumps(
             report.as_public_dict(), ensure_ascii=False,

@@ -2,12 +2,20 @@
 
 from __future__ import annotations
 
-from datetime import datetime
+from collections.abc import Callable
+from dataclasses import dataclass
+from datetime import datetime, timedelta
+import math
 from pathlib import Path
 import sqlite3
+from time import monotonic, sleep
 
 from ..identity import bsc_address, utc_datetime
 from .mint_alert_audit_models import DeBotMintSeen, StoredMintAlert
+from .mint_alert_gate_codec import (
+    MintAlertGateState,
+    read_mint_alert_gate_state,
+)
 from .mint_alert_store import TABLE as ALERT_TABLE
 from .mint_alert_store_codec import alert_from_row
 from .mint_location import DEBOT_STAGE_SOURCES
@@ -16,6 +24,56 @@ from .mint_location_store import TABLE as LOCATION_TABLE
 
 class MintAlertAuditReadError(RuntimeError):
     """An audit input is missing, oversized, or unreadable."""
+
+
+@dataclass(frozen=True, slots=True)
+class MintAlertAuditInputs:
+    gate: MintAlertGateState
+    alerts: tuple[StoredMintAlert, ...]
+    debot_mints: tuple[DeBotMintSeen, ...]
+
+
+def wait_for_mint_alert_audit_inputs(
+    gate_path: str | Path,
+    alert_path: str | Path,
+    location_path: str | Path,
+    *,
+    now: datetime,
+    timeout_seconds: float = 15.0,
+    poll_seconds: float = 0.1,
+    monotonic_clock: Callable[[], float] = monotonic,
+    sleeper: Callable[[float], None] = sleep,
+) -> MintAlertAuditInputs:
+    """Wait briefly for runtime-owned state before failing the audit closed."""
+
+    if (
+        not math.isfinite(timeout_seconds)
+        or not math.isfinite(poll_seconds)
+        or timeout_seconds <= 0
+        or poll_seconds <= 0
+    ):
+        raise ValueError("audit readiness intervals must be positive and finite")
+    deadline = monotonic_clock() + timeout_seconds
+    last_error: MintAlertAuditReadError | None = None
+    while True:
+        try:
+            gate = read_mint_alert_gate_state(gate_path)
+            if gate is None:
+                raise MintAlertAuditReadError(
+                    "mint alert gate state is unavailable"
+                )
+            current = utc_datetime(now)
+            since = max(gate.policy_started_at, current - timedelta(days=1))
+            alerts = read_mint_alerts(alert_path, since=since)
+            debot_mints = read_debot_mints(location_path, since=since)
+            return MintAlertAuditInputs(gate, alerts, debot_mints)
+        except MintAlertAuditReadError as exc:
+            last_error = exc
+        remaining = deadline - monotonic_clock()
+        if remaining <= 0:
+            assert last_error is not None
+            raise last_error
+        sleeper(min(poll_seconds, remaining))
 
 
 def read_mint_alerts(
@@ -114,4 +172,10 @@ def _validate_limit(limit: int) -> None:
         raise ValueError("mint alert audit limit must be between 1 and 20000")
 
 
-__all__ = ["MintAlertAuditReadError", "read_debot_mints", "read_mint_alerts"]
+__all__ = [
+    "MintAlertAuditInputs",
+    "MintAlertAuditReadError",
+    "read_debot_mints",
+    "read_mint_alerts",
+    "wait_for_mint_alert_audit_inputs",
+]

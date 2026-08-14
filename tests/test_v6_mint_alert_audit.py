@@ -5,12 +5,16 @@ from datetime import timedelta
 from decimal import Decimal
 from pathlib import Path
 
+import pytest
+
 from debot4.v6.dex_audit.models import Board, Gainer
 from debot4.v6.narrative.debot_mint_location import location_from_debot
 from debot4.v6.narrative.mint_alert_audit import audit_mint_alerts
 from debot4.v6.narrative.mint_alert_audit_reader import (
+    MintAlertAuditReadError,
     read_debot_mints,
     read_mint_alerts,
+    wait_for_mint_alert_audit_inputs,
 )
 from debot4.v6.narrative.mint_alert_gate import MintAlertGate
 from debot4.v6.narrative.mint_alert_gate_codec import read_mint_alert_gate_state
@@ -107,6 +111,61 @@ def test_reader_aggregates_all_debot_stages_for_one_exact_ca(
     assert seen.sources == ("debot_completed", "debot_new")
     assert seen.first_observed_at == BUDUJIN_OBSERVED_AT
     assert seen.last_observed_at == BUDUJIN_OBSERVED_AT + timedelta(seconds=2)
+
+
+def test_reader_waits_for_runtime_owned_files(tmp_path: Path) -> None:
+    gate_path = tmp_path / "gate.json"
+    alert_path = tmp_path / "alerts.sqlite3"
+    location_path = tmp_path / "locations.sqlite3"
+    elapsed = [0.0]
+
+    def create_runtime_state(delay: float) -> None:
+        elapsed[0] += delay
+        _gate_state(gate_path)
+        with MintAlertStore(alert_path):
+            pass
+        with MintLocationStore(location_path):
+            pass
+
+    inputs = wait_for_mint_alert_audit_inputs(
+        gate_path,
+        alert_path,
+        location_path,
+        now=BUDUJIN_DELIVERED_AT,
+        timeout_seconds=1,
+        poll_seconds=0.1,
+        monotonic_clock=lambda: elapsed[0],
+        sleeper=create_runtime_state,
+    )
+
+    assert inputs.gate.policy_started_at == BUDUJIN_OBSERVED_AT
+    assert inputs.alerts == ()
+    assert inputs.debot_mints == ()
+    assert elapsed == [0.1]
+
+
+def test_reader_fails_closed_after_readiness_timeout(tmp_path: Path) -> None:
+    elapsed = [0.0]
+
+    def advance(delay: float) -> None:
+        elapsed[0] += delay
+
+    with pytest.raises(
+        MintAlertAuditReadError,
+        match="mint alert gate state is unavailable",
+    ):
+        wait_for_mint_alert_audit_inputs(
+            tmp_path / "gate.json",
+            tmp_path / "alerts.sqlite3",
+            tmp_path / "locations.sqlite3",
+            now=BUDUJIN_DELIVERED_AT,
+            timeout_seconds=0.2,
+            poll_seconds=0.1,
+            monotonic_clock=lambda: elapsed[0],
+            sleeper=advance,
+        )
+
+    assert elapsed == [0.2]
 
 
 def test_selected_match_without_durable_alert_is_a_hard_violation(
