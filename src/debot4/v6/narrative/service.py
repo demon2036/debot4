@@ -15,6 +15,7 @@ from .collection import (
     CollectionCycle,
     DeBotSource,
     MarketSource,
+    MintSource,
     NarrativeCollector,
     TelegramSource,
     XSource,
@@ -22,6 +23,7 @@ from .collection import (
 from .job_queue import NarrativeJobQueue
 from .job_priority import narrative_job_priority
 from .live_signal_filter import NarrativeSignalFilter
+from .catalyst_mint_state import CatalystMintState
 from .worker import NarrativeResearchWorker, ResearchRuntime, WorkCycle
 
 
@@ -82,6 +84,8 @@ class NarrativeService:
         telegram_monitor: TelegramSource,
         debot_feed: DeBotSource,
         market_monitor: MarketSource | None = None,
+        mint_monitor: MintSource | None = None,
+        catalyst_mints: CatalystMintState | None = None,
         queue: NarrativeJobQueue,
         research_runtime: ResearchRuntime,
         telegram_realtime: TelegramRealtimeSource | None = None,
@@ -105,6 +109,8 @@ class NarrativeService:
             debot_feed,
             queue,
             market_monitor=market_monitor,
+            mint_monitor=mint_monitor,
+            catalyst_mints=catalyst_mints,
             max_attempts=self.config.max_attempts,
             registry=registry,
             clock=clock,
@@ -131,6 +137,7 @@ class NarrativeService:
             "debot": None,
             **({"x_reposts": None} if x_repost_monitor is not None else {}),
             **({"market": None} if market_monitor is not None else {}),
+            **({"debot_new_mints": None} if mint_monitor is not None else {}),
         }
         self.last_collector_error_type: str | None = None
         self.last_worker_error_type: str | None = None
@@ -189,6 +196,8 @@ class NarrativeService:
         ]
         if self.collector.market_monitor is not None:
             sources.append(("market", self.collector.collect_market_once))
+        if self.collector.mint_monitor is not None:
+            sources.append(("debot_new_mints", self.collector.collect_mints_once))
         if self.x_repost_monitor is not None:
             sources.append(("x_reposts", self.x_repost_monitor.poll_once))
         threads = [

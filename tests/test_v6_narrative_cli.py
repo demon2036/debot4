@@ -95,6 +95,7 @@ def test_collect_once_is_json_and_does_not_request_grok(
         "telegram_posts": 2,
             "debot_signals": 5,
         "market_anomalies": 0,
+        "catalyst_mint_matches": 0,
         "filter": {"accepted": 3, "rejected": 2, "reasons": {"test": 5}},
         "jobs": {"pending": 2, "leased": 0, "done": 4, "failed": 1},
     }

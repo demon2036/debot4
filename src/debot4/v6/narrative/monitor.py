@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from collections.abc import Callable, Mapping
+from collections.abc import Callable, Iterator, Mapping
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -168,9 +168,8 @@ class NarrativeMonitor:
         initial_replay_dropped = 0
         for target in due:
             self._next_due[target.handle] = now + target.interval_seconds
-        attempts = self._poll_due(due)
-        self.last_polled_targets = len(attempts)
-        for attempt in attempts:
+        self.last_polled_targets = len(due)
+        for attempt in self._poll_due(due):
             target = attempt.target
             previous = attempt.previous
             try:
@@ -217,9 +216,9 @@ class NarrativeMonitor:
             key=lambda item: (item.created_at, int(item.tweet_id), item.author),
         ))
 
-    def _poll_due(self, due: list[MonitorTarget]) -> tuple[_PollAttempt, ...]:
+    def _poll_due(self, due: list[MonitorTarget]) -> Iterator[_PollAttempt]:
         if not due:
-            return ()
+            return
         seeds = tuple(
             (
                 target,
@@ -227,7 +226,6 @@ class NarrativeMonitor:
             )
             for target in due
         )
-        attempts: dict[str, _PollAttempt] = {}
         workers = min(self.max_workers, len(seeds))
         with ThreadPoolExecutor(max_workers=workers) as pool:
             futures = {
@@ -244,8 +242,7 @@ class NarrativeMonitor:
                     attempt = _PollAttempt(target, previous, batch=future.result())
                 except Exception as exc:
                     attempt = _PollAttempt(target, previous, error=exc)
-                attempts[target.handle] = attempt
-        return tuple(attempts[target.handle] for target, _ in seeds)
+                yield attempt
 
     def seconds_until_next_poll(self) -> float:
         now = self._now()

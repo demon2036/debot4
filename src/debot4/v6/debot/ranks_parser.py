@@ -3,7 +3,7 @@
 from __future__ import annotations
 
 from collections.abc import Mapping
-from datetime import datetime
+from datetime import datetime, timezone
 from decimal import Decimal, InvalidOperation
 from typing import Any
 
@@ -55,6 +55,8 @@ def _snapshot(
     stats = stats if isinstance(stats, Mapping) else {}
     meta = raw.get("meta")
     meta = meta if isinstance(meta, Mapping) else {}
+    social = raw.get("social_info")
+    social = social if isinstance(social, Mapping) else {}
     kols = _integer(stats.get("kols"))
     if kols is None:
         kols = 0
@@ -72,7 +74,33 @@ def _snapshot(
         kol_holds=_decimal(stats.get("kolsHolds")),
         provider_fdv_usd=_market_cap(raw, stats),
         launched=(stage == "completed" or migrated > 0 or progress >= 1 or status >= 1),
+        created_at=_created_at(meta, stats),
+        launchpad=_text(meta.get("launchpad"), 80),
+        description=_text(social.get("description"), 1_000),
+        social_urls=_social_urls(social),
     )
+
+
+def _created_at(
+    meta: Mapping[str, Any], stats: Mapping[str, Any],
+) -> datetime | None:
+    for raw in (meta.get("create_time"), stats.get("createdTime")):
+        value = _decimal(raw)
+        if value is None:
+            continue
+        seconds = value / 1_000 if value >= Decimal("100000000000") else value
+        if Decimal("946684800") <= seconds <= Decimal("4102444800"):
+            return datetime.fromtimestamp(float(seconds), timezone.utc)
+    return None
+
+
+def _social_urls(social: Mapping[str, Any]) -> tuple[str, ...]:
+    found: list[str] = []
+    for key in ("twitter", "telegram", "website"):
+        value = str(social.get(key) or "").strip()
+        if value.startswith(("https://", "http://")) and len(value) <= 2_000:
+            found.append(value)
+    return tuple(dict.fromkeys(found))
 
 
 def _aliases(row: Mapping[str, Any], stats: Mapping[str, Any]) -> tuple[str, ...]:

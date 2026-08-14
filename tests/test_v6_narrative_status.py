@@ -114,6 +114,7 @@ def test_actor_cadence_matches_the_reviewed_monitor_and_skips_unverified_ids(
     assert snapshot["polling"] == {
         "collector_tick_seconds": 0.25,
         "debot_seconds": 1.0,
+        "mint_seconds": 1.0,
         "market_seconds": 5.0,
     }
     assert snapshot["configuration"]["market"]["source"] == (

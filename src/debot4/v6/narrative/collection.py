@@ -9,11 +9,14 @@ from datetime import datetime
 from threading import Lock
 from typing import Protocol
 
+from ..debot.ranks_models import RankSnapshot
 from ..domain import DeBotSignal
 from ..identity import utc_now
 from ..telegram.models import TelegramPost
 from ..x.models import XPost
 from .actor_registry import ActorRegistry, DEFAULT_ACTOR_REGISTRY
+from .catalyst_mint import CatalystMintMatch
+from .catalyst_mint_state import CatalystMintState
 from .debot_feed import NarrativeDeBotCandidate
 from .job_priority import narrative_job_priority
 from .job_queue import NarrativeJobQueue
@@ -54,12 +57,20 @@ class MarketSource(Protocol):
     ) -> tuple[MarketAnomaly, ...]: ...
 
 
+class MintSource(Protocol):
+    def poll_once(
+        self,
+        accept: Callable[[tuple[RankSnapshot, ...]], object] | None = None,
+    ) -> tuple[RankSnapshot, ...]: ...
+
+
 @dataclass(frozen=True, slots=True)
 class CollectionCycle:
     x_posts: int
     telegram_posts: int
     debot_signals: int
     market_anomalies: int = 0
+    catalyst_mint_matches: int = 0
 
     @property
     def active_posts(self) -> int:
@@ -67,7 +78,10 @@ class CollectionCycle:
 
     @property
     def passive_signals(self) -> int:
-        return self.debot_signals + self.market_anomalies
+        return (
+            self.debot_signals + self.market_anomalies
+            + self.catalyst_mint_matches
+        )
 
 
 class NarrativeCollector:
@@ -81,6 +95,8 @@ class NarrativeCollector:
         queue: NarrativeJobQueue,
         *,
         market_monitor: MarketSource | None = None,
+        mint_monitor: MintSource | None = None,
+        catalyst_mints: CatalystMintState | None = None,
         max_attempts: int = 3,
         registry: ActorRegistry = DEFAULT_ACTOR_REGISTRY,
         clock: Callable[[], datetime] = utc_now,
@@ -92,6 +108,10 @@ class NarrativeCollector:
         self.telegram_monitor = telegram_monitor
         self.debot_feed = debot_feed
         self.market_monitor = market_monitor
+        if (mint_monitor is None) != (catalyst_mints is None):
+            raise ValueError("mint monitor and catalyst state must be configured together")
+        self.mint_monitor = mint_monitor
+        self.catalyst_mints = catalyst_mints
         self.queue = queue
         self.max_attempts = max_attempts
         self.registry = registry
@@ -105,8 +125,10 @@ class NarrativeCollector:
         telegram_posts = self.collect_telegram_once()
         candidates = self.collect_debot_once()
         anomalies = self.collect_market_once()
+        matches = self.collect_mints_once()
         return CollectionCycle(
-            len(x_posts), len(telegram_posts), len(candidates), len(anomalies)
+            len(x_posts), len(telegram_posts), len(candidates), len(anomalies),
+            len(matches),
         )
 
     def collect_x_once(self) -> tuple[XPost, ...]:
@@ -122,6 +144,17 @@ class NarrativeCollector:
         if self.market_monitor is None:
             return ()
         return self.market_monitor.poll_once(accept=self._accept_market)
+
+    def collect_mints_once(self) -> tuple[CatalystMintMatch, ...]:
+        if self.mint_monitor is None:
+            return ()
+        accepted: list[CatalystMintMatch] = []
+
+        def consume(snapshots: tuple[RankSnapshot, ...]) -> None:
+            accepted.extend(self._accept_mints(snapshots))
+
+        self.mint_monitor.poll_once(accept=consume)
+        return tuple(accepted)
 
     def filter_snapshot(self) -> dict[str, object]:
         with self._filter_lock:
@@ -139,11 +172,11 @@ class NarrativeCollector:
             },
         }
 
-    def _enqueue(self, payload: NarrativeSignal) -> None:
+    def _enqueue(self, payload: NarrativeSignal) -> bool:
         decision = self.signal_filter.decide(payload)
         if not decision.accepted:
             self._record_filter(decision)
-            return
+            return False
         self.queue.enqueue(
             payload,
             max_attempts=self.max_attempts,
@@ -152,14 +185,19 @@ class NarrativeCollector:
             ),
         )
         self._record_filter(decision)
+        return True
 
     def _record_filter(self, decision: SignalFilterDecision) -> None:
         with self._filter_lock:
             self._filter_counts[(decision.accepted, decision.reason)] += 1
 
     def _accept_x(self, posts: tuple[XPost, ...]) -> None:
+        accepted: list[XPost] = []
         for post in posts:
-            self._enqueue(post)
+            if self._enqueue(post):
+                accepted.append(post)
+        if accepted and self.catalyst_mints is not None:
+            self._persist_matches(self.catalyst_mints.observe_posts(accepted))
 
     def accept_telegram(self, posts: tuple[TelegramPost, ...]) -> None:
         """Persist realtime or public Telegram observations idempotently."""
@@ -176,3 +214,18 @@ class NarrativeCollector:
     def _accept_market(self, anomalies: tuple[MarketAnomaly, ...]) -> None:
         for anomaly in anomalies:
             self._enqueue(anomaly)
+
+    def _accept_mints(
+        self, snapshots: tuple[RankSnapshot, ...]
+    ) -> tuple[CatalystMintMatch, ...]:
+        if self.catalyst_mints is None:
+            return ()
+        return self._persist_matches(self.catalyst_mints.observe_mints(snapshots))
+
+    def _persist_matches(
+        self, matches: tuple[CatalystMintMatch, ...]
+    ) -> tuple[CatalystMintMatch, ...]:
+        accepted = tuple(match for match in matches if self._enqueue(match))
+        if matches and self.catalyst_mints is not None:
+            self.catalyst_mints.acknowledge(match.match_id for match in matches)
+        return accepted

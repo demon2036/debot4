@@ -12,6 +12,12 @@ from ..domain import DeBotSignal, WalletTrade
 from ..identity import canonical_json, utc_datetime
 from ..telegram.models import TelegramPost
 from ..x.models import XPost
+from .catalyst_mint import CatalystMintMatch
+from .catalyst_mint_payload import (
+    catalyst_mint_content,
+    catalyst_mint_from_payload,
+    catalyst_mint_payload,
+)
 from .market_job_payload import market_from_payload, market_payload
 from .market_signal import MarketAnomaly
 
@@ -20,9 +26,12 @@ ACTIVE_X_POST = "active_x_post"
 ACTIVE_TELEGRAM_POST = "active_telegram_post"
 PASSIVE_DEBOT_SIGNAL = "passive_debot_signal"
 PASSIVE_MARKET_ANOMALY = "passive_market_anomaly"
+PASSIVE_CATALYST_MINT = "passive_catalyst_mint"
 JOB_PAYLOAD_SCHEMA = "debot4.narrative-job-input.v1"
 JOB_IDENTITY_SCHEMA = "debot4.narrative-job-identity.v1"
-NarrativeJobInput: TypeAlias = XPost | TelegramPost | DeBotSignal | MarketAnomaly
+NarrativeJobInput: TypeAlias = (
+    XPost | TelegramPost | DeBotSignal | MarketAnomaly | CatalystMintMatch
+)
 
 
 def encode_job_input(value: NarrativeJobInput) -> tuple[str, str, str, str]:
@@ -55,6 +64,11 @@ def encode_job_input(value: NarrativeJobInput) -> tuple[str, str, str, str]:
         payload = market_payload(value)
         source_id = value.anomaly_id
         content = {"anomaly_id": value.anomaly_id}
+    elif isinstance(value, CatalystMintMatch):
+        kind = PASSIVE_CATALYST_MINT
+        payload = catalyst_mint_payload(value)
+        source_id = value.match_id
+        content = catalyst_mint_content(value)
     else:
         raise TypeError("unsupported narrative job input")
     document = canonical_json(
@@ -85,6 +99,8 @@ def decode_job_input(document: str) -> tuple[str, NarrativeJobInput]:
         return kind, _debot_signal(payload)
     if kind == PASSIVE_MARKET_ANOMALY:
         return kind, market_from_payload(payload)
+    if kind == PASSIVE_CATALYST_MINT:
+        return kind, catalyst_mint_from_payload(payload)
     raise ValueError("invalid narrative job kind")
 
 

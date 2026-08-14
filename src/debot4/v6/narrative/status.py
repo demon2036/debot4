@@ -53,6 +53,7 @@ def status_snapshot(
         "polling": {
             "collector_tick_seconds": current.collector_tick_seconds,
             "debot_seconds": current.debot_poll_seconds,
+            "mint_seconds": current.mint_poll_seconds,
             "market_seconds": current.market_poll_seconds,
         },
         "actors": actors,

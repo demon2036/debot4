@@ -83,6 +83,7 @@ def _cmd_collect_once(_args: argparse.Namespace) -> dict[str, object]:
             "telegram_posts": cycle.telegram_posts,
             "debot_signals": cycle.debot_signals,
             "market_anomalies": cycle.market_anomalies,
+            "catalyst_mint_matches": cycle.catalyst_mint_matches,
             "filter": app.collector.filter_snapshot(),
             "jobs": _queue_counts(app),
         }

@@ -9,6 +9,7 @@ def test_defaults_are_fast_and_use_isolated_state_directory() -> None:
     settings = NarrativeSettings.from_env({})
     assert settings.collector_tick_seconds == 0.25
     assert settings.debot_poll_seconds == 2.0
+    assert settings.mint_poll_seconds == 1.0
     assert settings.market_poll_seconds == 5.0
     assert settings.x_egress_pool_file.name == "egress-pool.toml"
     assert settings.x_egress_location == "local"
@@ -17,6 +18,7 @@ def test_defaults_are_fast_and_use_isolated_state_directory() -> None:
     assert settings.x_repost_workers == 10
     assert settings.research_workers == 10
     assert settings.market_checkpoint_path.name == "market-anomalies.json"
+    assert settings.catalyst_mint_state_path.name == "catalyst-mints.json"
     assert settings.queue_database.name == "jobs.sqlite3"
     assert settings.research_database.parent == settings.state_dir
 
@@ -28,6 +30,7 @@ def test_environment_overrides_are_validated(tmp_path: Path) -> None:
         "DEBOT4_TELEGRAM_REALTIME_CONFIG": str(tmp_path / "telegram.json"),
         "DEBOT4_COLLECTOR_TICK_SECONDS": "0.1",
         "DEBOT4_DEBOT_POLL_SECONDS": "0.5",
+        "DEBOT4_MINT_POLL_SECONDS": "0.75",
         "DEBOT4_MARKET_POLL_SECONDS": "1.5",
         "DEBOT4_MARKET_TIMEOUT_SECONDS": "3",
         "DEBOT4_X_EGRESS_POOL_FILE": str(tmp_path / "egress.toml"),
@@ -45,6 +48,7 @@ def test_environment_overrides_are_validated(tmp_path: Path) -> None:
     assert settings.telegram_realtime_config == (tmp_path / "telegram.json").resolve()
     assert settings.collector_tick_seconds == 0.1
     assert settings.debot_poll_seconds == 0.5
+    assert settings.mint_poll_seconds == 0.75
     assert settings.market_poll_seconds == 1.5
     assert settings.market_timeout_seconds == 3
     assert settings.x_egress_pool_file == (tmp_path / "egress.toml").resolve()
@@ -63,6 +67,7 @@ def test_environment_overrides_are_validated(tmp_path: Path) -> None:
     [
         ("DEBOT4_COLLECTOR_TICK_SECONDS", "3"),
         ("DEBOT4_DEBOT_POLL_SECONDS", "30"),
+        ("DEBOT4_MINT_POLL_SECONDS", "0.1"),
         ("DEBOT4_MARKET_POLL_SECONDS", "30"),
         ("DEBOT4_JOB_LEASE_SECONDS", "2"),
         ("DEBOT4_X_EGRESS_ATTEMPTS", "11"),

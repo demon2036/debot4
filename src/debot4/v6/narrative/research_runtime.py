@@ -11,6 +11,8 @@ from ..identity import utc_now
 from ..telegram.models import TelegramPost
 from ..x.models import XPost
 from .active_trigger import ActiveNarrativeTrigger, investigate_active_trigger
+from .catalyst_mint import CatalystMintMatch
+from .catalyst_mint_trigger import passive_trigger_from_catalyst_mint
 from .market_signal import MarketAnomaly
 from .market_trigger import passive_trigger_from_market
 from .passive_trigger import investigate_passive_signal, investigate_passive_trigger
@@ -108,6 +110,20 @@ class NarrativeResearchRuntime:
         )
         package = package_passive_result(
             result, self.clock(), mode=ResearchMode.PASSIVE_MARKET
+        )
+        self.store.append(package)
+        return package
+
+    def research_catalyst_mint(
+        self, match: CatalystMintMatch
+    ) -> NarrativeResearchPackage:
+        """Investigate one exact no-CA catalyst joined to a subsequent mint."""
+
+        result = investigate_passive_trigger(
+            passive_trigger_from_catalyst_mint(match), self.grok, self.verifier
+        )
+        package = package_passive_result(
+            result, self.clock(), mode=ResearchMode.PASSIVE_CATALYST_MINT
         )
         self.store.append(package)
         return package

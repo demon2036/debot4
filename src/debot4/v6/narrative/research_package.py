@@ -30,6 +30,7 @@ class ResearchMode(str, Enum):
     ACTIVE_TELEGRAM = "ACTIVE_TELEGRAM"
     PASSIVE_DEBOT = "PASSIVE_DEBOT"
     PASSIVE_MARKET = "PASSIVE_MARKET"
+    PASSIVE_CATALYST_MINT = "PASSIVE_CATALYST_MINT"
 
 
 @dataclass(frozen=True, slots=True)
@@ -198,7 +199,11 @@ def package_passive_result(
     *,
     mode: ResearchMode = ResearchMode.PASSIVE_DEBOT,
 ) -> NarrativeResearchPackage:
-    if mode not in (ResearchMode.PASSIVE_DEBOT, ResearchMode.PASSIVE_MARKET):
+    if mode not in (
+        ResearchMode.PASSIVE_DEBOT,
+        ResearchMode.PASSIVE_MARKET,
+        ResearchMode.PASSIVE_CATALYST_MINT,
+    ):
         raise ValueError("passive package requires a passive research mode")
     leads = [
         {

@@ -17,6 +17,7 @@ def _settings(tmp_path: Path) -> NarrativeSettings:
         debot_cookie_file=tmp_path / "debot-cookies.json",
         collector_tick_seconds=0.5,
         debot_poll_seconds=1.5,
+        mint_poll_seconds=0.75,
         market_poll_seconds=2.5,
         worker_idle_seconds=0.75,
         retry_delay_seconds=4,
@@ -54,6 +55,13 @@ def test_full_app_wires_real_interfaces_and_closes_in_reverse_order(
     })})
     assert workers == 40
     assert calls["queue_path"] == settings.queue_database
+    assert calls["mint_monitor"] == {
+        "credential_file": settings.debot_cookie_file,
+        "timeout_seconds": 3,
+        "max_response_bytes": 123_456,
+        "poll_seconds": 0.75,
+    }
+    assert calls["catalyst_state_path"] == settings.catalyst_mint_state_path
     market = app.market_monitor
     assert market[1] == (settings.market_checkpoint_path,)
     assert market[2]["poll_seconds"] == 2.5
@@ -89,6 +97,8 @@ def test_full_app_wires_real_interfaces_and_closes_in_reverse_order(
     assert service["telegram_monitor"] is app.telegram_monitor
     assert service["debot_feed"] is app.debot_feed
     assert service["market_monitor"] is app.market_monitor
+    assert service["mint_monitor"] is app.mint_monitor
+    assert service["catalyst_mints"] is app.catalyst_mints
     assert service["queue"] is app.queue
     assert service["research_runtime"] is app.research_runtime
     assert service["telegram_realtime"] is None
@@ -103,7 +113,7 @@ def test_full_app_wires_real_interfaces_and_closes_in_reverse_order(
 
     app.close()
     app.close()
-    assert calls["closed"] == ["store", "queue", "feed"]
+    assert calls["closed"] == ["store", "queue", "mint-monitor", "feed"]
 
 
 def test_collection_app_never_loads_grok_and_rejects_worker_use(
@@ -121,7 +131,7 @@ def test_collection_app_never_loads_grok_and_rejects_worker_use(
 
     assert "grok_from_env" not in calls
     assert "store_path" not in calls
-    assert calls["closed"] == ["queue", "feed"]
+    assert calls["closed"] == ["queue", "mint-monitor", "feed"]
 
 
 def test_full_app_wires_private_realtime_config_only_when_enabled(
@@ -161,4 +171,4 @@ def test_failed_research_assembly_closes_collector_resources(
     with pytest.raises(RuntimeError, match="private key"):
         narrative_app.build_narrative_app(_settings(tmp_path))
 
-    assert calls["closed"] == ["queue", "feed"]
+    assert calls["closed"] == ["queue", "mint-monitor", "feed"]

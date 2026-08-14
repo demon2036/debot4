@@ -13,10 +13,13 @@ from ..telegram.models import TelegramPost
 from ..x.models import XPost
 from .actor_registry import ActorRegistry, DEFAULT_ACTOR_REGISTRY
 from .actors import ActorRef, ActorTier
+from .catalyst_mint import CatalystMintMatch
 from .market_signal import MarketAnomaly
 
 
-NarrativeSignal = XPost | TelegramPost | DeBotSignal | MarketAnomaly
+NarrativeSignal = (
+    XPost | TelegramPost | DeBotSignal | MarketAnomaly | CatalystMintMatch
+)
 _BSC_ECOSYSTEMS = frozenset({"bsc", "bnb", "binance", "robinhood"})
 _ACTION = re.compile(
     r"(?:\b(?:ca|contract|mint|launch(?:ed|ing)?|deploy(?:ed|ment)?|"
@@ -85,6 +88,8 @@ class BscRealtimeSignalFilter:
             return self._debot(signal)
         if isinstance(signal, MarketAnomaly):
             return SignalFilterDecision(True, "exact_market_anomaly")
+        if isinstance(signal, CatalystMintMatch):
+            return SignalFilterDecision(True, "exact_catalyst_mint_binding")
         raise TypeError("unsupported narrative signal")
 
     def _x(self, post: XPost) -> SignalFilterDecision:

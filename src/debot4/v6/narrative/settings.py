@@ -21,6 +21,7 @@ class NarrativeSettings:
     telegram_realtime_config: Path | None = None
     collector_tick_seconds: float = 0.25
     debot_poll_seconds: float = 2.0
+    mint_poll_seconds: float = 1.0
     market_poll_seconds: float = 5.0
     worker_idle_seconds: float = 0.25
     retry_delay_seconds: float = 5.0
@@ -54,6 +55,7 @@ class NarrativeSettings:
         cadences = (
             self.collector_tick_seconds,
             self.debot_poll_seconds,
+            self.mint_poll_seconds,
             self.market_poll_seconds,
             self.worker_idle_seconds,
             self.retry_delay_seconds,
@@ -70,6 +72,8 @@ class NarrativeSettings:
             raise ValueError("collector tick must be between 0.05 and 2 seconds")
         if not 0.25 <= self.debot_poll_seconds <= 5:
             raise ValueError("DeBot poll must be between 0.25 and 5 seconds")
+        if not 0.25 <= self.mint_poll_seconds <= 5:
+            raise ValueError("mint poll must be between 0.25 and 5 seconds")
         if not 0.5 <= self.market_poll_seconds <= 15:
             raise ValueError("market poll must be between 0.5 and 15 seconds")
         if not 0.05 <= self.worker_idle_seconds <= 5:
@@ -112,6 +116,7 @@ class NarrativeSettings:
             ),
             collector_tick_seconds=_number(env, "DEBOT4_COLLECTOR_TICK_SECONDS", 0.25),
             debot_poll_seconds=_number(env, "DEBOT4_DEBOT_POLL_SECONDS", 2.0),
+            mint_poll_seconds=_number(env, "DEBOT4_MINT_POLL_SECONDS", 1.0),
             market_poll_seconds=_number(env, "DEBOT4_MARKET_POLL_SECONDS", 5.0),
             worker_idle_seconds=_number(env, "DEBOT4_WORKER_IDLE_SECONDS", 0.25),
             retry_delay_seconds=_number(env, "DEBOT4_RETRY_DELAY_SECONDS", 5.0),
@@ -163,6 +168,10 @@ class NarrativeSettings:
     @property
     def market_checkpoint_path(self) -> Path:
         return self.state_dir / "market-anomalies.json"
+
+    @property
+    def catalyst_mint_state_path(self) -> Path:
+        return self.state_dir / "catalyst-mints.json"
 
     @property
     def queue_database(self) -> Path:

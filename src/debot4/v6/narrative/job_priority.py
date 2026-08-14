@@ -9,18 +9,20 @@ from ..identity import utc_datetime, utc_now
 from ..telegram.models import TelegramPost
 from ..x.models import XPost
 from .actor_registry import ActorRegistry, DEFAULT_ACTOR_REGISTRY
+from .catalyst_mint import CatalystMintMatch
 from .market_signal import MarketAnomaly
 
 
 QUALIFIED_DEBOT_PRIORITY = 6
 UNQUALIFIED_DEBOT_PRIORITY = 40
 MARKET_ANOMALY_PRIORITY = 8
+CATALYST_MINT_PRIORITY = 2
 REALTIME_WINDOW = timedelta(minutes=2)
 REPLAY_PRIORITY = 80
 
 
 def narrative_job_priority(
-    value: XPost | TelegramPost | DeBotSignal | MarketAnomaly,
+    value: XPost | TelegramPost | DeBotSignal | MarketAnomaly | CatalystMintMatch,
     registry: ActorRegistry = DEFAULT_ACTOR_REGISTRY,
     *,
     now: datetime | None = None,
@@ -45,6 +47,9 @@ def narrative_job_priority(
         event_at = value.available_at
     elif isinstance(value, MarketAnomaly):
         priority = MARKET_ANOMALY_PRIORITY
+        event_at = value.observed_at
+    elif isinstance(value, CatalystMintMatch):
+        priority = CATALYST_MINT_PRIORITY
         event_at = value.observed_at
     else:
         raise TypeError("unsupported narrative job payload")

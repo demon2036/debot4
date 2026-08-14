@@ -33,6 +33,19 @@ def patch_app_graph(
         def close(self) -> None:
             closed.append("queue")
 
+    class MintMonitor:
+        @classmethod
+        def from_credentials(cls, **kwargs: object):
+            calls["mint_monitor"] = kwargs
+            return cls()
+
+        def close(self) -> None:
+            closed.append("mint-monitor")
+
+    class CatalystState:
+        def __init__(self, path: Path) -> None:
+            calls["catalyst_state_path"] = path
+
     class Store:
         def __init__(self, path: Path) -> None:
             calls["store_path"] = path
@@ -49,10 +62,15 @@ def patch_app_graph(
             queue: object,
             *,
             market_monitor: object | None = None,
+            mint_monitor: object | None = None,
+            catalyst_mints: object | None = None,
             signal_filter: object | None = None,
         ) -> None:
             calls.setdefault("collectors", []).append(
-                (monitor, telegram, feed, queue, market_monitor, signal_filter)
+                (
+                    monitor, telegram, feed, queue, market_monitor,
+                    mint_monitor, catalyst_mints, signal_filter,
+                )
             )
             self.signal_filter = signal_filter
 
@@ -72,6 +90,8 @@ def patch_app_graph(
                 kwargs["debot_feed"],
                 kwargs["queue"],
                 market_monitor=kwargs["market_monitor"],
+                mint_monitor=kwargs["mint_monitor"],
+                catalyst_mints=kwargs["catalyst_mints"],
                 signal_filter=kwargs["signal_filter"],
             )
             self.worker = Worker()
@@ -121,6 +141,8 @@ def patch_app_graph(
         narrative_app, "TelegramNarrativeMonitor", make_telegram_monitor
     )
     monkeypatch.setattr(narrative_app, "NarrativeDeBotFeed", Feed)
+    monkeypatch.setattr(narrative_app, "NarrativeMintMonitor", MintMonitor)
+    monkeypatch.setattr(narrative_app, "CatalystMintState", CatalystState)
     monkeypatch.setattr(
         narrative_app, "DirectJsonClient", lambda **kwargs: ("market-http", kwargs)
     )

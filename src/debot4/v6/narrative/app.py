@@ -18,15 +18,17 @@ from ..x import (
     FxEgressPool,
     FxJsonHttp,
     FxTwitterRepostMonitor,
-    XRepostTarget,
     XTimelineClient,
 )
 from .debot_feed import NarrativeDeBotFeed
 from .actor_registry import DEFAULT_ACTOR_REGISTRY
+from .app_x_sources import x_egress as _x_egress, x_reposts as _x_reposts
+from .catalyst_mint_state import CatalystMintState
 from .fxtwitter import FxTwitterClient
 from .job_queue import NarrativeJobQueue
 from .live_signal_filter import BscRealtimeSignalFilter
 from .market_monitor import MarketAnomalyMonitor
+from .mint_monitor import NarrativeMintMonitor
 from .research_runtime import NarrativeResearchRuntime
 from .research_store import NarrativeResearchStore
 from .service import (
@@ -55,6 +57,8 @@ class NarrativeApp:
     x_repost_monitor: FxTwitterRepostMonitor | None
     debot_feed: NarrativeDeBotFeed
     market_monitor: MarketAnomalyMonitor
+    mint_monitor: NarrativeMintMonitor
+    catalyst_mints: CatalystMintState
     queue: NarrativeJobQueue
     collector: NarrativeCollector
     x_egress_pool: FxEgressPool | None = None
@@ -141,6 +145,14 @@ def build_narrative_app(
             poll_seconds=config.debot_poll_seconds,
         )
         resources.callback(debot_feed.close)
+        mint_monitor = NarrativeMintMonitor.from_credentials(
+            credential_file=config.debot_cookie_file,
+            timeout_seconds=config.debot_timeout_seconds,
+            max_response_bytes=config.max_response_bytes,
+            poll_seconds=config.mint_poll_seconds,
+        )
+        resources.callback(mint_monitor.close)
+        catalyst_mints = CatalystMintState(config.catalyst_mint_state_path)
         market_monitor = MarketAnomalyMonitor(
             config.market_checkpoint_path,
             client=DirectJsonClient(
@@ -158,6 +170,8 @@ def build_narrative_app(
             debot_feed,
             queue,
             market_monitor=market_monitor,
+            mint_monitor=mint_monitor,
+            catalyst_mints=catalyst_mints,
             signal_filter=signal_filter,
         )
         app = NarrativeApp(
@@ -169,6 +183,8 @@ def build_narrative_app(
             x_repost_monitor=x_repost_monitor,
             debot_feed=debot_feed,
             market_monitor=market_monitor,
+            mint_monitor=mint_monitor,
+            catalyst_mints=catalyst_mints,
             queue=queue,
             collector=collector,
             x_egress_pool=x_egress_pool,
@@ -199,6 +215,8 @@ def build_narrative_app(
             telegram_monitor=telegram_monitor,
             debot_feed=debot_feed,
             market_monitor=market_monitor,
+            mint_monitor=mint_monitor,
+            catalyst_mints=catalyst_mints,
             queue=queue,
             research_runtime=runtime,
             telegram_realtime=realtime,
@@ -252,34 +270,4 @@ def _telegram_realtime(
         load_telegram_realtime_config(path),
         channels,
         retry_seconds=settings.telegram_realtime_retry_seconds,
-    )
-
-
-def _x_reposts(
-    settings: NarrativeSettings, http: FxJsonHttp
-) -> FxTwitterRepostMonitor | None:
-    targets = tuple(
-        XRepostTarget(actor.handle, registration.author_ids[0])
-        for registration in DEFAULT_ACTOR_REGISTRY.registrations()
-        if registration.author_ids
-        for actor in (registration.actor,)
-        if actor.monitor_reposts
-    )
-    if not targets:
-        return None
-    return FxTwitterRepostMonitor(
-        targets,
-        http=http,
-        max_workers=settings.x_repost_workers,
-    )
-
-
-def _x_egress(settings: NarrativeSettings) -> FxEgressPool | None:
-    path = settings.x_egress_pool_file
-    if path is None:
-        return None
-    return FxEgressPool.from_toml(
-        path,
-        location=settings.x_egress_location,
-        max_attempts=settings.x_egress_attempts,
     )

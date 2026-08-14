@@ -10,6 +10,7 @@ import pytest
 
 from debot4.v6.domain import DeBotSignal
 from debot4.v6.grok.models import GrokSearchAnswer, GrokSearchSource
+from debot4.v6.narrative.catalyst_mint import CatalystMintMatch
 from debot4.v6.narrative.research_package import (
     NarrativeResearchPackage,
     ResearchMode,
@@ -210,3 +211,44 @@ def test_independent_active_research_propagates_for_queue_retry(
         with pytest.raises(RuntimeError, match="provider offline"):
             runtime.research_active_post(_post())
         assert store.count() == 0
+
+
+def test_catalyst_mint_research_uses_its_distinct_audit_mode(
+    tmp_path: Path,
+) -> None:
+    match = CatalystMintMatch(
+        exact_ca=TOKEN,
+        token_created_at=NOW - timedelta(minutes=1),
+        observed_at=NOW - timedelta(seconds=30),
+        token_name="bBroker",
+        token_symbol="bBroker",
+        provider_fdv_usd=Decimal("5000.67"),
+        launchpad="flap",
+        token_description=None,
+        token_social_urls=(STATUS_URL,),
+        token_status_url=STATUS_URL,
+        catalyst_tweet_id=STATUS_ID,
+        catalyst_author="cz_binance",
+        catalyst_text="An upstream product catalyst without a CA.",
+        catalyst_created_at=NOW - timedelta(minutes=2),
+        catalyst_fetched_at=NOW - timedelta(seconds=90),
+    )
+    with NarrativeResearchStore(tmp_path / "research.sqlite3") as store:
+        runtime = NarrativeResearchRuntime(
+            monitor=OneShotMonitor(),
+            grok=FakeGrok(),
+            verifier=UnavailableVerifier(),
+            store=store,
+            clock=lambda: NOW,
+        )
+
+        package = runtime.research_catalyst_mint(match)
+        stored = store.get(package.package_id)
+
+        assert package.mode is ResearchMode.PASSIVE_CATALYST_MINT
+        assert stored is not None
+        assert stored["mode"] == "PASSIVE_CATALYST_MINT"
+        assert stored["authorizes_trade"] is False
+        trigger = stored["research"]["trigger"]
+        assert trigger["exact_ca"] == TOKEN.lower()
+        assert trigger["social_urls_are_evidence"] is False

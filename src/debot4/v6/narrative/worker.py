@@ -8,11 +8,13 @@ from typing import Protocol
 from ..domain import DeBotSignal
 from ..telegram.models import TelegramPost
 from ..x.models import XPost
+from .catalyst_mint import CatalystMintMatch
 from .job_payloads import (
     ACTIVE_TELEGRAM_POST,
     ACTIVE_X_POST,
     PASSIVE_DEBOT_SIGNAL,
     PASSIVE_MARKET_ANOMALY,
+    PASSIVE_CATALYST_MINT,
 )
 from .market_signal import MarketAnomaly
 from .job_queue import NarrativeJobQueue
@@ -29,6 +31,8 @@ class ResearchRuntime(Protocol):
     ) -> object: ...
 
     def research_market_anomaly(self, anomaly: MarketAnomaly) -> object: ...
+
+    def research_catalyst_mint(self, match: CatalystMintMatch) -> object: ...
 
 
 @dataclass(frozen=True, slots=True)
@@ -82,7 +86,9 @@ class NarrativeResearchWorker:
     def _research(
         self,
         kind: str,
-        payload: XPost | TelegramPost | DeBotSignal | MarketAnomaly,
+        payload: (
+            XPost | TelegramPost | DeBotSignal | MarketAnomaly | CatalystMintMatch
+        ),
     ) -> None:
         if kind == ACTIVE_X_POST and isinstance(payload, XPost):
             self.runtime.research_active_post(payload)
@@ -95,5 +101,8 @@ class NarrativeResearchWorker:
             return
         if kind == PASSIVE_MARKET_ANOMALY and isinstance(payload, MarketAnomaly):
             self.runtime.research_market_anomaly(payload)
+            return
+        if kind == PASSIVE_CATALYST_MINT and isinstance(payload, CatalystMintMatch):
+            self.runtime.research_catalyst_mint(payload)
             return
         raise TypeError("narrative job kind and payload do not match")
