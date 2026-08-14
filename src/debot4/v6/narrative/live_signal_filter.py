@@ -65,12 +65,16 @@ class BscRealtimeSignalFilter:
         *,
         clock=utc_now,
         debot_fresh_seconds: float = 180.0,
+        x_fresh_seconds: float = 300.0,
     ) -> None:
         if not 1 <= float(debot_fresh_seconds) <= 900:
             raise ValueError("DeBot freshness must be between 1 and 900 seconds")
+        if not 1 <= float(x_fresh_seconds) <= 900:
+            raise ValueError("X freshness must be between 1 and 900 seconds")
         self.registry = registry
         self.clock = clock
         self.debot_freshness = timedelta(seconds=float(debot_fresh_seconds))
+        self.x_freshness = timedelta(seconds=float(x_fresh_seconds))
 
     def decide(self, signal: NarrativeSignal) -> SignalFilterDecision:
         if isinstance(signal, XPost):
@@ -84,6 +88,13 @@ class BscRealtimeSignalFilter:
         raise TypeError("unsupported narrative signal")
 
     def _x(self, post: XPost) -> SignalFilterDecision:
+        if not _is_fresh(
+            utc_datetime(self.clock()),
+            post.created_at,
+            post.fetched_at,
+            self.x_freshness,
+        ):
+            return SignalFilterDecision(False, "stale_x_replay")
         if post.bsc_contracts:
             return SignalFilterDecision(True, "exact_bsc_ca")
         actor = self.registry.resolve(post.author)
@@ -120,14 +131,11 @@ class BscRealtimeSignalFilter:
 
     def _debot(self, signal: DeBotSignal) -> SignalFilterDecision:
         now = utc_datetime(self.clock())
-        event = utc_datetime(signal.event_at)
-        available = utc_datetime(signal.available_at)
-        tolerance = timedelta(seconds=30)
-        event_age = now - event
-        availability_age = now - available
-        fresh = (
-            -tolerance <= event_age <= self.debot_freshness
-            and -tolerance <= availability_age <= self.debot_freshness
+        fresh = _is_fresh(
+            now,
+            signal.event_at,
+            signal.available_at,
+            self.debot_freshness,
         )
         if signal.kol_buy_qualified and fresh:
             return SignalFilterDecision(True, "qualified_debot_kol")
@@ -154,6 +162,16 @@ def _actionable(*values: str) -> bool:
 def _bsc_context(*values: str) -> bool:
     text = " ".join(item for item in values if item)
     return bool(_BSC_CONTEXT.search(text))
+
+
+def _is_fresh(now, event_at, available_at, window: timedelta) -> bool:
+    tolerance = timedelta(seconds=30)
+    event_age = now - utc_datetime(event_at)
+    availability_age = now - utc_datetime(available_at)
+    return (
+        -tolerance <= event_age <= window
+        and -tolerance <= availability_age <= window
+    )
 
 
 __all__ = [

@@ -93,6 +93,18 @@ def test_exact_bsc_ca_always_passes_even_from_non_bsc_propagator() -> None:
     assert decision.accepted and decision.reason == "exact_bsc_ca"
 
 
+def test_old_exact_ca_post_replayed_by_another_source_is_rejected() -> None:
+    old = replace(
+        _post("hellduan", f"BSC CA {TOKEN}", contracts=(TOKEN,)),
+        created_at=NOW - timedelta(days=1),
+        fetched_at=NOW - timedelta(seconds=2),
+    )
+
+    decision = BscRealtimeSignalFilter(clock=lambda: NOW).decide(old)
+
+    assert not decision.accepted and decision.reason == "stale_x_replay"
+
+
 def test_debot_requires_fresh_event_and_availability_times() -> None:
     policy = BscRealtimeSignalFilter(clock=lambda: NOW, debot_fresh_seconds=180)
 

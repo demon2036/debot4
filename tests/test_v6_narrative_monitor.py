@@ -82,7 +82,7 @@ def _registry(*handles: str) -> ActorRegistry:
     return ActorRegistry(registrations)
 
 
-def test_first_poll_replays_bounded_posts_then_only_new_posts_survive_restart(
+def test_empty_first_poll_still_bounds_later_replay_and_survives_restart(
     tmp_path: Path,
 ) -> None:
     old = _post("cz_binance", "2000001", "old baseline", 0)
@@ -91,7 +91,7 @@ def test_first_poll_replays_bounded_posts_then_only_new_posts_survive_restart(
     new = _post("cz_binance", "2000004", "new narrative", 5)
     newer = _post("cz_binance", "2000005", "restart narrative", 10)
     timeline = FakeTimeline({
-        "cz_binance": [(old, middle, latest), (old, middle, latest, new)]
+        "cz_binance": [(), (old, middle, latest), (old, middle, latest, new)]
     })
     clock = FakeClock()
     directory = tmp_path / "private"
@@ -101,13 +101,15 @@ def test_first_poll_replays_bounded_posts_then_only_new_posts_survive_restart(
         wall_clock=lambda: NOW + timedelta(seconds=10),
     )
 
-    assert monitor.monitor_once() == (latest,)
-    assert monitor.last_initial_replay_dropped == 2
+    assert monitor.monitor_once() == ()
     assert timeline.calls[0][1] is not None
     assert timeline.calls[0][1].user_id == "902926941413453824"
     clock.value = 5.0
+    assert monitor.monitor_once() == (latest,)
+    assert monitor.last_initial_replay_dropped == 2
+    clock.value = 10.0
     assert monitor.monitor_once() == (new,)
-    assert timeline.calls[1][1] == XCheckpoint(
+    assert timeline.calls[2][1] == XCheckpoint(
         "cz_binance", "902926941413453824", "2000003"
     )
 

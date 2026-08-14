@@ -185,7 +185,7 @@ class NarrativeMonitor:
                     )
                 if batch.checkpoint.user_id != target.author_id:
                     raise ValueError("timeline client returned an untrusted actor identity")
-                if previous is None:
+                if previous is None or not previous.latest_tweet_id:
                     observed_at = self._wall_now()
                     fresh, dropped = bounded_initial_replay(
                         batch.posts,
