@@ -1,4 +1,4 @@
-"""Low-latency application loop for reviewed BSC factory mint receipts."""
+"""Low-latency application loop for BSC zero-transfer mint logs."""
 
 from __future__ import annotations
 
@@ -11,9 +11,8 @@ from typing import Protocol
 from ..identity import utc_datetime, utc_now
 from .chain_mint import (
     BscMintBlock,
-    BscMintReceipt,
-    is_verified_factory_transaction,
-    locate_verified_flap_mints,
+    BscZeroTransferLog,
+    locate_flap_mint_logs,
 )
 from .chain_mint_state import ChainMintCheckpoint, ChainMintCheckpointStore
 from .mint_location import MintLocation
@@ -25,12 +24,12 @@ DEFAULT_CHAIN_MINT_POLL_SECONDS = 0.25
 class ChainMintRpc(Protocol):
     def latest_block_number(self) -> int: ...
     def fetch_block(self, number: int) -> BscMintBlock: ...
-    def fetch_receipts(
-        self, transaction_hashes: Sequence[str]
-    ) -> tuple[BscMintReceipt, ...]: ...
+    def fetch_zero_transfers(
+        self, block: BscMintBlock,
+    ) -> tuple[BscZeroTransferLog, ...]: ...
 
 
-class BscFactoryMintMonitor:
+class BscMintMonitor:
     """Checkpoint only after exact locations have reached durable storage."""
 
     def __init__(
@@ -120,7 +119,8 @@ class BscFactoryMintMonitor:
             "locations_persisted": self.locations_persisted,
             "skipped_stale_blocks": self.skipped_stale_blocks,
             "reorg_recoveries": self.reorg_recoveries,
-            "verified_factories": 1,
+            "location_invariant": "erc20_zero_transfer_suffix_7777",
+            "route_independent": True,
             "confirmation_depth": 0,
             "finality": "included_not_finalized",
             "authorizes_trade": False,
@@ -150,20 +150,9 @@ class BscFactoryMintMonitor:
         return blocks
 
     def _locations(self, block: BscMintBlock) -> tuple[MintLocation, ...]:
-        transactions = tuple(
-            item for item in block.transactions
-            if is_verified_factory_transaction(item)
-        )
-        receipts = self.rpc.fetch_receipts(tuple(
-            item.transaction_hash for item in transactions
-        ))
-        if len(receipts) != len(transactions):
-            raise RuntimeError("BSC factory receipt set is incomplete")
         observed = utc_datetime(self.clock())
-        return tuple(
-            location
-            for transaction, receipt in zip(transactions, receipts)
-            for location in locate_verified_flap_mints(
-                block, transaction, receipt, observed_at=observed
-            )
+        return locate_flap_mint_logs(
+            block,
+            self.rpc.fetch_zero_transfers(block),
+            observed_at=observed,
         )

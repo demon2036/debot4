@@ -1,49 +1,63 @@
-"""Strict JSON-RPC decoding for BSC mint blocks and receipts."""
+"""Strict JSON-RPC decoding for BSC block headers and zero-transfer logs."""
 
 from __future__ import annotations
 
 from collections.abc import Mapping, Sequence
 from datetime import datetime, timezone
 import re
-from typing import Any
 
 from ..identity import bsc_address
 from .chain_mint import (
+    TRANSFER_TOPIC,
+    ZERO_TOPIC,
     BscMintBlock,
-    BscMintLog,
-    BscMintReceipt,
-    BscMintTransaction,
+    BscZeroTransferLog,
 )
 
 
 _HASH = re.compile(r"0x[0-9a-f]{64}")
-_HEX = re.compile(r"0x[0-9a-f]*")
 _QUANTITY = re.compile(r"0x(?:0|[1-9a-f][0-9a-f]*)")
+_WORD = re.compile(r"0x[0-9a-f]{64}")
 
 
 def block_from_rpc(raw: object, expected_number: int) -> BscMintBlock:
     if not isinstance(raw, Mapping):
         raise ValueError
     actual = rpc_quantity(raw.get("number"))
-    rows = raw.get("transactions")
-    if actual != expected_number or not isinstance(rows, list) or len(rows) > 10_000:
+    transactions = raw.get("transactions")
+    if (
+        actual != expected_number
+        or not isinstance(transactions, list)
+        or len(transactions) > 10_000
+    ):
         raise ValueError
+    for transaction_hash in transactions:
+        rpc_hash(transaction_hash)
     return BscMintBlock(
         actual,
         rpc_hash(raw.get("hash")),
         rpc_hash(raw.get("parentHash")),
         datetime.fromtimestamp(rpc_quantity(raw.get("timestamp")), timezone.utc),
-        tuple(_transaction(item) for item in rows),
     )
 
 
-def receipts_from_rpc(
-    rows: tuple[Any, ...], expected_hashes: tuple[str, ...],
-) -> tuple[BscMintReceipt, ...]:
-    receipts = tuple(_receipt(item) for item in rows)
-    if tuple(item.transaction_hash for item in receipts) != expected_hashes:
+def zero_transfers_from_rpc(
+    raw: object, block: BscMintBlock,
+) -> tuple[BscZeroTransferLog, ...]:
+    if not isinstance(raw, list) or len(raw) > 10_000:
         raise ValueError
-    return receipts
+    logs = tuple(_zero_transfer(item) for item in raw)
+    if any(
+        item.block_number != block.number or item.block_hash != block.block_hash
+        for item in logs
+    ):
+        raise ValueError
+    identities = tuple(
+        (item.transaction_hash, item.log_index) for item in logs
+    )
+    if len(set(identities)) != len(identities):
+        raise ValueError
+    return logs
 
 
 def batch_values(payload: object, ids: Sequence[int]) -> tuple[object, ...]:
@@ -81,50 +95,28 @@ def rpc_hash(value: object) -> str:
     return result
 
 
-def _transaction(raw: object) -> BscMintTransaction:
-    if not isinstance(raw, Mapping):
+def _zero_transfer(raw: object) -> BscZeroTransferLog:
+    if not isinstance(raw, Mapping) or raw.get("removed") is not False:
         raise ValueError
-    to_raw = raw.get("to")
-    return BscMintTransaction(
-        rpc_hash(raw.get("hash")),
-        None if to_raw is None else bsc_address(to_raw),
-        rpc_quantity(raw.get("transactionIndex")),
-    )
-
-
-def _receipt(raw: object) -> BscMintReceipt:
-    if not isinstance(raw, Mapping):
+    topics = raw.get("topics")
+    if not isinstance(topics, list) or len(topics) != 3:
         raise ValueError
-    status = rpc_quantity(raw.get("status"))
-    rows = raw.get("logs")
-    if status not in {0, 1} or not isinstance(rows, list) or len(rows) > 10_000:
+    normalized = tuple(str(item).casefold() for item in topics)
+    if (
+        any(not _WORD.fullmatch(item) for item in normalized)
+        or normalized[0] != TRANSFER_TOPIC
+        or normalized[1] != ZERO_TOPIC
+    ):
         raise ValueError
-    to_raw = raw.get("to")
-    return BscMintReceipt(
+    data = str(raw.get("data") or "").casefold()
+    if not _WORD.fullmatch(data):
+        raise ValueError
+    return BscZeroTransferLog(
+        token_address=bsc_address(raw.get("address")),
         transaction_hash=rpc_hash(raw.get("transactionHash")),
-        to_address=None if to_raw is None else bsc_address(to_raw),
-        succeeded=status == 1,
         block_number=rpc_quantity(raw.get("blockNumber")),
         block_hash=rpc_hash(raw.get("blockHash")),
         transaction_index=rpc_quantity(raw.get("transactionIndex")),
-        logs=tuple(_log(item) for item in rows),
-    )
-
-
-def _log(raw: object) -> BscMintLog:
-    if not isinstance(raw, Mapping):
-        raise ValueError
-    topics = raw.get("topics")
-    data = str(raw.get("data") or "").casefold()
-    if (
-        not isinstance(topics, list) or len(topics) > 8
-        or not _HEX.fullmatch(data)
-    ):
-        raise ValueError
-    normalized = tuple(str(item).casefold() for item in topics)
-    if any(not _HASH.fullmatch(item) for item in normalized):
-        raise ValueError
-    return BscMintLog(
-        bsc_address(raw.get("address")), normalized, data,
-        rpc_hash(raw.get("transactionHash")),
+        log_index=rpc_quantity(raw.get("logIndex")),
+        data=data,
     )

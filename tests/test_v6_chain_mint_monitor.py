@@ -6,15 +6,10 @@ from pathlib import Path
 import pytest
 
 from debot4.v6.narrative.chain_mint import (
-    FLAP_FACTORY,
-    TRANSFER_TOPIC,
-    ZERO_TOPIC,
     BscMintBlock,
-    BscMintLog,
-    BscMintReceipt,
-    BscMintTransaction,
+    BscZeroTransferLog,
 )
-from debot4.v6.narrative.chain_mint_monitor import BscFactoryMintMonitor
+from debot4.v6.narrative.chain_mint_monitor import BscMintMonitor
 from debot4.v6.narrative.chain_mint_state import (
     ChainMintCheckpoint,
     ChainMintCheckpointStore,
@@ -37,13 +32,15 @@ class _Rpc:
     def __init__(
         self,
         blocks: tuple[BscMintBlock, ...],
-        receipts: tuple[BscMintReceipt, ...] = (),
+        logs: tuple[BscZeroTransferLog, ...] = (),
     ) -> None:
         self.blocks = {item.number: item for item in blocks}
-        self.receipts = {item.transaction_hash: item for item in receipts}
+        self.logs: dict[int, list[BscZeroTransferLog]] = {}
+        for item in logs:
+            self.logs.setdefault(item.block_number, []).append(item)
         self.head_calls = 0
         self.block_calls: list[int] = []
-        self.receipt_calls: list[tuple[str, ...]] = []
+        self.log_calls: list[int] = []
 
     def latest_block_number(self) -> int:
         self.head_calls += 1
@@ -53,37 +50,33 @@ class _Rpc:
         self.block_calls.append(number)
         return self.blocks[number]
 
-    def fetch_receipts(
-        self, transaction_hashes: tuple[str, ...]
-    ) -> tuple[BscMintReceipt, ...]:
-        self.receipt_calls.append(transaction_hashes)
-        return tuple(self.receipts[item] for item in transaction_hashes)
+    def fetch_zero_transfers(
+        self, block: BscMintBlock,
+    ) -> tuple[BscZeroTransferLog, ...]:
+        self.log_calls.append(block.number)
+        return tuple(self.logs.get(block.number, ()))
 
 
 def _hash(number: int) -> str:
     return "0x" + format(number, "064x")
 
 
-def _mint_block(number: int = 10) -> tuple[BscMintBlock, BscMintReceipt]:
+def _mint_block(number: int = 10) -> tuple[BscMintBlock, BscZeroTransferLog]:
     transaction_hash = "0x" + "a" * 64
-    transaction = BscMintTransaction(transaction_hash, FLAP_FACTORY, 7)
     block = BscMintBlock(
-        number, _hash(number), _hash(number - 1), NOW, (transaction,)
+        number, _hash(number), _hash(number - 1), NOW
     )
-    receipt = BscMintReceipt(
-        transaction_hash, FLAP_FACTORY, True, number, block.block_hash, 7,
-        (BscMintLog(
-            CA, (TRANSFER_TOPIC, ZERO_TOPIC, "0x" + "b" * 64),
-            "0x01", transaction_hash,
-        ),),
+    mint_log = BscZeroTransferLog(
+        CA, transaction_hash, number, block.block_hash, 7, 9,
+        "0x" + "0" * 63 + "1",
     )
-    return block, receipt
+    return block, mint_log
 
 
 def _empty_blocks(start: int, end: int) -> tuple[BscMintBlock, ...]:
     return tuple(
         BscMintBlock(
-            number, _hash(number), _hash(number - 1), NOW, ()
+            number, _hash(number), _hash(number - 1), NOW
         )
         for number in range(start, end + 1)
     )
@@ -92,11 +85,11 @@ def _empty_blocks(start: int, end: int) -> tuple[BscMintBlock, ...]:
 def test_location_reaches_callback_before_checkpoint_and_restart_deduplicates(
     tmp_path: Path,
 ) -> None:
-    block, receipt = _mint_block()
-    rpc = _Rpc((block,), (receipt,))
+    block, mint_log = _mint_block()
+    rpc = _Rpc((block,), (mint_log,))
     path = tmp_path / "cursor.json"
     checkpoints = ChainMintCheckpointStore(path)
-    monitor = BscFactoryMintMonitor(
+    monitor = BscMintMonitor(
         rpc, checkpoints, startup_lookback_blocks=1,
         clock=lambda: NOW,
     )
@@ -111,7 +104,7 @@ def test_location_reaches_callback_before_checkpoint_and_restart_deduplicates(
     assert found == tuple(accepted)
     assert len(found) == 1 and found[0].exact_ca == CA
     assert checkpoints.load() == ChainMintCheckpoint(10, _hash(10))
-    restarted = BscFactoryMintMonitor(
+    restarted = BscMintMonitor(
         rpc, ChainMintCheckpointStore(path), startup_lookback_blocks=1,
         clock=lambda: NOW,
     )
@@ -120,10 +113,10 @@ def test_location_reaches_callback_before_checkpoint_and_restart_deduplicates(
 
 
 def test_callback_failure_never_advances_checkpoint(tmp_path: Path) -> None:
-    block, receipt = _mint_block()
+    block, mint_log = _mint_block()
     checkpoints = ChainMintCheckpointStore(tmp_path / "cursor.json")
-    monitor = BscFactoryMintMonitor(
-        _Rpc((block,), (receipt,)), checkpoints,
+    monitor = BscMintMonitor(
+        _Rpc((block,), (mint_log,)), checkpoints,
         startup_lookback_blocks=1,
         clock=lambda: NOW,
     )
@@ -141,7 +134,7 @@ def test_empty_blocks_checkpoint_and_poll_is_self_throttled(tmp_path: Path) -> N
     block = _empty_blocks(10, 10)[0]
     rpc = _Rpc((block,))
     checkpoints = ChainMintCheckpointStore(tmp_path / "cursor.json")
-    monitor = BscFactoryMintMonitor(
+    monitor = BscMintMonitor(
         rpc, checkpoints, poll_seconds=0.25, startup_lookback_blocks=1,
         timer=timer,
     )
@@ -154,7 +147,7 @@ def test_empty_blocks_checkpoint_and_poll_is_self_throttled(tmp_path: Path) -> N
     timer.value = 0.25
     assert monitor.poll_once(lambda _items: None) == ()
     assert rpc.head_calls == 2
-    assert rpc.receipt_calls == [()]
+    assert rpc.log_calls == [10]
 
 
 def test_stale_checkpoint_uses_bounded_recent_catchup(tmp_path: Path) -> None:
@@ -162,7 +155,7 @@ def test_stale_checkpoint_uses_bounded_recent_catchup(tmp_path: Path) -> None:
     checkpoints = ChainMintCheckpointStore(path)
     checkpoints.save(ChainMintCheckpoint(1, _hash(1)))
     rpc = _Rpc(_empty_blocks(98, 100))
-    monitor = BscFactoryMintMonitor(
+    monitor = BscMintMonitor(
         rpc, checkpoints, startup_lookback_blocks=3, max_catchup_blocks=4
     )
 
@@ -179,7 +172,7 @@ def test_parent_mismatch_replays_bounded_canonical_window(tmp_path: Path) -> Non
     checkpoints = ChainMintCheckpointStore(path)
     checkpoints.save(ChainMintCheckpoint(9, "0x" + "f" * 64))
     rpc = _Rpc(_empty_blocks(8, 10))
-    monitor = BscFactoryMintMonitor(
+    monitor = BscMintMonitor(
         rpc, checkpoints, startup_lookback_blocks=3,
     )
 

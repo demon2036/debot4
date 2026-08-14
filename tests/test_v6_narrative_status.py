@@ -102,10 +102,10 @@ def test_snapshot_reads_exact_databases_and_never_exposes_credentials(
     assert snapshot["research"]["total"] == 2
     assert snapshot["mint_locations"]["available"] is True
     assert snapshot["mint_locations"]["unique_exact_cas"] == 1
-    assert snapshot["sources"]["bsc_factory_mints"]["last_processed_block"] == (
+    assert snapshot["sources"]["bsc_mints"]["last_processed_block"] == (
         115_824_174
     )
-    assert snapshot["sources"]["bsc_factory_mints"]["finality"] == (
+    assert snapshot["sources"]["bsc_mints"]["finality"] == (
         "included_not_finalized"
     )
     latest = snapshot["research"]["recent_packages"]

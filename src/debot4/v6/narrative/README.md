@@ -6,10 +6,11 @@ v6-owned.
 
 Exact CA location flow:
 
-1. `BscFactoryMintMonitor` polls included BSC heads every 250 ms and accepts
-   only reviewed Flap factory receipts. A successful zero-address ERC-20
-   `Transfer` from the token contract locates the Exact CA; latest-block
-   evidence is explicitly included but not finalized.
+1. `BscMintMonitor` polls included BSC heads every 250 ms and reads canonical
+   ERC-20 `Transfer` logs whose sender is the zero address. A positive mint log
+   emitted by an address ending in the reviewed Flap `7777` suffix locates the
+   Exact CA without depending on a mutable factory/router address. Latest-block
+   evidence is explicitly included but not finalized and infers no launchpad.
 2. `NarrativeMintMonitor` polls DeBot's `new` stage every second and persists
    every Exact CA, including tokens with no creation time or social link.
 3. `MintLocationStore` bounds raw evidence to one day, 20,000 rows, and a

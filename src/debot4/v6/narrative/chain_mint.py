@@ -1,15 +1,14 @@
-"""Immutable BSC receipt inputs and reviewed launchpad mint rules."""
+"""Immutable BSC zero-transfer evidence and exact Flap-CA location rules."""
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime
 
-from ..identity import bsc_address, utc_datetime
-from .mint_location import BSC_FACTORY_SOURCE, MintLocation
+from ..identity import utc_datetime
+from .mint_location import BSC_LOG_SOURCE, MintLocation
 
 
-FLAP_FACTORY = "0x880a2c2d5009c4f50e8c3b2220361e19805c6666"
 TRANSFER_TOPIC = (
     "0xddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef"
 )
@@ -18,94 +17,62 @@ FLAP_TOKEN_SUFFIX = "7777"
 
 
 @dataclass(frozen=True, slots=True)
-class BscMintTransaction:
-    transaction_hash: str
-    to_address: str | None
-    transaction_index: int
-
-
-@dataclass(frozen=True, slots=True)
 class BscMintBlock:
     number: int
     block_hash: str
     parent_hash: str
     timestamp: datetime
-    transactions: tuple[BscMintTransaction, ...]
 
 
 @dataclass(frozen=True, slots=True)
-class BscMintLog:
-    address: str
-    topics: tuple[str, ...]
-    data: str
+class BscZeroTransferLog:
+    token_address: str
     transaction_hash: str
-
-
-@dataclass(frozen=True, slots=True)
-class BscMintReceipt:
-    transaction_hash: str
-    to_address: str | None
-    succeeded: bool
     block_number: int
     block_hash: str
     transaction_index: int
-    logs: tuple[BscMintLog, ...]
+    log_index: int
+    data: str
 
 
-def is_verified_factory_transaction(transaction: BscMintTransaction) -> bool:
-    """Cheap block-level filter; the receipt rule remains authoritative."""
-
-    return transaction.to_address == FLAP_FACTORY
-
-
-def locate_verified_flap_mints(
+def locate_flap_mint_logs(
     block: BscMintBlock,
-    transaction: BscMintTransaction,
-    receipt: BscMintReceipt,
+    logs: tuple[BscZeroTransferLog, ...],
     *,
     observed_at: datetime,
 ) -> tuple[MintLocation, ...]:
-    """Extract exact token emitters only from a successful reviewed factory call."""
+    """Locate raw Exact CAs from the mint invariant, independent of entry route.
 
-    if not is_verified_factory_transaction(transaction):
-        return ()
-    if (
-        not receipt.succeeded
-        or receipt.to_address != FLAP_FACTORY
-        or receipt.transaction_hash != transaction.transaction_hash
-        or receipt.block_number != block.number
-        or receipt.block_hash != block.block_hash
-        or receipt.transaction_index != transaction.transaction_index
-    ):
-        return ()
-    exact_cas: set[str] = set()
-    for log in receipt.logs:
-        if (
-            log.transaction_hash != transaction.transaction_hash
-            or len(log.topics) < 3
-            or log.topics[0] != TRANSFER_TOPIC
-            or log.topics[1] != ZERO_TOPIC
-            or not log.address.endswith(FLAP_TOKEN_SUFFIX)
-            or _quantity(log.data) <= 0
-        ):
-            continue
-        exact_cas.add(bsc_address(log.address))
+    The source adapter has already requested ERC-20 Transfer logs whose sender is
+    the zero address.  This rule deliberately claims only that a matching token
+    emitted a successful canonical mint log; it does not authorize research or a
+    trade and does not infer which narrative owns the token.
+    """
+
     observed = utc_datetime(observed_at)
-    return tuple(
-        MintLocation(
-            exact_ca=exact_ca,
-            source=BSC_FACTORY_SOURCE,
+    found: dict[tuple[str, str], MintLocation] = {}
+    for item in logs:
+        if (
+            item.block_number != block.number
+            or item.block_hash != block.block_hash
+        ):
+            raise ValueError("BSC mint log does not belong to its block")
+        if not item.token_address.endswith(FLAP_TOKEN_SUFFIX):
+            continue
+        if _quantity(item.data) <= 0:
+            continue
+        key = (item.transaction_hash, item.token_address)
+        found[key] = MintLocation(
+            exact_ca=item.token_address,
+            source=BSC_LOG_SOURCE,
             observed_at=observed,
             created_at=block.timestamp,
-            launchpad="flap",
-            transaction_hash=transaction.transaction_hash,
+            transaction_hash=item.transaction_hash,
             block_number=block.number,
             block_hash=block.block_hash,
-            transaction_index=transaction.transaction_index,
-            factory_address=FLAP_FACTORY,
+            transaction_index=item.transaction_index,
         )
-        for exact_ca in sorted(exact_cas)
-    )
+    return tuple(found[key] for key in sorted(found))
 
 
 def _quantity(value: str) -> int:

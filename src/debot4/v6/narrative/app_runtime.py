@@ -11,7 +11,7 @@ from ..telegram import TelegramPublicClient, TelegramRealtimeMonitor
 from ..x import FxEgressPool, FxTwitterRepostMonitor
 from .bsc_mint_rpc import BscMintRpcClient
 from .catalyst_mint_state import CatalystMintState
-from .chain_mint_monitor import BscFactoryMintMonitor
+from .chain_mint_monitor import BscMintMonitor
 from .debot_feed import NarrativeDeBotFeed
 from .job_queue import NarrativeJobQueue
 from .market_monitor import MarketAnomalyMonitor
@@ -41,7 +41,7 @@ class NarrativeApp:
     market_monitor: MarketAnomalyMonitor
     mint_monitor: NarrativeMintMonitor
     catalyst_mints: CatalystMintState
-    chain_mint_monitor: BscFactoryMintMonitor
+    chain_mint_monitor: BscMintMonitor
     mint_locations: MintLocationStore
     bsc_mint_rpc: BscMintRpcClient
     queue: NarrativeJobQueue

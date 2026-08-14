@@ -11,8 +11,8 @@ from ..identity import bsc_address, utc_datetime
 
 
 DEBOT_NEW_SOURCE = "debot_new"
-BSC_FACTORY_SOURCE = "bsc_factory_receipt"
-MINT_LOCATION_SOURCES = frozenset({DEBOT_NEW_SOURCE, BSC_FACTORY_SOURCE})
+BSC_LOG_SOURCE = "bsc_zero_transfer_log"
+MINT_LOCATION_SOURCES = frozenset({DEBOT_NEW_SOURCE, BSC_LOG_SOURCE})
 _HASH = re.compile(r"0x[0-9a-f]{64}")
 
 
@@ -61,13 +61,15 @@ class MintLocation:
             None if self.factory_address is None
             else bsc_address(self.factory_address)
         )
-        chain_values = (
+        chain_position = (
             transaction_hash, self.block_number, block_hash,
-            self.transaction_index, factory,
+            self.transaction_index,
         )
-        if source == BSC_FACTORY_SOURCE:
-            if any(item is None for item in chain_values) or created is None:
-                raise ValueError("chain mint location requires complete receipt evidence")
+        if source == BSC_LOG_SOURCE:
+            if any(item is None for item in chain_position) or created is None:
+                raise ValueError("chain mint location requires complete log evidence")
+            if factory is not None:
+                raise ValueError("zero-transfer evidence cannot infer a factory")
             if any(
                 isinstance(item, bool)
                 or not isinstance(item, int)
@@ -79,8 +81,8 @@ class MintLocation:
                 f"{block_hash[2:]}-{transaction_hash[2:]}-{exact_ca[2:]}"
             )
         else:
-            if any(item is not None for item in chain_values):
-                raise ValueError("DeBot mint location cannot contain chain receipt fields")
+            if any(item is not None for item in (*chain_position, factory)):
+                raise ValueError("DeBot mint location cannot contain chain log fields")
             reference = exact_ca[2:]
         object.__setattr__(self, "exact_ca", exact_ca)
         object.__setattr__(self, "source", source)

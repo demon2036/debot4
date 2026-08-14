@@ -100,7 +100,7 @@ class NarrativeService:
             **({"x_reposts": None} if x_repost_monitor is not None else {}),
             **({"market": None} if market_monitor is not None else {}),
             **({"debot_new_mints": None} if mint_monitor is not None else {}),
-            **({"bsc_factory_mints": None} if chain_mint_monitor is not None else {}),
+            **({"bsc_mints": None} if chain_mint_monitor is not None else {}),
         }
         self.last_collector_error_type: str | None = None
         self.last_worker_error_type: str | None = None
@@ -167,7 +167,7 @@ class NarrativeService:
             sources.append(("debot_new_mints", self.collector.collect_mints_once, cadence))
         if self.collector.chain_mint_monitor is not None:
             sources.append((
-                "bsc_factory_mints", self.collector.collect_chain_mints_once,
+                "bsc_mints", self.collector.collect_chain_mints_once,
                 min(cadence, self.collector.chain_mint_monitor.poll_seconds),
             ))
         if self.x_repost_monitor is not None:

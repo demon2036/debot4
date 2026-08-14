@@ -9,7 +9,7 @@ from debot4.v6.narrative.bsc_mint_rpc import (
     BscMintRpcClient,
     BscMintRpcError,
 )
-from debot4.v6.narrative.chain_mint import FLAP_FACTORY, TRANSFER_TOPIC, ZERO_TOPIC
+from debot4.v6.narrative.chain_mint import TRANSFER_TOPIC, ZERO_TOPIC
 
 
 BLOCK_HASH = "0x" + "1" * 64
@@ -33,42 +33,41 @@ def _handler(request: httpx.Request) -> httpx.Response:
             value = {
                 "number": "0xa", "hash": BLOCK_HASH,
                 "parentHash": PARENT_HASH, "timestamp": "0x64",
-                "transactions": [{
-                    "hash": TX, "to": FLAP_FACTORY,
-                    "transactionIndex": "0x7",
-                }],
+                "transactions": [TX],
             }
-        elif method == "eth_getTransactionReceipt":
-            value = {
-                "transactionHash": call["params"][0], "to": FLAP_FACTORY,
-                "status": "0x1", "blockNumber": "0xa",
+        elif method == "eth_getLogs":
+            assert call["params"] == [{
+                "blockHash": BLOCK_HASH,
+                "topics": [TRANSFER_TOPIC, ZERO_TOPIC],
+            }]
+            value = [{
+                "address": CA,
+                "topics": [TRANSFER_TOPIC, ZERO_TOPIC, "0x" + "4" * 64],
+                "data": "0x" + "0" * 63 + "1",
+                "transactionHash": TX, "blockNumber": "0xa",
                 "blockHash": BLOCK_HASH, "transactionIndex": "0x7",
-                "logs": [{
-                    "address": CA,
-                    "topics": [TRANSFER_TOPIC, ZERO_TOPIC, "0x" + "4" * 64],
-                    "data": "0x01", "transactionHash": call["params"][0],
-                }],
-            }
+                "logIndex": "0x9", "removed": False,
+            }]
         else:
             raise AssertionError(method)
         rows.append(_result(call["id"], value))
     return httpx.Response(200, json=list(reversed(rows)))
 
 
-def test_rpc_adapter_parses_bounded_blocks_and_receipts() -> None:
+def test_rpc_adapter_parses_bounded_headers_and_zero_transfers() -> None:
     with httpx.Client(transport=httpx.MockTransport(_handler)) as http:
         rpc = BscMintRpcClient(("https://rpc.example",), client=http)
 
         assert rpc.latest_block_number() == 10
         block = rpc.fetch_block(10)
-        (receipt,) = rpc.fetch_receipts((TX,))
+        (mint_log,) = rpc.fetch_zero_transfers(block)
 
     assert block.number == 10
     assert block.block_hash == BLOCK_HASH
-    assert block.transactions[0].to_address == FLAP_FACTORY
-    assert receipt.succeeded is True
-    assert receipt.logs[0].address == CA
-    assert receipt.logs[0].topics[1] == ZERO_TOPIC
+    assert mint_log.token_address == CA
+    assert mint_log.transaction_hash == TX
+    assert mint_log.transaction_index == 7
+    assert mint_log.log_index == 9
 
 
 def test_rpc_fails_over_when_first_endpoint_omits_response_identity() -> None:

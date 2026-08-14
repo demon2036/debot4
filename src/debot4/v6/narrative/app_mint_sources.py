@@ -7,7 +7,7 @@ from dataclasses import dataclass
 
 from .bsc_mint_rpc import BscMintRpcClient
 from .catalyst_mint_state import CatalystMintState
-from .chain_mint_monitor import BscFactoryMintMonitor
+from .chain_mint_monitor import BscMintMonitor
 from .chain_mint_state import ChainMintCheckpointStore
 from .mint_location_store import MintLocationStore
 from .mint_monitor import NarrativeMintMonitor
@@ -20,7 +20,7 @@ class NarrativeMintSources:
     catalyst: CatalystMintState
     locations: MintLocationStore
     rpc: BscMintRpcClient
-    chain: BscFactoryMintMonitor
+    chain: BscMintMonitor
 
 
 def build_mint_sources(
@@ -41,7 +41,7 @@ def build_mint_sources(
         max_response_bytes=settings.max_response_bytes,
     )
     resources.callback(rpc.close)
-    chain = BscFactoryMintMonitor(
+    chain = BscMintMonitor(
         rpc,
         ChainMintCheckpointStore(settings.chain_mint_checkpoint_path),
         poll_seconds=settings.chain_mint_poll_seconds,

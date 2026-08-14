@@ -66,7 +66,7 @@ def read_source_checkpoints(settings: NarrativeSettings) -> SourceCheckpointStat
             "emitted_anomalies": len(emitted),
             "updated_at": market_updated,
         },
-        "bsc_factory_mints": {
+        "bsc_mints": {
             "available": chain_block is not None,
             "last_processed_block": chain_block,
             "finality": "included_not_finalized",

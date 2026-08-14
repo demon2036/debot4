@@ -10,13 +10,17 @@ from urllib.parse import urlsplit
 
 import httpx
 
-from .chain_mint import BscMintBlock, BscMintReceipt
+from .chain_mint import (
+    TRANSFER_TOPIC,
+    ZERO_TOPIC,
+    BscMintBlock,
+    BscZeroTransferLog,
+)
 from .bsc_mint_rpc_codec import (
     batch_values,
     block_from_rpc,
-    receipts_from_rpc,
-    rpc_hash,
     rpc_quantity,
+    zero_transfers_from_rpc,
 )
 
 
@@ -67,25 +71,20 @@ class BscMintRpcClient:
         if isinstance(number, bool) or number < 0:
             raise ValueError("BSC block number must be non-negative")
         return self._batch(
-            (("eth_getBlockByNumber", (hex(number), True)),),
+            (("eth_getBlockByNumber", (hex(number), False)),),
             validator=lambda rows: (block_from_rpc(rows[0], number),),
         )[0]
 
-    def fetch_receipts(
-        self, transaction_hashes: Sequence[str]
-    ) -> tuple[BscMintReceipt, ...]:
-        hashes = tuple(rpc_hash(item) for item in transaction_hashes)
-        if len(hashes) > 128 or len(set(hashes)) != len(hashes):
-            raise ValueError("BSC receipt request is invalid or duplicated")
-        if not hashes:
-            return ()
+    def fetch_zero_transfers(
+        self, block: BscMintBlock,
+    ) -> tuple[BscZeroTransferLog, ...]:
         return self._batch(
-            tuple(
-                ("eth_getTransactionReceipt", (transaction_hash,))
-                for transaction_hash in hashes
-            ),
-            validator=lambda rows: receipts_from_rpc(rows, hashes),
-        )
+            (("eth_getLogs", ({
+                "blockHash": block.block_hash,
+                "topics": [TRANSFER_TOPIC, ZERO_TOPIC],
+            },)),),
+            validator=lambda rows: (zero_transfers_from_rpc(rows[0], block),),
+        )[0]
 
     def _batch(
         self,
