@@ -26,6 +26,7 @@ def test_defaults_are_fast_and_use_isolated_state_directory() -> None:
     assert settings.chain_mint_checkpoint_path.name == "chain-mint-checkpoint.json"
     assert settings.mint_location_database.name == "mint-locations.sqlite3"
     assert settings.mint_alert_database.name == "mint-alerts.sqlite3"
+    assert settings.mint_alert_gate_path.name == "mint-alert-gate.json"
     assert settings.queue_database.name == "jobs.sqlite3"
     assert settings.research_database.parent == settings.state_dir
 

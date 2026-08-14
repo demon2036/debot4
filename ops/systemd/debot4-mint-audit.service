@@ -1,0 +1,19 @@
+[Unit]
+Description=Audit DeBot4 exact X-to-mint alert coverage
+After=network-online.target debot4-narrative.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+User=root
+WorkingDirectory=/opt/debot4
+Environment=PYTHONUNBUFFERED=1
+Environment=PYTHONDONTWRITEBYTECODE=1
+Environment=PYTHONPATH=/opt/debot4/src
+Environment=DEBOT4_NARRATIVE_STATE_DIR=/opt/debot4/var/narrative
+ExecStart=/opt/debot4/.venv/bin/python -m debot4.v6.narrative.audit_mint_alerts
+NoNewPrivileges=true
+PrivateTmp=true
+UMask=0077
+StandardOutput=journal
+StandardError=journal

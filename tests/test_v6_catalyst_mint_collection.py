@@ -8,6 +8,7 @@ from debot4.v6.narrative.collection import NarrativeCollector
 from debot4.v6.narrative.job_payloads import encode_job_input
 from debot4.v6.narrative.job_queue import JobStatus, NarrativeJobQueue
 from debot4.v6.narrative.live_signal_filter import BscRealtimeSignalFilter
+from debot4.v6.narrative.mint_alert_gate import MintAlertGate
 from debot4.v6.narrative.mint_alert_store import MintAlertStore
 from debot4.v6.narrative.mint_location_store import MintLocationStore
 from debot4.v6.x.models import XPost
@@ -63,6 +64,9 @@ def test_collector_turns_no_ca_bbroker_post_into_exact_ca_job(
         collector = NarrativeCollector(
             _XSource(post), object(), object(), queue,
             mint_monitor=_MintSource(mint), catalyst_mints=state,
+            mint_alert_gate=MintAlertGate(
+                tmp_path / "gate.json", clock=lambda: observed_at
+            ),
             mint_locations=locations, mint_alerts=alerts,
             clock=lambda: observed_at,
             signal_filter=BscRealtimeSignalFilter(clock=lambda: observed_at),
@@ -85,7 +89,10 @@ def test_collector_turns_no_ca_bbroker_post_into_exact_ca_job(
             "exact_catalyst_mint_binding": 1,
             "reviewed_catalyst_event": 1,
         }
-        assert alerts.snapshot()["total"] == 1
+        assert alerts.snapshot()["total"] == 0
+        assert collector.mint_pipeline_snapshot()["mint_alert_gate"]["reasons"] == {
+            "catalyst_alert_deadline_elapsed": 1,
+        }
 
 
 def test_no_social_mint_is_located_without_queueing_grok(tmp_path: Path) -> None:
@@ -108,6 +115,9 @@ def test_no_social_mint_is_located_without_queueing_grok(tmp_path: Path) -> None
         collector = NarrativeCollector(
             object(), object(), object(), queue,
             mint_monitor=_MintSource(mint), catalyst_mints=state,
+            mint_alert_gate=MintAlertGate(
+                tmp_path / "gate.json", clock=lambda: observed_at
+            ),
             mint_locations=locations,
             mint_alerts=alerts, clock=lambda: observed_at,
         )
@@ -149,6 +159,9 @@ def test_routine_post_stays_available_for_later_exact_mint_binding(
         collector = NarrativeCollector(
             _XSource(post), object(), object(), queue,
             mint_monitor=_MintSource(mint), catalyst_mints=state,
+            mint_alert_gate=MintAlertGate(
+                tmp_path / "gate.json", clock=lambda: observed_at
+            ),
             mint_locations=locations, mint_alerts=alerts,
             clock=lambda: observed_at,
             signal_filter=BscRealtimeSignalFilter(clock=lambda: observed_at),
@@ -164,4 +177,4 @@ def test_routine_post_stays_available_for_later_exact_mint_binding(
             "exact_catalyst_mint_binding": 1,
             "routine_x_chatter": 1,
         }
-        assert alerts.snapshot()["total"] == 1
+        assert alerts.snapshot()["total"] == 0

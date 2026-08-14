@@ -24,7 +24,7 @@ def read_mint_alert_status(path: Path, *, limit: int = 20) -> dict[str, Any]:
         "last_raised_at": None,
         "recent_alerts": [],
         "sla_seconds": MINT_ALERT_SLA_SECONDS,
-        "trigger": "accepted_catalyst_mint_match",
+        "trigger": "verified_first_party_unique_catalyst_mint",
         "raw_mint_triggers_alert": False,
         "rpc_on_critical_path": False,
         "model_on_critical_path": False,

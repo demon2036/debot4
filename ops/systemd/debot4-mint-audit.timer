@@ -1,0 +1,12 @@
+[Unit]
+Description=Audit DeBot4 mint alerts every ten minutes
+
+[Timer]
+OnBootSec=3min
+OnUnitActiveSec=10min
+AccuracySec=30s
+Persistent=true
+Unit=debot4-mint-audit.service
+
+[Install]
+WantedBy=timers.target

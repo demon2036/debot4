@@ -34,6 +34,8 @@ from .live_signal_filter import (
     SignalFilterDecision,
 )
 from .market_signal import MarketAnomaly
+from .mint_alert_gate import MintAlertGate
+from .mint_alert_policy import MintAlertAction
 from .mint_alert_store import MintAlertStore
 from .mint_collection import MintCollectionPipeline
 from .mint_location import MintLocation
@@ -74,6 +76,7 @@ class NarrativeCollector:
         market_monitor: MarketSource | None = None,
         mint_monitor: MintSource | None = None,
         catalyst_mints: CatalystMintState | None = None,
+        mint_alert_gate: MintAlertGate | None = None,
         chain_mint_monitor: ChainMintSource | None = None,
         mint_locations: MintLocationStore | None = None,
         mint_alerts: MintAlertStore | None = None,
@@ -95,10 +98,14 @@ class NarrativeCollector:
             and mint_locations is None
         ):
             raise ValueError("mint sources require durable mint location storage")
-        if (catalyst_mints is None) != (mint_alerts is None):
-            raise ValueError("catalyst state and mint alert storage must be paired")
+        alert_path = (catalyst_mints, mint_alert_gate, mint_alerts)
+        if any(item is not None for item in alert_path) and not all(
+            item is not None for item in alert_path
+        ):
+            raise ValueError("catalyst state, alert gate, and alert store must be paired")
         self.mint_monitor = mint_monitor
         self.catalyst_mints = catalyst_mints
+        self.mint_alert_gate = mint_alert_gate
         self.chain_mint_monitor = chain_mint_monitor
         self.mint_alerts = mint_alerts
         self._mint_pipeline = MintCollectionPipeline(mint_locations)
@@ -180,6 +187,11 @@ class NarrativeCollector:
             if self.mint_alerts is None
             else {"configured": True, **self.mint_alerts.snapshot()}
         )
+        snapshot["mint_alert_gate"] = (
+            {"configured": False}
+            if self.mint_alert_gate is None
+            else {"configured": True, **self.mint_alert_gate.snapshot()}
+        )
         return snapshot
 
     def _enqueue(
@@ -252,15 +264,24 @@ class NarrativeCollector:
     def _persist_matches(
         self, matches: tuple[CatalystMintMatch, ...]
     ) -> tuple[CatalystMintMatch, ...]:
-        accepted = tuple(
-            match
-            for match in matches
-            if self._enqueue(match, before_queue=self._record_mint_alert)
-        )
+        if not matches:
+            return ()
+        if self.mint_alert_gate is None:
+            raise RuntimeError("mint alert gate is unavailable")
+        verdicts = self.mint_alert_gate.evaluate(matches)
+        accepted: list[CatalystMintMatch] = []
+        terminal_ids: list[str] = []
+        for verdict in verdicts:
+            if verdict.action is MintAlertAction.ALERT:
+                self._record_mint_alert(verdict.match)
+            if self._enqueue(verdict.match):
+                accepted.append(verdict.match)
+            if verdict.action is not MintAlertAction.WAIT:
+                terminal_ids.append(verdict.match.match_id)
         self._mint_pipeline.record_hard_bindings(len(accepted))
-        if matches and self.catalyst_mints is not None:
-            self.catalyst_mints.acknowledge(match.match_id for match in matches)
-        return accepted
+        if terminal_ids and self.catalyst_mints is not None:
+            self.catalyst_mints.acknowledge(terminal_ids)
+        return tuple(accepted)
 
     def _record_mint_alert(self, signal: NarrativeSignal) -> None:
         if not isinstance(signal, CatalystMintMatch):

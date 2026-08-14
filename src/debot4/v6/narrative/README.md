@@ -1,43 +1,69 @@
 # v6 narrative boundary
 
-This package is independent of every pre-v6 narrative/source package. Its
-adapters, domain rules, persistence, runtime, and presentation boundaries are
-v6-owned.
+This package owns the independent X-to-mint alert and narrative-research
+runtime. Adapters collect facts; pure domain rules decide; persistence keeps
+evidence and delivery state; the service only orchestrates those boundaries.
 
-Exact CA location flow:
+## Mint-alert critical path
 
-1. `BscMintMonitor` polls included BSC heads every 250 ms and reads canonical
-   ERC-20 `Transfer` logs whose sender is the zero address. A positive mint log
-   emitted by an address ending in the reviewed Flap `7777` suffix locates the
-   Exact CA without depending on a mutable factory/router address. Latest-block
-   evidence is explicitly included but not finalized and infers no launchpad.
-   The header and filtered logs are fetched as one same-endpoint batch and must
-   agree on block number and hash before the checkpoint advances.
-2. `NarrativeMintMonitor` polls DeBot's `new` stage every second and persists
-   every Exact CA, including tokens with no creation time or social link.
-3. `MintLocationStore` bounds raw evidence to one day, 20,000 rows, and a
-   64 MiB SQLite page ceiling. Raw locations never queue Grok and never
-   authorize a trade.
-4. `CatalystMintState` separately joins a reviewed X post only when mint
-   metadata references the exact status ID inside the strict time window. Only
-   this hard binding may enter narrative research.
+```text
+reviewed X account publishes
+├── preserve exact status ID, author, text, created_at, fetched_at
+└── wait for matching DeBot metadata
+    ├── new
+    ├── completing
+    └── completed
+        └── exact status URL + exact CA + token identity
+            ├── before 12s: WAIT and re-evaluate
+            ├── 12s..15s: deterministic gate
+            │   ├── one first-party CA -> durable alert outbox
+            │   └── ambiguity/mismatch -> REJECT
+            └── after 15s: REJECT
+```
 
-Input flow:
+The three DeBot stages rotate at the configured mint polling cadence. With the
+default 0.5-second cadence, a complete stage cycle is 1.5 seconds. A candidate
+must be created no earlier than its X catalyst. One X post resolving to multiple
+exact CAs is rejected; a later conflicting CA is retained as an audit violation.
 
-1. `LiveNarrativeRepository.research(...)` fetches only an exact X status URL.
-2. `build_live_dossier(...)` accepts an exact-CA primary declaration and only
-   strictly prior official DeBot KOL BUY facts. `READY` never authorizes a trade.
-3. `build_executable_dossier(...)` classifies propagation, cultural fit,
-   catalyst, leader competition, and consensus stage from the exact status,
-   internally consistent DeBot social metadata, and repeated prior/current KOL
-   waves. Missing evidence remains `WAIT`; contradictory contract context is
-   `REJECT`. It seals the enriched dossier into the source research identity.
-4. `evaluate_narrative_gate(...)` combines a completed narrative dossier,
-   bounded valuation, immutable research result, and a fresh decision-time DeBot
-   KOL/SmartMoney wave. It emits categorical `PASS`, `WAIT`, or `REJECT`.
-5. `evaluate_execution_boundary(...)` rechecks an atomic route-and-FDV quote
-   against the newest observed head. It emits `PASS`, `REQUOTE`, or `REJECT`.
-6. `authorize_entry(...)` emits `COMMIT` only when both preceding decisions pass.
+The alert is stored before narrative research is queued. Delivery retries from
+the durable outbox, and the JSONL sink flushes each event immediately. Neither
+Grok nor RPC is on this 15-second path. Optional BSC zero-address log collection
+is off by default, records raw location evidence only, and can never trigger an
+alert.
 
-All outputs have canonical identities. There is no score, target-price guess,
-DEX trigger, browser dependency, or permission to place real-money orders.
+## Research path
+
+```text
+X / Telegram / DeBot / market observation
+└── bounded priority queue
+    └── exact-source research
+        ├── origin and why-now
+        ├── propagation and competing CAs
+        ├── counter-evidence and invalidation
+        └── immutable research package
+```
+
+Research is asynchronous and never authorizes a mint alert or a trade. Model
+output is a lead until its source URL and identity are independently verified.
+
+## Ten-minute audit
+
+`python -m debot4.v6.narrative.audit_mint_alerts` reads the gate, DeBot mint
+locations, and alert outbox in SQLite read-only mode, then compares them with
+the exact CoinMarketCap BSC one-hour gainer board.
+
+Hard violations include a selected gate match missing from the outbox, a recent
+orphan alert, an alert attached to a rejected group, unresolved state beyond the
+SLA, and detection or delivery after 15 seconds. A current market leader that
+was seen by DeBot but not alerted is marked for review. It is not treated as
+proof of a miss because a current one-hour board is not a historical fixed-window
+golden-dog label. GeckoTerminal fallback data is reported as unavailable for
+this exact-ranking audit.
+
+## Safety boundary
+
+All current outputs are evidence and research artifacts. They do not authorize
+real-money orders and do not establish that the system is profitable. Final
+golden-dog qualification remains the responsibility of the separate immutable
+`golden_dogs` evaluation path.

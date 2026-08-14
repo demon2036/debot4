@@ -234,6 +234,10 @@ class NarrativeSettings:
         return self.state_dir / "catalyst-mints.json"
 
     @property
+    def mint_alert_gate_path(self) -> Path:
+        return self.state_dir / "mint-alert-gate.json"
+
+    @property
     def chain_mint_checkpoint_path(self) -> Path:
         return self.state_dir / "chain-mint-checkpoint.json"
 

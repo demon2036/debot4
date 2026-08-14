@@ -63,6 +63,7 @@ def test_full_app_wires_real_interfaces_and_closes_in_reverse_order(
         "poll_seconds": 0.75,
     }
     assert calls["catalyst_state_path"] == settings.catalyst_mint_state_path
+    assert calls["mint_alert_gate_path"] == settings.mint_alert_gate_path
     assert calls["mint_location_path"] == settings.mint_location_database
     assert calls["mint_alert_path"] == settings.mint_alert_database
     assert calls["mint_alert_dispatcher"] == (
@@ -115,6 +116,7 @@ def test_full_app_wires_real_interfaces_and_closes_in_reverse_order(
     assert service["market_monitor"] is app.market_monitor
     assert service["mint_monitor"] is app.mint_monitor
     assert service["catalyst_mints"] is app.catalyst_mints
+    assert service["mint_alert_gate"] is app.mint_alert_gate
     assert service["chain_mint_monitor"] is app.chain_mint_monitor
     assert service["mint_locations"] is app.mint_locations
     assert service["mint_alerts"] is app.mint_alerts

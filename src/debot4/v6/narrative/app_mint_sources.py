@@ -9,6 +9,7 @@ from .bsc_mint_rpc import BscMintRpcClient
 from .catalyst_mint_state import CatalystMintState
 from .chain_mint_monitor import BscMintMonitor
 from .chain_mint_state import ChainMintCheckpointStore
+from .mint_alert_gate import MintAlertGate
 from .mint_location_store import MintLocationStore
 from .mint_monitor import NarrativeMintMonitor
 from .settings import NarrativeSettings
@@ -18,6 +19,7 @@ from .settings import NarrativeSettings
 class NarrativeMintSources:
     debot: NarrativeMintMonitor
     catalyst: CatalystMintState
+    gate: MintAlertGate
     locations: MintLocationStore
     rpc: BscMintRpcClient | None
     chain: BscMintMonitor | None
@@ -33,12 +35,15 @@ def build_mint_sources(
         poll_seconds=settings.mint_poll_seconds,
     )
     resources.callback(debot.close)
+    catalyst = CatalystMintState(settings.catalyst_mint_state_path)
+    gate = MintAlertGate(settings.mint_alert_gate_path)
     locations = MintLocationStore(settings.mint_location_database)
     resources.callback(locations.close)
     if not settings.chain_mint_audit_enabled:
         return NarrativeMintSources(
             debot=debot,
-            catalyst=CatalystMintState(settings.catalyst_mint_state_path),
+            catalyst=catalyst,
+            gate=gate,
             locations=locations,
             rpc=None,
             chain=None,
@@ -58,7 +63,8 @@ def build_mint_sources(
     )
     return NarrativeMintSources(
         debot=debot,
-        catalyst=CatalystMintState(settings.catalyst_mint_state_path),
+        catalyst=catalyst,
+        gate=gate,
         locations=locations,
         rpc=rpc,
         chain=chain,

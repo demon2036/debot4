@@ -46,6 +46,10 @@ def patch_app_graph(
         def __init__(self, path: Path) -> None:
             calls["catalyst_state_path"] = path
 
+    class AlertGate:
+        def __init__(self, path: Path) -> None:
+            calls["mint_alert_gate_path"] = path
+
     class MintLocations:
         def __init__(self, path: Path) -> None:
             calls["mint_location_path"] = path
@@ -101,6 +105,7 @@ def patch_app_graph(
             market_monitor: object | None = None,
             mint_monitor: object | None = None,
             catalyst_mints: object | None = None,
+            mint_alert_gate: object | None = None,
             chain_mint_monitor: object | None = None,
             mint_locations: object | None = None,
             mint_alerts: object | None = None,
@@ -110,7 +115,7 @@ def patch_app_graph(
                 (
                     monitor, telegram, feed, queue, market_monitor,
                     mint_monitor, catalyst_mints, chain_mint_monitor,
-                    mint_locations, mint_alerts, signal_filter,
+                    mint_locations, mint_alerts, signal_filter, mint_alert_gate,
                 )
             )
             self.signal_filter = signal_filter
@@ -133,6 +138,7 @@ def patch_app_graph(
                 market_monitor=kwargs["market_monitor"],
                 mint_monitor=kwargs["mint_monitor"],
                 catalyst_mints=kwargs["catalyst_mints"],
+                mint_alert_gate=kwargs["mint_alert_gate"],
                 chain_mint_monitor=kwargs["chain_mint_monitor"],
                 mint_locations=kwargs["mint_locations"],
                 mint_alerts=kwargs["mint_alerts"],
@@ -192,6 +198,7 @@ def patch_app_graph(
         return SimpleNamespace(
             debot=monitor,
             catalyst=CatalystState(settings.catalyst_mint_state_path),
+            gate=AlertGate(settings.mint_alert_gate_path),
             locations=locations,
             rpc=rpc,
             chain=chain,

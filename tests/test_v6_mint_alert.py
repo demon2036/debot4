@@ -17,6 +17,7 @@ from debot4.v6.narrative.mint_alert_delivery import (
     MintAlertDispatcher,
 )
 from debot4.v6.narrative.mint_alert_status import read_mint_alert_status
+from debot4.v6.narrative.mint_alert_gate import MintAlertGate
 from debot4.v6.narrative.mint_alert_store import MintAlertStore
 from debot4.v6.narrative.mint_location_store import MintLocationStore
 from tests.v6_catalyst_mint_samples import (
@@ -40,6 +41,7 @@ def test_budujin_replay_alerts_tweet_bound_ca_not_earlier_raw_ca(
         tmp_path / "join.json", clock=lambda: BUDUJIN_OBSERVED_AT
     )
     with (
+        NarrativeJobQueue(tmp_path / "jobs.sqlite3") as queue,
         MintLocationStore(tmp_path / "locations.sqlite3") as locations,
         MintAlertStore(
             tmp_path / "alerts.sqlite3", clock=lambda: BUDUJIN_OBSERVED_AT
@@ -47,14 +49,21 @@ def test_budujin_replay_alerts_tweet_bound_ca_not_earlier_raw_ca(
     ):
         locations.record((budujin_raw_location(),))
         assert alerts.snapshot()["total"] == 0
-        assert state.observe_mints((budujin_mint(),)) == ()
-        (match,) = state.observe_posts((budujin_post(),))
-        assert BscRealtimeSignalFilter(
-            clock=lambda: BUDUJIN_OBSERVED_AT
-        ).decide(match).accepted
-        (alert,) = alerts.record((match,)).created
-        assert alert.exact_ca == BUDUJIN_CA
-        assert alert.exact_ca != BUDUJIN_RAW_CA
+        collector = NarrativeCollector(
+            _XSource(), object(), object(), queue,
+            mint_monitor=_MintSource(budujin_mint()), catalyst_mints=state,
+            mint_alert_gate=MintAlertGate(
+                tmp_path / "gate.json", clock=lambda: BUDUJIN_OBSERVED_AT
+            ),
+            mint_locations=locations, mint_alerts=alerts,
+            signal_filter=BscRealtimeSignalFilter(
+                clock=lambda: BUDUJIN_OBSERVED_AT
+            ),
+            clock=lambda: BUDUJIN_OBSERVED_AT,
+        )
+        assert collector.collect_mints_once() == ()
+        assert collector.collect_x_once() == (budujin_post(),)
+        assert alerts.snapshot()["total"] == 1
         dispatcher = MintAlertDispatcher(
             alerts, JsonLineMintAlertSink(stream),
             clock=lambda: BUDUJIN_DELIVERED_AT,
@@ -109,6 +118,7 @@ def test_raw_chain_and_unlinked_debot_mints_never_alert(tmp_path: Path) -> None:
         collector = NarrativeCollector(
             object(), object(), object(), queue,
             mint_monitor=_MintSource(unlinked), catalyst_mints=state,
+            mint_alert_gate=MintAlertGate(tmp_path / "gate.json"),
             chain_mint_monitor=_ChainSource(), mint_locations=locations,
             mint_alerts=alerts,
         )
@@ -148,6 +158,9 @@ def test_alert_is_durable_before_research_queue_failure(tmp_path: Path) -> None:
         collector = NarrativeCollector(
             _XSource(), object(), object(), _BrokenQueue(),
             mint_monitor=_MintSource(budujin_mint()), catalyst_mints=state,
+            mint_alert_gate=MintAlertGate(
+                tmp_path / "gate.json", clock=lambda: BUDUJIN_OBSERVED_AT
+            ),
             mint_locations=locations, mint_alerts=alerts,
             signal_filter=BscRealtimeSignalFilter(
                 clock=lambda: BUDUJIN_OBSERVED_AT

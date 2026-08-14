@@ -55,6 +55,9 @@ Japan, and global English-language communities.
 - Delivers mint alerts independently from research; the default credential-free
   sink emits immediately flushed JSONL while SQLite and the dashboard retain
   delivery and 15-second SLA evidence.
+- Audits the durable X-to-mint gate, outbox delivery, and current exact CMC BSC
+  1h leaders every ten minutes. Market leaders without an alert are review
+  leads, not retroactive alert evidence.
 - Polls an exact-CA BSC 1h mover board at a configurable 0.5–15 second cadence.
 - Prioritizes fresh high-authority events over historical replay work.
 - Uses Grok to investigate origin, why-now, propagation path, competing CAs,
@@ -101,6 +104,16 @@ python -m debot4.v6.narrative.serve --host 127.0.0.1 --port 8777
 ```
 
 Then open `http://127.0.0.1:8777/` on the same machine.
+
+Run one read-only alert audit:
+
+```bash
+python -m debot4.v6.narrative.audit_mint_alerts
+```
+
+The production units include `debot4-mint-audit.timer`. The health and audit
+timers observe the service but do not implicitly start it, so an intentionally
+stopped monitor stays stopped.
 
 ## Credentials and local state
 
