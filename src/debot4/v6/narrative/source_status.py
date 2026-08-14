@@ -67,10 +67,21 @@ def read_source_checkpoints(settings: NarrativeSettings) -> SourceCheckpointStat
             "updated_at": market_updated,
         },
         "bsc_mints": {
-            "available": chain_block is not None,
-            "last_processed_block": chain_block,
-            "finality": "included_not_finalized",
-            "updated_at": chain_updated,
+            "available": (
+                settings.chain_mint_audit_enabled and chain_block is not None
+            ),
+            "disabled": not settings.chain_mint_audit_enabled,
+            "last_processed_block": (
+                chain_block if settings.chain_mint_audit_enabled else None
+            ),
+            "finality": (
+                "included_not_finalized"
+                if settings.chain_mint_audit_enabled and chain_block is not None
+                else None
+            ),
+            "updated_at": (
+                chain_updated if settings.chain_mint_audit_enabled else None
+            ),
         },
     }
     return SourceCheckpointStatus(

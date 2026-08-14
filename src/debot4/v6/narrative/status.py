@@ -23,7 +23,7 @@ from ..telegram import load_telegram_realtime_config
 
 
 JOB_STATUSES = ("pending", "leased", "done", "failed")
-STATUS_SCHEMA = "debot4.v6.narrative_status.v4"
+STATUS_SCHEMA = "debot4.v6.narrative_status.v5"
 
 
 def status_snapshot(
@@ -48,8 +48,9 @@ def status_snapshot(
     return {
         "schema": STATUS_SCHEMA,
         "generated_at": now.astimezone(timezone.utc).isoformat(),
-        "mode": "research_only",
-        "research_only": True,
+        "mode": "mint_alert_monitor",
+        "research_only": False,
+        "mint_alerting": True,
         "read_only": True,
         "authorizes_trade": False,
         "profitability": "unknown",

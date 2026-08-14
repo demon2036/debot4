@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from datetime import datetime, timedelta, timezone
 import json
 from pathlib import Path
@@ -117,7 +118,9 @@ def test_snapshot_reads_exact_databases_and_never_exposes_credentials(
     )
 
     assert snapshot["generated_at"] == NOW.isoformat()
-    assert snapshot["research_only"] is True
+    assert snapshot["mode"] == "mint_alert_monitor"
+    assert snapshot["research_only"] is False
+    assert snapshot["mint_alerting"] is True
     assert snapshot["authorizes_trade"] is False
     assert snapshot["profitability"] == "unknown"
     assert snapshot["jobs"] == {
@@ -132,12 +135,13 @@ def test_snapshot_reads_exact_databases_and_never_exposes_credentials(
     assert snapshot["mint_alerts"]["total"] == 1
     assert snapshot["mint_alerts"]["delivered"] == 1
     assert snapshot["mint_alerts"]["detection_sla_met"] == 1
-    assert snapshot["sources"]["bsc_mints"]["last_processed_block"] == (
-        115_824_174
-    )
-    assert snapshot["sources"]["bsc_mints"]["finality"] == (
-        "included_not_finalized"
-    )
+    assert snapshot["sources"]["bsc_mints"] == {
+        "available": False,
+        "disabled": True,
+        "last_processed_block": None,
+        "finality": None,
+        "updated_at": None,
+    }
     latest = snapshot["research"]["recent_packages"]
     assert [item["package_id"] for item in latest] == ["package-2"]
     assert latest[0]["authorizes_trade"] is False
@@ -156,6 +160,22 @@ def test_snapshot_reads_exact_databases_and_never_exposes_credentials(
     raw = json.dumps(snapshot)
     for secret in (*env.values(), "research-body-2"):
         assert secret not in raw
+
+
+def test_enabled_chain_audit_reports_its_checkpoint(tmp_path: Path) -> None:
+    settings = replace(_settings(tmp_path), chain_mint_audit_enabled=True)
+    _databases(settings)
+
+    snapshot = status_snapshot(settings, environ={}, clock=lambda: NOW)
+
+    assert snapshot["sources"]["bsc_mints"]["available"] is True
+    assert snapshot["sources"]["bsc_mints"]["disabled"] is False
+    assert snapshot["sources"]["bsc_mints"]["last_processed_block"] == (
+        115_824_174
+    )
+    assert snapshot["sources"]["bsc_mints"]["finality"] == (
+        "included_not_finalized"
+    )
 
 
 def test_actor_cadence_matches_the_reviewed_monitor_and_skips_unverified_ids(

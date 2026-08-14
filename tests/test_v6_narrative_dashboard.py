@@ -14,8 +14,9 @@ from debot4.v6.narrative.dashboard import create_narrative_dashboard_server
 
 
 STATUS = {
-    "mode": "research_only",
-    "research_only": True,
+    "mode": "mint_alert_monitor",
+    "research_only": False,
+    "mint_alerting": True,
     "authorizes_trade": False,
     "profitability": "unknown",
     "jobs": {"total": 2, "counts": {"pending": 1}},

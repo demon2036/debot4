@@ -5,6 +5,6 @@ Wants=debot4-narrative.service
 
 [Service]
 Type=oneshot
-ExecStart=/usr/bin/curl --fail --silent --show-error http://127.0.0.1:8777/api/status
+ExecStart=/usr/bin/curl --fail --silent --show-error --retry 6 --retry-connrefused --retry-delay 1 --max-time 15 http://127.0.0.1:8777/api/status
 StandardOutput=journal
 StandardError=journal

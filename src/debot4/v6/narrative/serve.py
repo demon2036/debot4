@@ -68,7 +68,9 @@ def main(argv: Sequence[str] | None = None) -> int:
             sys.stdout.write(json.dumps({
                 "ok": True,
                 "dashboard_url": f"http://{host}:{port}",
-                "research_only": True,
+                "mode": "mint_alert_monitor",
+                "research_only": False,
+                "mint_alerting": True,
                 "authorizes_trade": False,
             }, ensure_ascii=False, sort_keys=True) + "\n")
             sys.stdout.flush()
