@@ -58,7 +58,8 @@ def test_dashboard_serves_chinese_html_and_exact_read_only_status() -> None:
         assert "不授权交易" in html
         assert "X 实时互动测试" in html
         assert "15 秒 推文→Mint 报警" in html
-        assert "裸 mint、RPC 和模型均不触发报警" in html
+        assert "裸 mint 与 RPC 均不触发报警" in html
+        assert "GPT-5.3 Codex Spark 确认为值得报警" in html
         assert "点赞不可见" in html
         assert "/api/status" in html
 

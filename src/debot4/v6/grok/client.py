@@ -4,8 +4,8 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 import os
-import stat
 
+from .credentials import api_key_from_env
 from .models import GrokSearchAnswer
 from .request import (
     DISCOVERY_SEARCH,
@@ -19,7 +19,6 @@ from .response import parse_answer, parse_responses_answer
 from .transport import JsonTransport, UrlLibTransport
 
 
-_KEY_FILE_LIMIT = 4096
 _KEY_ENV = "DEBOT4_GROK2API_KEY"
 _KEY_FILE_ENV = "DEBOT4_GROK2API_KEY_FILE"
 _BASE_URL_ENV = "DEBOT4_GROK2API_BASE_URL"
@@ -170,31 +169,12 @@ def _validate_prompt(prompt: str, instructions: str) -> tuple[str, str]:
 
 
 def _api_key_from_env() -> str:
-    direct_key = os.environ.get(_KEY_ENV, "").strip()
-    if direct_key:
-        return direct_key
-    key_file = os.environ.get(_KEY_FILE_ENV, "").strip()
-    if not key_file:
-        return ""
-    try:
-        with open(key_file, "rb") as handle:
-            metadata = os.fstat(handle.fileno())
-            if not stat.S_ISREG(metadata.st_mode):
-                raise ValueError("Grok2API API key file must be a regular file")
-            if metadata.st_size > _KEY_FILE_LIMIT:
-                raise ValueError("Grok2API API key file exceeds 4096 bytes")
-            raw_key = handle.read(_KEY_FILE_LIMIT)
-    except ValueError:
-        raise
-    except OSError:
-        raise ValueError("Grok2API API key file cannot be read") from None
-    try:
-        key = raw_key.decode("utf-8").strip()
-    except UnicodeDecodeError:
-        raise ValueError("Grok2API API key file must contain UTF-8 text") from None
-    if not key:
-        raise ValueError("Grok2API API key file is empty")
-    return key
+    return api_key_from_env(
+        os.environ,
+        key_env=_KEY_ENV,
+        key_file_env=_KEY_FILE_ENV,
+        label="Grok2API",
+    )
 
 
 def _set_env_default(config: dict[str, object], field_name: str, env_name: str) -> None:

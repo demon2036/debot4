@@ -10,62 +10,28 @@ import sqlite3
 from threading import RLock
 
 from ..identity import utc_datetime, utc_now
-from .catalyst_mint import CatalystMintMatch
 from .job_queue_sqlite import (
     immediate_transaction,
     prepare_private_database,
     secure_sqlite_files,
 )
 from .mint_alert import MINT_ALERT_SLA_SECONDS, MintAlert
+from .mint_alert_gate import MintAlertVerdict
+from .mint_alert_policy import MintAlertAction
+from .mint_qualification import MintQualificationAction
 from .mint_alert_store_codec import (
     MintAlertStoreError,
     alert_from_row,
     insert_values,
 )
+from .mint_alert_store_schema import (
+    INSERT_COLUMNS,
+    TABLE,
+    prepare_mint_alert_schema,
+)
 
 
-TABLE = "catalyst_mint_alerts"
 DEFAULT_MAX_DATABASE_BYTES = 64 * 1_024 * 1_024
-INSERT_COLUMNS = """
-alert_id,match_id,exact_ca,token_stage,match_kind,catalyst_tweet_id,catalyst_author,
-catalyst_text,catalyst_created_at,catalyst_fetched_at,token_created_at,
-match_observed_at,token_name,token_symbol,provider_fdv_usd,launchpad,
-token_description,token_social_urls_json,token_status_url,raised_at,next_attempt_at
-"""
-SCHEMA = f"""
-CREATE TABLE IF NOT EXISTS {TABLE} (
-    alert_id TEXT PRIMARY KEY,
-    match_id TEXT NOT NULL UNIQUE,
-    exact_ca TEXT NOT NULL UNIQUE,
-    token_stage TEXT NOT NULL,
-    match_kind TEXT NOT NULL,
-    catalyst_tweet_id TEXT NOT NULL,
-    catalyst_author TEXT NOT NULL,
-    catalyst_text TEXT NOT NULL,
-    catalyst_created_at TEXT NOT NULL,
-    catalyst_fetched_at TEXT NOT NULL,
-    token_created_at TEXT NOT NULL,
-    match_observed_at TEXT NOT NULL,
-    token_name TEXT,
-    token_symbol TEXT,
-    provider_fdv_usd TEXT,
-    launchpad TEXT,
-    token_description TEXT,
-    token_social_urls_json TEXT NOT NULL,
-    token_status_url TEXT NOT NULL,
-    raised_at TEXT NOT NULL,
-    delivery_attempts INTEGER NOT NULL DEFAULT 0,
-    next_attempt_at TEXT NOT NULL,
-    last_delivery_error_type TEXT,
-    delivered_at TEXT,
-    authorizes_trade INTEGER NOT NULL DEFAULT 0 CHECK(authorizes_trade = 0)
-);
-CREATE INDEX IF NOT EXISTS catalyst_mint_alerts_delivery_idx
-ON {TABLE}(delivered_at,next_attempt_at,catalyst_created_at);
-CREATE INDEX IF NOT EXISTS catalyst_mint_alerts_raised_idx
-ON {TABLE}(raised_at DESC,alert_id DESC);
-PRAGMA user_version=2;
-"""
 
 
 @dataclass(frozen=True, slots=True)
@@ -120,7 +86,7 @@ class MintAlertStore:
             self._connection.execute("PRAGMA journal_size_limit=1048576")
             self._connection.execute("PRAGMA wal_autocheckpoint=100")
             self._apply_page_limit()
-            self._connection.executescript(SCHEMA)
+            prepare_mint_alert_schema(self._connection)
             secure_sqlite_files(self.path)
         except BaseException:
             self._connection.close()
@@ -140,19 +106,28 @@ class MintAlertStore:
                 self._connection.close()
                 self._closed = True
 
-    def record(self, matches: Iterable[CatalystMintMatch]) -> MintAlertWrite:
-        items = tuple(matches)
+    def record(self, verdicts: Iterable[MintAlertVerdict]) -> MintAlertWrite:
+        items = tuple(verdicts)
         if not items:
             return MintAlertWrite()
-        if any(not isinstance(match, CatalystMintMatch) for match in items):
-            raise TypeError("mint alerts require CatalystMintMatch evidence")
+        if any(not isinstance(item, MintAlertVerdict) for item in items):
+            raise TypeError("mint alerts require qualified gate verdicts")
         if len(items) > 1_000:
             raise ValueError("too many mint alerts in one write")
         now = utc_datetime(self.clock())
         created: list[MintAlert] = []
         duplicates = 0
         with self._transaction() as database:
-            for match in items:
+            for verdict in items:
+                if (
+                    verdict.action is not MintAlertAction.ALERT
+                    or verdict.qualification is None
+                    or verdict.qualification.action
+                    is not MintQualificationAction.ALERT
+                    or verdict.qualification.match_id != verdict.match.match_id
+                ):
+                    raise ValueError("mint alert verdict lacks Spark approval")
+                match = verdict.match
                 row = database.execute(
                     f"SELECT * FROM {TABLE} WHERE exact_ca=? OR match_id=?",
                     (match.exact_ca, match.match_id),
@@ -163,8 +138,14 @@ class MintAlertStore:
                         raise MintAlertStoreError("mint alert identity collision")
                     duplicates += 1
                     continue
-                alert = MintAlert.from_match(match, raised_at=now)
-                placeholders = ",".join("?" for _ in range(21))
+                alert = MintAlert.qualified(
+                    match,
+                    raised_at=now,
+                    decision_reason=verdict.reason,
+                    qualification_model=verdict.qualification.model,
+                    qualified_at=verdict.qualification.completed_at,
+                )
+                placeholders = ",".join("?" for _ in range(24))
                 database.execute(
                     f"INSERT INTO {TABLE} ({INSERT_COLUMNS}) VALUES ({placeholders})",
                     insert_values(alert),
@@ -238,10 +219,10 @@ class MintAlertStore:
             "delivered": int(row["delivered"] or 0),
             "last_raised_at": row["latest"],
             "sla_seconds": MINT_ALERT_SLA_SECONDS,
-            "trigger": "verified_first_party_unique_catalyst_mint",
+            "trigger": "spark_qualified_unique_catalyst_mint",
             "raw_mint_triggers_alert": False,
             "rpc_on_critical_path": False,
-            "model_on_critical_path": False,
+            "model_on_critical_path": True,
             "authorizes_trade": False,
         }
 

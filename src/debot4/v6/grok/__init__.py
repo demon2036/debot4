@@ -18,6 +18,7 @@ from .request import (
     FORMAT_ONLY,
     REALTIME_SEARCH,
     GrokRequestPolicy,
+    execute_response,
 )
 from .response import parse_responses_answer
 from .prompts import passive_investigation_prompt, proactive_investigation_prompt
@@ -44,6 +45,7 @@ __all__ = [
     "REALTIME_SEARCH",
     "StructuredNarrativeSearch",
     "UrlLibTransport",
+    "execute_response",
     "extract_x_status_leads",
     "passive_investigation_prompt",
     "parse_narrative_brief",

@@ -9,28 +9,31 @@ evidence and delivery state; the service only orchestrates those boundaries.
 ```text
 reviewed X account publishes
 ├── preserve exact status ID, author, text, created_at, fetched_at
-└── wait for matching DeBot metadata
+└── bind matching DeBot metadata by exact status URL and exact CA
     ├── new
     ├── completing
     └── completed
-        └── exact status URL + exact CA + token identity
-            ├── before 12s: WAIT and re-evaluate
-            ├── 12s..15s: deterministic gate
-            │   ├── one first-party CA -> durable alert outbox
-            │   └── ambiguity/mismatch -> REJECT
-            └── after 15s: REJECT
+        └── 1.5-second ambiguity stabilization
+            ├── multiple exact CAs for one post -> REJECT
+            └── one exact candidate -> tool-free gpt-5.3-codex-spark
+                ├── A before 15s -> durable alert outbox
+                └── R/error/late response -> REJECT
 ```
 
 The three DeBot stages rotate at the configured mint polling cadence. With the
-default 0.5-second cadence, a complete stage cycle is 1.5 seconds. A candidate
-must be created no earlier than its X catalyst. One X post resolving to multiple
-exact CAs is rejected; a later conflicting CA is retained as an audit violation.
+default 0.5-second cadence, a complete stage cycle is 1.5 seconds. Preparing
+tokens may predate the X post; the alert deadline is measured from the X post's
+own creation time. One X post resolving to multiple exact CAs is rejected; a
+later conflicting CA is retained as an audit violation.
 
-The alert is stored before narrative research is queued. Delivery retries from
-the durable outbox, and the JSONL sink flushes each event immediately. Neither
-Grok nor RPC is on this 15-second path. Optional BSC zero-address log collection
-is off by default, records raw location evidence only, and can never trigger an
-alert.
+Spark receives only the exact X post and the matched DeBot token metadata. It
+runs without search or tools, with one bounded request, and must explicitly
+approve exceptional meme, cultural, or current-attention potential. Missing
+credentials, ambiguity, model errors, and timeouts fail closed. The alert is
+stored before narrative research is queued; delivery retries from the durable
+outbox, and the JSONL sink flushes each event immediately. RPC remains outside
+this path. Optional BSC zero-address log collection is off by default, records
+raw location evidence only, and can never trigger an alert.
 
 ## Research path
 
@@ -44,8 +47,10 @@ X / Telegram / DeBot / market observation
         └── immutable research package
 ```
 
-Research is asynchronous and never authorizes a mint alert or a trade. Model
-output is a lead until its source URL and identity are independently verified.
+Research is asynchronous and never authorizes a trade. Its model output is a
+lead until its source URL and identity are independently verified. The separate
+bounded Spark classifier is the required semantic approval for mint alerts, but
+it does not authorize a trade.
 
 ## Ten-minute audit
 
@@ -55,18 +60,19 @@ mint rows for those exact CAs in SQLite read-only mode. A separate aggregate
 count preserves overall DeBot coverage without loading the full observation set.
 
 Hard violations include a selected gate match missing from the outbox, a recent
-orphan alert, an alert attached to a rejected group, unresolved state beyond the
-SLA, and detection or delivery after 15 seconds. Of the quality-qualified market
-leaders, only tokens with a trustworthy publish time inside the last two hours
-and no earlier than this alert policy are checked for coverage. Older tokens,
-future timestamps, and missing timestamps are reported as scope exclusions, not
-mint misses. An eligible leader without an alert is marked for review; it is not
-proof of a miss because a current one-hour board is not a historical fixed-window
-golden-dog label. GeckoTerminal fallback data is reported as unavailable.
+orphan alert, an alert attached to a rejected group, an alert without matching
+Spark approval, unresolved state beyond the SLA, and detection or delivery after
+15 seconds. Of the quality-qualified market leaders, only tokens with a
+trustworthy publish time inside the last two hours and no earlier than this alert
+policy are checked for coverage. Older tokens, future timestamps, and missing
+timestamps are reported as scope exclusions, not mint misses. An eligible leader
+without an alert is marked for review; it is not proof of a miss because a
+current one-hour board is not a historical fixed-window golden-dog label.
+GeckoTerminal fallback data is reported as unavailable.
 
 ## Safety boundary
 
 All current outputs are evidence and research artifacts. They do not authorize
-real-money orders and do not establish that the system is profitable. Final
-golden-dog qualification remains the responsibility of the separate immutable
-`golden_dogs` evaluation path.
+real-money orders and do not establish that the system is profitable. The mint
+alert path performs its own immutable fast qualification; the separate
+`golden_dogs` evaluation remains the retrospective quality-measurement path.

@@ -4,10 +4,11 @@ from __future__ import annotations
 
 from datetime import datetime, timedelta
 
-from .mint_alert import MINT_ALERT_SLA_SECONDS
+from .mint_alert import MINT_ALERT_DECISION_REASON, MINT_ALERT_SLA_SECONDS
 from .mint_alert_audit_models import AuditViolation, StoredMintAlert
 from .mint_alert_gate_codec import MintAlertGateGroup, MintAlertGateState
 from .mint_alert_policy import MintAlertAction
+from .mint_qualification import MINT_QUALIFIER_MODEL
 
 
 MISSING_ALERT_GRACE_SECONDS = 5.0
@@ -62,6 +63,16 @@ def alert_violations(
     orphan_cutoff = max(gate.policy_started_at, now - RECENT_ORPHAN_WINDOW)
     for stored in valid:
         alert = stored.alert
+        if (
+            alert.decision_reason != MINT_ALERT_DECISION_REASON
+            or alert.qualification_model != MINT_QUALIFIER_MODEL
+            or alert.qualified_at is None
+        ):
+            output.append(_violation(
+                "alert_missing_spark_qualification",
+                alert.alert_id,
+                "durable alert lacks the required Spark approval provenance",
+            ))
         if alert.raised_at >= orphan_cutoff and alert.match.match_id not in selected:
             output.append(_violation(
                 "alert_not_selected_by_gate",

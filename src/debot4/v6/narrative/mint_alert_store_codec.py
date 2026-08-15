@@ -39,6 +39,9 @@ def insert_values(alert: MintAlert) -> tuple[object, ...]:
         match.token_status_url,
         alert.raised_at.isoformat(),
         alert.raised_at.isoformat(),
+        alert.decision_reason,
+        alert.qualification_model,
+        None if alert.qualified_at is None else alert.qualified_at.isoformat(),
     )
 
 
@@ -75,6 +78,13 @@ def alert_from_row(row: sqlite3.Row) -> MintAlert:
         alert = MintAlert(
             match=match,
             raised_at=datetime.fromisoformat(row["raised_at"]),
+            decision_reason=row["decision_reason"],
+            qualification_model=row["qualification_model"],
+            qualified_at=(
+                None
+                if row["qualified_at"] is None
+                else datetime.fromisoformat(row["qualified_at"])
+            ),
         )
         if (
             match.match_id != row["match_id"]

@@ -10,7 +10,7 @@ DASHBOARD_HTML = r"""<!doctype html>
 <div class="notice">研究模式：展示采集、取证和 exact-CA 绑定结果；当前不授权交易，盈利能力仍需实盘样本验证。</div>
 <div class="grid" id="cards"></div>
 <h2>数据源</h2><div class="grid" id="sources"></div>
-<h2>15 秒 推文→Mint 报警</h2><div class="sub">监控 X 帖子触发；仅当 DeBot new / completing / completed 候选精确绑定同一帖子并通过门禁，才报警具体 CA。裸 mint、RPC 和模型均不触发报警。</div><div class="tablebox" id="mintAlerts"></div>
+<h2>15 秒 推文→Mint 报警</h2><div class="sub">监控 X 帖子触发；仅当 DeBot new / completing / completed 候选精确绑定同一帖子，并经 GPT-5.3 Codex Spark 确认为值得报警，才投递具体 CA。裸 mint 与 RPC 均不触发报警。</div><div class="tablebox" id="mintAlerts"></div>
 <h2>X 实时互动测试</h2><div class="sub" id="repostNote">转发探针初始化中；点赞不在 FxTwitter 公共时间线中。</div><div class="tablebox" id="reposts"></div>
 <h2>监控人物与 KOL</h2><div class="toolbar"><input id="search" placeholder="搜索账号、姓名、身份、地区、链…"><select id="ecosystem"><option value="">全部生态</option></select><span class="badge" id="shown"></span></div><div class="tablebox" id="actors"></div>
 <h2>最近叙事研究</h2><div class="tablebox" id="research"></div>

@@ -34,8 +34,9 @@ from .live_signal_filter import (
     SignalFilterDecision,
 )
 from .market_signal import MarketAnomaly
-from .mint_alert_gate import MintAlertGate
+from .mint_alert_gate import MintAlertVerdict
 from .mint_alert_policy import MintAlertAction
+from .mint_qualification import MintAlertEvaluator
 from .mint_alert_store import MintAlertStore
 from .mint_collection import MintCollectionPipeline
 from .mint_location import MintLocation
@@ -76,7 +77,7 @@ class NarrativeCollector:
         market_monitor: MarketSource | None = None,
         mint_monitor: MintSource | None = None,
         catalyst_mints: CatalystMintState | None = None,
-        mint_alert_gate: MintAlertGate | None = None,
+        mint_alert_gate: MintAlertEvaluator | None = None,
         chain_mint_monitor: ChainMintSource | None = None,
         mint_locations: MintLocationStore | None = None,
         mint_alerts: MintAlertStore | None = None,
@@ -273,7 +274,7 @@ class NarrativeCollector:
         terminal_ids: list[str] = []
         for verdict in verdicts:
             if verdict.action is MintAlertAction.ALERT:
-                self._record_mint_alert(verdict.match)
+                self._record_mint_alert(verdict)
             if self._enqueue(verdict.match):
                 accepted.append(verdict.match)
             if verdict.action is not MintAlertAction.WAIT:
@@ -283,9 +284,7 @@ class NarrativeCollector:
             self.catalyst_mints.acknowledge(terminal_ids)
         return tuple(accepted)
 
-    def _record_mint_alert(self, signal: NarrativeSignal) -> None:
-        if not isinstance(signal, CatalystMintMatch):
-            raise TypeError("only catalyst mint matches may create mint alerts")
+    def _record_mint_alert(self, verdict: MintAlertVerdict) -> None:
         if self.mint_alerts is None:
             raise RuntimeError("mint alert persistence is unavailable")
-        self.mint_alerts.record((signal,))
+        self.mint_alerts.record((verdict,))

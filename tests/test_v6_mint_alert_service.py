@@ -8,7 +8,6 @@ from debot4.v6.narrative.catalyst_mint_state import CatalystMintState
 from debot4.v6.narrative.job_queue import NarrativeJobQueue
 from debot4.v6.narrative.live_signal_filter import BscRealtimeSignalFilter
 from debot4.v6.narrative.mint_alert_delivery import MintAlertDispatcher
-from debot4.v6.narrative.mint_alert_gate import MintAlertGate
 from debot4.v6.narrative.mint_alert_store import MintAlertStore
 from debot4.v6.narrative.mint_location_store import MintLocationStore
 from debot4.v6.narrative.service import NarrativeService, NarrativeServiceConfig
@@ -19,6 +18,7 @@ from tests.v6_catalyst_mint_samples import (
     budujin_mint,
     budujin_post,
 )
+from tests.v6_mint_alert_qualification import ApprovingMintAlertEvaluator
 
 
 class _XSource:
@@ -101,7 +101,7 @@ def test_service_delivers_alert_while_research_model_is_blocked(
             monitor=_XSource(), telegram_monitor=_EmptySource(),
             debot_feed=_EmptyDeBot(), mint_monitor=_MintSource(),
             catalyst_mints=state, mint_locations=locations,
-            mint_alert_gate=MintAlertGate(
+            mint_alert_gate=ApprovingMintAlertEvaluator(
                 tmp_path / "gate.json", clock=lambda: BUDUJIN_OBSERVED_AT
             ),
             mint_alerts=alerts, mint_alert_dispatcher=dispatcher,

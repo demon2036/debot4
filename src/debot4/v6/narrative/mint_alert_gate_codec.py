@@ -5,16 +5,25 @@ from __future__ import annotations
 from dataclasses import dataclass
 from datetime import datetime
 import json
+import os
 from pathlib import Path
+import tempfile
 from typing import Any, Mapping
 
 from ..identity import utc_datetime
 from .catalyst_mint import CatalystMintMatch
 from .catalyst_mint_payload import catalyst_mint_from_payload, catalyst_mint_payload
 from .mint_alert_policy import MintAlertAction
+from .mint_qualification import (
+    MintQualification,
+    MintQualificationAction,
+    qualification_from_payload,
+    qualification_payload,
+)
 
 
-GATE_SCHEMA = "debot4.v6.mint-alert-gate.v1"
+GATE_SCHEMA = "debot4.v6.mint-alert-gate.v2"
+_LEGACY_GATE_SCHEMA = "debot4.v6.mint-alert-gate.v1"
 
 
 class MintAlertGateStateError(ValueError):
@@ -28,6 +37,7 @@ class MintAlertGateGroup:
     outcome: str
     reason: str
     selected_match_id: str | None
+    qualification: MintQualification | None
     updated_at: datetime
 
 
@@ -60,11 +70,17 @@ def decode_mint_alert_gate_state(
     }:
         raise ValueError("invalid mint alert gate structure")
     groups_raw = raw["groups"]
-    if raw["schema"] != GATE_SCHEMA or not isinstance(groups_raw, list):
+    schema = str(raw["schema"])
+    if schema not in {GATE_SCHEMA, _LEGACY_GATE_SCHEMA} or not isinstance(
+        groups_raw, list
+    ):
         raise ValueError("unsupported mint alert gate schema")
     if len(groups_raw) > max_groups:
         raise ValueError("mint alert gate exceeds configured bounds")
-    groups = tuple(_decode_group(item) for item in groups_raw)
+    groups = tuple(
+        _decode_group(item, legacy=schema == _LEGACY_GATE_SCHEMA)
+        for item in groups_raw
+    )
     if len({item.tweet_id for item in groups}) != len(groups):
         raise ValueError("duplicate tweet group in mint alert gate")
     return MintAlertGateState(
@@ -81,11 +97,42 @@ def encode_mint_alert_gate_state(state: MintAlertGateState) -> str:
     }, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
 
 
-def _decode_group(raw: Mapping[str, Any]) -> MintAlertGateGroup:
-    if not isinstance(raw, dict) or set(raw) != {
+def write_mint_alert_gate_state(
+    path: str | Path, state: MintAlertGateState,
+) -> None:
+    target = Path(path)
+    target.parent.mkdir(parents=True, exist_ok=True, mode=0o700)
+    target.parent.chmod(0o700)
+    if target.exists() and (target.is_symlink() or not target.is_file()):
+        raise MintAlertGateStateError("mint alert gate must be a regular file")
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            "w", encoding="utf-8", dir=target.parent,
+            prefix=f".{target.name}.", suffix=".tmp", delete=False,
+        ) as stream:
+            temporary = Path(stream.name)
+            temporary.chmod(0o600)
+            stream.write(encode_mint_alert_gate_state(state) + "\n")
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, target)
+        target.chmod(0o600)
+    finally:
+        if temporary is not None and temporary.exists():
+            temporary.unlink()
+
+
+def _decode_group(
+    raw: Mapping[str, Any], *, legacy: bool = False,
+) -> MintAlertGateGroup:
+    keys = {
         "tweet_id", "matches", "outcome", "reason",
         "selected_match_id", "updated_at",
-    }:
+    }
+    if not legacy:
+        keys.add("qualification")
+    if not isinstance(raw, dict) or set(raw) != keys:
         raise ValueError("invalid mint alert gate group structure")
     matches_raw = raw["matches"]
     if not isinstance(matches_raw, list):
@@ -112,12 +159,32 @@ def _decode_group(raw: Mapping[str, Any]) -> MintAlertGateGroup:
             raise ValueError("mint alert selected match is absent")
     if outcome == MintAlertAction.ALERT.value and selected is None:
         raise ValueError("alerting mint group has no selected match")
+    qualification = (
+        None
+        if legacy or raw["qualification"] is None
+        else qualification_from_payload(raw["qualification"])
+    )
+    if qualification is not None and qualification.match_id not in match_ids:
+        raise ValueError("mint qualification match is absent")
+    if legacy and outcome == MintAlertAction.ALERT.value:
+        outcome = MintAlertAction.REJECT.value
+        selected = None
+        reason = "legacy_alert_without_qualification"
+    else:
+        reason = str(raw["reason"])
+    if outcome == MintAlertAction.ALERT.value and (
+        qualification is None
+        or qualification.action is not MintQualificationAction.ALERT
+        or qualification.match_id != selected
+    ):
+        raise ValueError("alerting mint group lacks approval evidence")
     return MintAlertGateGroup(
         tweet_id=tweet_id,
         matches=matches,
         outcome=outcome,
-        reason=str(raw["reason"]),
+        reason=reason,
         selected_match_id=selected,
+        qualification=qualification,
         updated_at=utc_datetime(datetime.fromisoformat(str(raw["updated_at"]))),
     )
 
@@ -129,6 +196,11 @@ def _encode_group(group: MintAlertGateGroup) -> dict[str, object]:
         "outcome": group.outcome,
         "reason": group.reason,
         "selected_match_id": group.selected_match_id,
+        "qualification": (
+            None
+            if group.qualification is None
+            else qualification_payload(group.qualification)
+        ),
         "updated_at": group.updated_at.isoformat(),
     }
 
@@ -141,4 +213,5 @@ __all__ = [
     "decode_mint_alert_gate_state",
     "encode_mint_alert_gate_state",
     "read_mint_alert_gate_state",
+    "write_mint_alert_gate_state",
 ]

@@ -9,9 +9,12 @@ from .bsc_mint_rpc import BscMintRpcClient
 from .catalyst_mint_state import CatalystMintState
 from .chain_mint_monitor import BscMintMonitor
 from .chain_mint_state import ChainMintCheckpointStore
+from .mint_alert_coordinator import MintAlertCoordinator
 from .mint_alert_gate import MintAlertGate
+from .mint_qualification import MintAlertEvaluator
 from .mint_location_store import MintLocationStore
 from .mint_monitor import NarrativeMintMonitor
+from .spark_mint_qualifier import SparkMintQualifier
 from .settings import NarrativeSettings
 
 
@@ -19,7 +22,7 @@ from .settings import NarrativeSettings
 class NarrativeMintSources:
     debot: NarrativeMintMonitor
     catalyst: CatalystMintState
-    gate: MintAlertGate
+    gate: MintAlertEvaluator
     locations: MintLocationStore
     rpc: BscMintRpcClient | None
     chain: BscMintMonitor | None
@@ -36,7 +39,12 @@ def build_mint_sources(
     )
     resources.callback(debot.close)
     catalyst = CatalystMintState(settings.catalyst_mint_state_path)
-    gate = MintAlertGate(settings.mint_alert_gate_path)
+    raw_gate = MintAlertGate(settings.mint_alert_gate_path)
+    qualifier = SparkMintQualifier.from_env_optional()
+    if qualifier is not None:
+        qualifier.warmup()
+    gate = MintAlertCoordinator(raw_gate, qualifier)
+    resources.callback(gate.close)
     locations = MintLocationStore(settings.mint_location_database)
     resources.callback(locations.close)
     if not settings.chain_mint_audit_enabled:

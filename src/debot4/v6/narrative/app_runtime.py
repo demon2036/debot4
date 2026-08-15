@@ -16,7 +16,7 @@ from .debot_feed import NarrativeDeBotFeed
 from .job_queue import NarrativeJobQueue
 from .market_monitor import MarketAnomalyMonitor
 from .mint_alert_delivery import MintAlertDispatcher
-from .mint_alert_gate import MintAlertGate
+from .mint_qualification import MintAlertEvaluator
 from .mint_alert_store import MintAlertStore
 from .mint_location_store import MintLocationStore
 from .mint_monitor import NarrativeMintMonitor
@@ -44,7 +44,7 @@ class NarrativeApp:
     market_monitor: MarketAnomalyMonitor
     mint_monitor: NarrativeMintMonitor
     catalyst_mints: CatalystMintState
-    mint_alert_gate: MintAlertGate
+    mint_alert_gate: MintAlertEvaluator
     chain_mint_monitor: BscMintMonitor | None
     mint_locations: MintLocationStore
     mint_alerts: MintAlertStore

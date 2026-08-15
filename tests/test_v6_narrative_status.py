@@ -19,6 +19,7 @@ from debot4.v6.narrative.mint_location_store import MintLocationStore
 from debot4.v6.narrative.research_store import SCHEMA as RESEARCH_SCHEMA
 from debot4.v6.narrative.settings import NarrativeSettings
 from debot4.v6.narrative.status import status_snapshot
+from tests.v6_mint_alert_qualification import approved_verdict
 
 
 NOW = datetime(2026, 8, 9, 12, tzinfo=timezone.utc)
@@ -88,7 +89,10 @@ def _databases(settings: NarrativeSettings) -> None:
             catalyst_created_at=NOW - timedelta(seconds=10),
             catalyst_fetched_at=NOW - timedelta(seconds=8),
         )
-        write = alerts.record((match,))
+        verdict = approved_verdict(
+            settings.mint_alert_gate_path, match, now=NOW
+        )
+        write = alerts.record((verdict,))
         alerts.mark_delivered(write.created[0].alert_id, NOW)
     ChainMintCheckpointStore(settings.chain_mint_checkpoint_path).save(
         ChainMintCheckpoint(115_824_174, "0x" + "1" * 64)

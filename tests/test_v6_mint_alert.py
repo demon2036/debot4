@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+from dataclasses import replace
 from datetime import datetime, timedelta
 from io import StringIO
 import json
@@ -17,9 +18,9 @@ from debot4.v6.narrative.mint_alert_delivery import (
     MintAlertDispatcher,
 )
 from debot4.v6.narrative.mint_alert_status import read_mint_alert_status
-from debot4.v6.narrative.mint_alert_gate import MintAlertGate
 from debot4.v6.narrative.mint_alert_store import MintAlertStore
 from debot4.v6.narrative.mint_location_store import MintLocationStore
+from debot4.v6.narrative.mint_qualification import MintQualificationAction
 from tests.v6_catalyst_mint_samples import (
     BUDUJIN_CA,
     BUDUJIN_DELIVERED_AT,
@@ -30,6 +31,10 @@ from tests.v6_catalyst_mint_samples import (
     budujin_mint,
     budujin_post,
     budujin_raw_location,
+)
+from tests.v6_mint_alert_qualification import (
+    ApprovingMintAlertEvaluator,
+    approved_verdict,
 )
 
 
@@ -52,7 +57,7 @@ def test_budujin_replay_alerts_tweet_bound_ca_not_earlier_raw_ca(
         collector = NarrativeCollector(
             _XSource(), object(), object(), queue,
             mint_monitor=_MintSource(budujin_mint()), catalyst_mints=state,
-            mint_alert_gate=MintAlertGate(
+            mint_alert_gate=ApprovingMintAlertEvaluator(
                 tmp_path / "gate.json", clock=lambda: BUDUJIN_OBSERVED_AT
             ),
             mint_locations=locations, mint_alerts=alerts,
@@ -118,7 +123,9 @@ def test_raw_chain_and_unlinked_debot_mints_never_alert(tmp_path: Path) -> None:
         collector = NarrativeCollector(
             object(), object(), object(), queue,
             mint_monitor=_MintSource(unlinked), catalyst_mints=state,
-            mint_alert_gate=MintAlertGate(tmp_path / "gate.json"),
+            mint_alert_gate=ApprovingMintAlertEvaluator(
+                tmp_path / "gate.json", clock=lambda: BUDUJIN_OBSERVED_AT
+            ),
             chain_mint_monitor=_ChainSource(), mint_locations=locations,
             mint_alerts=alerts,
         )
@@ -126,8 +133,32 @@ def test_raw_chain_and_unlinked_debot_mints_never_alert(tmp_path: Path) -> None:
         assert collector.collect_chain_mints_once() == (budujin_raw_location(),)
         assert locations.snapshot()["observations"] == 2
         assert alerts.snapshot()["total"] == 0
-        with pytest.raises(TypeError, match="CatalystMintMatch"):
+        with pytest.raises(TypeError, match="qualified gate verdicts"):
             alerts.record((budujin_raw_location(),))  # type: ignore[arg-type]
+
+
+def test_store_rejects_non_approving_or_mismatched_qualification(
+    tmp_path: Path,
+) -> None:
+    verdict = approved_verdict(
+        tmp_path / "gate.json", budujin_match(), now=BUDUJIN_OBSERVED_AT
+    )
+    assert verdict.qualification is not None
+    rejected = replace(
+        verdict,
+        qualification=replace(
+            verdict.qualification, action=MintQualificationAction.REJECT
+        ),
+    )
+    mismatched = replace(
+        verdict,
+        qualification=replace(verdict.qualification, match_id="other-match"),
+    )
+    with MintAlertStore(tmp_path / "alerts.sqlite3") as alerts:
+        with pytest.raises(ValueError, match="lacks Spark approval"):
+            alerts.record((rejected,))
+        with pytest.raises(ValueError, match="lacks Spark approval"):
+            alerts.record((mismatched,))
 
 
 class _BrokenQueue:
@@ -158,7 +189,7 @@ def test_alert_is_durable_before_research_queue_failure(tmp_path: Path) -> None:
         collector = NarrativeCollector(
             _XSource(), object(), object(), _BrokenQueue(),
             mint_monitor=_MintSource(budujin_mint()), catalyst_mints=state,
-            mint_alert_gate=MintAlertGate(
+            mint_alert_gate=ApprovingMintAlertEvaluator(
                 tmp_path / "gate.json", clock=lambda: BUDUJIN_OBSERVED_AT
             ),
             mint_locations=locations, mint_alerts=alerts,
@@ -195,7 +226,11 @@ def test_failed_delivery_retries_without_losing_alert(tmp_path: Path) -> None:
     with MintAlertStore(
         tmp_path / "alerts.sqlite3", clock=lambda: BUDUJIN_OBSERVED_AT
     ) as alerts:
-        alerts.record((budujin_match(),))
+        verdict = approved_verdict(
+            tmp_path / "gate.json", budujin_match(),
+            now=BUDUJIN_OBSERVED_AT,
+        )
+        alerts.record((verdict,))
         dispatcher = MintAlertDispatcher(
             alerts, sink, retry_seconds=0.25,
             timer=lambda: next(ticks), clock=lambda: next(times),

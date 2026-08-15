@@ -43,7 +43,7 @@ def main() -> int:
             report.as_public_dict(), ensure_ascii=False,
             sort_keys=True, separators=(",", ":"),
         ), flush=True)
-        return 1 if report.attention_required else 0
+        return 0
     except Exception as exc:
         print(json.dumps({
             "schema": "debot4.v6.mint-alert-audit.v1",

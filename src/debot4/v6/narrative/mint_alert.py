@@ -7,10 +7,14 @@ from datetime import datetime
 
 from ..identity import stable_id, utc_datetime
 from .catalyst_mint import CatalystMintMatch
+from .mint_qualification import MINT_QUALIFIER_MODEL
 
 
-MINT_ALERT_SCHEMA = "debot4.v6.catalyst-mint-alert.v1"
+MINT_ALERT_SCHEMA = "debot4.v6.catalyst-mint-alert.v2"
+_ALERT_ID_SCHEMA = "debot4.v6.catalyst-mint-alert.v1"
 MINT_ALERT_SLA_SECONDS = 15.0
+MINT_ALERT_DECISION_REASON = "spark_qualified_unique_catalyst_mint"
+LEGACY_DECISION_REASON = "legacy_unqualified_alert"
 
 
 @dataclass(frozen=True, slots=True)
@@ -19,6 +23,9 @@ class MintAlert:
 
     match: CatalystMintMatch
     raised_at: datetime
+    decision_reason: str
+    qualification_model: str | None
+    qualified_at: datetime | None
     alert_id: str = field(init=False)
     authorizes_trade: bool = field(default=False, init=False)
 
@@ -26,18 +33,56 @@ class MintAlert:
         raised_at = utc_datetime(self.raised_at)
         if raised_at < self.match.observed_at:
             raise ValueError("mint alert predates the complete match evidence")
+        reason = self.decision_reason.strip()
+        model = (
+            None
+            if self.qualification_model is None
+            else self.qualification_model.strip()
+        )
+        qualified = (
+            None
+            if self.qualified_at is None
+            else utc_datetime(self.qualified_at)
+        )
+        if model is None or qualified is None:
+            if model is not None or qualified is not None:
+                raise ValueError("partial mint qualification provenance")
+            if reason != LEGACY_DECISION_REASON:
+                raise ValueError("mint alert lacks qualification provenance")
+        else:
+            if model != MINT_QUALIFIER_MODEL:
+                raise ValueError("mint alert uses an unexpected qualifier model")
+            if reason != MINT_ALERT_DECISION_REASON:
+                raise ValueError("mint alert has an invalid decision reason")
+            if qualified < self.match.observed_at or qualified > raised_at:
+                raise ValueError("mint alert qualification timing is invalid")
         object.__setattr__(self, "raised_at", raised_at)
+        object.__setattr__(self, "decision_reason", reason)
+        object.__setattr__(self, "qualification_model", model)
+        object.__setattr__(self, "qualified_at", qualified)
         object.__setattr__(
             self,
             "alert_id",
-            stable_id("mint-alert", MINT_ALERT_SCHEMA, self.match.match_id),
+            stable_id("mint-alert", _ALERT_ID_SCHEMA, self.match.match_id),
         )
 
     @classmethod
-    def from_match(
-        cls, match: CatalystMintMatch, *, raised_at: datetime,
+    def qualified(
+        cls,
+        match: CatalystMintMatch,
+        *,
+        raised_at: datetime,
+        decision_reason: str,
+        qualification_model: str,
+        qualified_at: datetime,
     ) -> "MintAlert":
-        return cls(match=match, raised_at=raised_at)
+        return cls(
+            match=match,
+            raised_at=raised_at,
+            decision_reason=decision_reason,
+            qualification_model=qualification_model,
+            qualified_at=qualified_at,
+        )
 
     @property
     def exact_ca(self) -> str:
@@ -101,6 +146,11 @@ class MintAlert:
                 "matched_status_url": self.match.token_status_url,
             },
             "raised_at": self.raised_at.isoformat(),
+            "decision_reason": self.decision_reason,
+            "qualification_model": self.qualification_model,
+            "qualified_at": (
+                None if self.qualified_at is None else self.qualified_at.isoformat()
+            ),
             "delivered_at": None if delivered is None else delivered.isoformat(),
             "detection_latency_seconds": self.detection_latency_seconds,
             "delivery_latency_seconds": delivery_latency,
@@ -113,6 +163,15 @@ class MintAlert:
             ),
             "triggered_by_raw_mint": False,
             "rpc_on_critical_path": False,
-            "model_on_critical_path": False,
+            "model_on_critical_path": self.qualification_model is not None,
             "authorizes_trade": False,
         }
+
+
+__all__ = [
+    "LEGACY_DECISION_REASON",
+    "MINT_ALERT_DECISION_REASON",
+    "MINT_ALERT_SCHEMA",
+    "MINT_ALERT_SLA_SECONDS",
+    "MintAlert",
+]

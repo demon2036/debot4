@@ -30,6 +30,7 @@ from tests.v6_catalyst_mint_samples import (
     budujin_match,
     budujin_mint,
 )
+from tests.v6_mint_alert_qualification import qualification
 
 
 def _board(*, source: str = "coinmarketcap_datahub", exact: bool = True) -> Board:
@@ -60,21 +61,22 @@ def _board(*, source: str = "coinmarketcap_datahub", exact: bool = True) -> Boar
 def _gate_state(path: Path):
     gate = MintAlertGate(path, clock=lambda: BUDUJIN_OBSERVED_AT)
     gate.evaluate((budujin_match(),))
+    (verdict,) = gate.evaluate((), (qualification(budujin_match()),))
     state = read_mint_alert_gate_state(path)
     assert state is not None
-    return state
+    return state, verdict
 
 
 def test_budujin_replay_is_alerted_and_delivered_within_sla(
     tmp_path: Path,
 ) -> None:
-    gate = _gate_state(tmp_path / "gate.json")
+    gate, verdict = _gate_state(tmp_path / "gate.json")
     alert_path = tmp_path / "alerts.sqlite3"
     location_path = tmp_path / "locations.sqlite3"
     with MintAlertStore(
         alert_path, clock=lambda: BUDUJIN_OBSERVED_AT
     ) as alerts:
-        write = alerts.record((budujin_match(),))
+        write = alerts.record((verdict,))
         alerts.mark_delivered(write.created[0].alert_id, BUDUJIN_DELIVERED_AT)
     with MintLocationStore(location_path) as locations:
         locations.record((location_from_debot(budujin_mint()),))
@@ -175,7 +177,7 @@ def test_reader_fails_closed_after_readiness_timeout(tmp_path: Path) -> None:
 def test_selected_match_without_durable_alert_is_a_hard_violation(
     tmp_path: Path,
 ) -> None:
-    gate = _gate_state(tmp_path / "gate.json")
+    gate, _ = _gate_state(tmp_path / "gate.json")
     report = audit_mint_alerts(
         gate, (), (), _board(),
         now=BUDUJIN_POST_AT + timedelta(seconds=20),
@@ -241,7 +243,7 @@ def test_reader_filters_before_group_limit_and_counts_all_debot_cas(
 def test_inexact_market_fallback_is_explicitly_unavailable(
     tmp_path: Path,
 ) -> None:
-    gate = _gate_state(tmp_path / "gate.json")
+    gate, _ = _gate_state(tmp_path / "gate.json")
     fallback = _board(source="geckoterminal", exact=False)
     report = audit_mint_alerts(
         gate, (), (), fallback, now=BUDUJIN_DELIVERED_AT

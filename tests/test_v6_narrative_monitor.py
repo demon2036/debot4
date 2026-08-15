@@ -132,7 +132,7 @@ def test_empty_first_poll_still_bounds_later_replay_and_survives_restart(
     assert restarted_timeline.calls[0][1].latest_tweet_id == "2000004"
 
 
-def test_priority_and_tier_cadence_use_five_ten_fifteen_second_bands(
+def test_priority_and_tier_cadence_use_five_and_ten_second_bands(
     tmp_path: Path,
 ) -> None:
     timeline = FakeTimeline()
@@ -161,14 +161,14 @@ def test_priority_and_tier_cadence_use_five_ten_fifteen_second_bands(
     clock.value = 10.0
     monitor.monitor_once()
     assert sorted(handle for handle, _ in timeline.calls) == sorted([
-        "btc2ai", "elonmusk", "karpathy",
+        "btc2ai", "elonmusk", "karpathy", "only1mrwhite",
     ])
     timeline.calls.clear()
     clock.value = 15.0
     monitor.monitor_once()
-    assert sorted(handle for handle, _ in timeline.calls) == sorted([
-        "btc2ai", "elonmusk", "only1mrwhite",
-    ])
+    assert sorted(handle for handle, _ in timeline.calls) == [
+        "btc2ai", "elonmusk",
+    ]
 
 
 def test_due_accounts_are_polled_concurrently(tmp_path: Path) -> None:

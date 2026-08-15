@@ -21,8 +21,8 @@ external sources
 └── exact-CA BSC 1h market movers
     └── concurrent collectors
         ├── identity checks and source checkpoints
-        ├── exact X-status ↔ DeBot CA binding and deterministic gate
-        │   └── durable exact-CA mint alert outbox
+        ├── exact X-status ↔ DeBot CA binding
+        │   └── fast Spark qualification and durable mint alert outbox
         ├── durable priority queue (SQLite)
         └── Grok narrative worker
             ├── active research: a monitored actor publishes
@@ -41,17 +41,20 @@ Japan, and global English-language communities.
 
 ## What the runtime does
 
-- Polls high-impact X accounts every 5–15 seconds according to reviewed tier.
+- Polls reviewed X accounts every 5–10 seconds according to tier.
 - Preserves original posts, replies, quotes, articles, cards, and polls.
 - Runs DeBot, X, Telegram, market, and research loops independently so a slow
   model request does not stop collection.
 - Polls the DeBot signal feed at a configurable 0.25–5 second cadence.
 - Polls one DeBot mint stage every 0.25–5 seconds, covering `new`,
   `completing`, and `completed`; the default full scan cycle is 1.5 seconds.
+- Considers DeBot candidates from `new`, `completing`, and `completed`, including
+  tokens preparing to launch and tokens that have already launched.
 - Raises a mint alert only when a monitored X post is referenced by the exact
-  status URL in a DeBot mint candidate and the deterministic signal gate passes.
-- Keeps models and RPC outside the 15-second alert path. Optional BSC mint-log
-  auditing is disabled by default and never creates a mint alert.
+  status URL in one unambiguous DeBot mint candidate and the bounded
+  `gpt-5.3-codex-spark` semantic gate approves it within 15 seconds of the post.
+- Keeps RPC outside the alert trigger. Optional BSC mint-log auditing is disabled
+  by default and never creates a mint alert.
 - Delivers mint alerts independently from research; the default credential-free
   sink emits immediately flushed JSONL while SQLite and the dashboard retain
   delivery and 15-second SLA evidence.

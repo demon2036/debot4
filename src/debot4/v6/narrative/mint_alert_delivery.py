@@ -126,5 +126,5 @@ class MintAlertDispatcher:
                 if self.last_delivered_at is None
                 else self.last_delivered_at.isoformat()
             ),
-            "model_on_critical_path": False,
+            "model_on_critical_path": True,
         }

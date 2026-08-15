@@ -93,6 +93,38 @@ def execute_x_search(
     )
 
 
+def execute_response(
+    transport: JsonTransport,
+    *,
+    base_url: str,
+    api_key: str,
+    model: str,
+    prompt: str,
+    instructions: str,
+    policy: GrokRequestPolicy,
+    max_output_tokens: int = 32,
+) -> Mapping[str, object]:
+    """Execute a compact, tool-free Responses API classification."""
+
+    if isinstance(max_output_tokens, bool) or not 1 <= max_output_tokens <= 512:
+        raise ValueError("response token limit must be between 1 and 512")
+    return _execute(
+        transport,
+        url=f"{base_url}/v1/responses",
+        api_key=api_key,
+        payload={
+            "model": model,
+            "stream": False,
+            "store": False,
+            "instructions": instructions,
+            "input": prompt,
+            "reasoning": {"effort": "low"},
+            "max_output_tokens": max_output_tokens,
+        },
+        policy=policy,
+    )
+
+
 def execute_image_chat(
     transport: JsonTransport,
     *,

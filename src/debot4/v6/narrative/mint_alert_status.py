@@ -7,7 +7,7 @@ from pathlib import Path
 import sqlite3
 from typing import Any
 
-from .mint_alert import MINT_ALERT_SLA_SECONDS
+from .mint_alert import MINT_ALERT_DECISION_REASON, MINT_ALERT_SLA_SECONDS
 from .mint_alert_store import TABLE
 
 
@@ -24,10 +24,10 @@ def read_mint_alert_status(path: Path, *, limit: int = 20) -> dict[str, Any]:
         "last_raised_at": None,
         "recent_alerts": [],
         "sla_seconds": MINT_ALERT_SLA_SECONDS,
-        "trigger": "verified_first_party_unique_catalyst_mint",
+        "trigger": MINT_ALERT_DECISION_REASON,
         "raw_mint_triggers_alert": False,
         "rpc_on_critical_path": False,
-        "model_on_critical_path": False,
+        "model_on_critical_path": True,
         "authorizes_trade": False,
     }
     if not path.is_file():
@@ -107,6 +107,9 @@ def _public_row(row: sqlite3.Row) -> dict[str, object]:
         "token_created_at": row["token_created_at"],
         "match_observed_at": row["match_observed_at"],
         "raised_at": row["raised_at"],
+        "decision_reason": row["decision_reason"],
+        "qualification_model": row["qualification_model"],
+        "qualified_at": row["qualified_at"],
         "delivered_at": row["delivered_at"],
         "delivery_status": "pending" if delivered_at is None else "delivered",
         "delivery_attempts": int(row["delivery_attempts"]),
@@ -119,5 +122,6 @@ def _public_row(row: sqlite3.Row) -> dict[str, object]:
         ),
         "triggered_by_raw_mint": False,
         "rpc_on_critical_path": False,
+        "model_on_critical_path": row["qualification_model"] is not None,
         "authorizes_trade": False,
     }

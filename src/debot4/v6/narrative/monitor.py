@@ -24,8 +24,8 @@ DEFAULT_TIER_POLL_SECONDS: Mapping[ActorTier, float] = MappingProxyType({
     ActorTier.ECOSYSTEM_AUTHORITY: 5.0,
     ActorTier.ORIGINAL_CREATOR: 5.0,
     ActorTier.DOMAIN_EXPERT: 10.0,
-    ActorTier.PROPAGATION_KOL: 15.0,
-    ActorTier.UNKNOWN: 15.0,
+    ActorTier.PROPAGATION_KOL: 10.0,
+    ActorTier.UNKNOWN: 10.0,
 })
 
 
@@ -36,7 +36,7 @@ class TimelinePoller(Protocol):
 
 
 class TierPollingPolicy:
-    """Validated 5-15 second cadence selected solely from reviewed actor tier."""
+    """Validated 5-10 second cadence selected solely from reviewed actor tier."""
 
     def __init__(self, seconds: Mapping[ActorTier, float] | None = None) -> None:
         values = dict(DEFAULT_TIER_POLL_SECONDS)
@@ -44,8 +44,8 @@ class TierPollingPolicy:
             values.update({ActorTier(key): float(value) for key, value in seconds.items()})
         if set(values) != set(ActorTier):
             raise ValueError("poll policy must cover every actor tier")
-        if any(not math.isfinite(value) or not 5 <= value <= 15 for value in values.values()):
-            raise ValueError("actor poll intervals must be between 5 and 15 seconds")
+        if any(not math.isfinite(value) or not 5 <= value <= 10 for value in values.values()):
+            raise ValueError("actor poll intervals must be between 5 and 10 seconds")
         self._seconds = MappingProxyType(values)
 
     @property

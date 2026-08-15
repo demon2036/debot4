@@ -25,7 +25,7 @@ from .job_queue import NarrativeJobQueue
 from .job_priority import narrative_job_priority
 from .live_signal_filter import NarrativeSignalFilter
 from .catalyst_mint_state import CatalystMintState
-from .mint_alert_gate import MintAlertGate
+from .mint_qualification import MintAlertEvaluator
 from .mint_alert_store import MintAlertStore
 from .mint_location_store import MintLocationStore
 from .service_config import NarrativeServiceConfig
@@ -47,7 +47,7 @@ class NarrativeService:
         market_monitor: MarketSource | None = None,
         mint_monitor: MintSource | None = None,
         catalyst_mints: CatalystMintState | None = None,
-        mint_alert_gate: MintAlertGate | None = None,
+        mint_alert_gate: MintAlertEvaluator | None = None,
         chain_mint_monitor: ChainMintSource | None = None,
         mint_locations: MintLocationStore | None = None,
         mint_alerts: MintAlertStore | None = None,
